@@ -10,7 +10,8 @@
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
     "dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "format": "prettier --write src && prettier --write server"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +38,8 @@
     "nodemon": "^2.0.20",
     "postcss": "^8.4.24",
     "postcss-loader": "^7.3.2",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",

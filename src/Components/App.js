@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import Home from "./Home";
-import Login from "./Login";
-import Cart from "./Cart";
-import { useSelector, useDispatch } from "react-redux";
-import { loginWithToken, fetchCart } from "../store";
-import { Link, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react"
+import Home from "./Home"
+import Login from "./Login"
+import Cart from "./Cart"
+import { useSelector, useDispatch } from "react-redux"
+import { loginWithToken, fetchCart } from "../store"
+import { Link, Routes, Route } from "react-router-dom"
 const App = () => {
-  const { auth } = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(loginWithToken());
-  }, []);
+    dispatch(loginWithToken())
+  }, [])
 
   useEffect(() => {
     if (auth.id) {
-      dispatch(fetchCart());
+      dispatch(fetchCart())
     }
-  }, [auth]);
+  }, [auth])
   return (
     <div>
       <h1>Acme Shopping</h1>
@@ -33,7 +33,7 @@ const App = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
