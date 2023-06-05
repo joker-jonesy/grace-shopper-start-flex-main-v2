@@ -18,25 +18,27 @@ const Login = () => {
     dispatch(attemptLogin(credentials))
   }
   return (
-    <div>
-      <h2 className="mb-2 text-3xl">Login</h2>
-      <form onSubmit={login} className="form-control ">
-        <input
-          placeholder="username"
-          value={credentials.username}
-          name="username"
-          onChange={onChange}
-          className="input mb-2 p-2"
-        />
-        <input
-          placeholder="password"
-          name="password"
-          value={credentials.password}
-          onChange={onChange}
-          className="input mb-2 p-2"
-        />
-        <button className="btn-primary btn">Login</button>
-      </form>
+    <div className="mt-4 w-1/2">
+      <div className="card">
+        <h2 className="mb-2 text-3xl">Login</h2>
+        <form onSubmit={login} className="form-control ">
+          <input
+            placeholder="username"
+            value={credentials.username}
+            name="username"
+            onChange={onChange}
+            className="input my-5 p-2"
+          />
+          <input
+            placeholder="password"
+            name="password"
+            value={credentials.password}
+            onChange={onChange}
+            className="input my-4 p-2"
+          />
+          <button className="btn-primary btn">Login</button>
+        </form>
+      </div>
     </div>
   )
 }
