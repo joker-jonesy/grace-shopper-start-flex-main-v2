@@ -5,7 +5,6 @@ const SingleProductView = () => {
 
   const addToCart = (event) => {
     event.preventDefault()
-    console.log(amount)
     //add to cart function
   }
 

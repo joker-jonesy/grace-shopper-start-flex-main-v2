@@ -2,8 +2,10 @@ import React, { useEffect } from "react"
 import Home from "./Home"
 import Login from "./Login"
 import Cart from "./Cart"
+import Products from "./Products"
+import SingleProductView from "./SingleProductView"
 import { useSelector, useDispatch } from "react-redux"
-import { loginWithToken, fetchCart } from "../store"
+import { loginWithToken, fetchCart, fetchProducts } from "../store"
 import { Link, Routes, Route } from "react-router-dom"
 import Navbar from "./Navbar"
 const App = () => {
@@ -11,6 +13,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loginWithToken())
+    dispatch(fetchProducts());
   }, [])
 
   useEffect(() => {
@@ -22,15 +25,14 @@ const App = () => {
     <>
       <Navbar auth={auth} />
       <div className="flex justify-center">
-        {auth.id ? <></> : <Login />}
-        {!!auth.id && (
-          <div>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/cart" element={<Cart />} />
-            </Routes>
-          </div>
-        )}
+        <div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/products" element={<Products/>} />
+            <Route path="/products/:id" element={<SingleProductView />} />
+          </Routes>
+        </div>
       </div>
     </>
   )
