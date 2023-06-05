@@ -22,7 +22,8 @@ const createFakeProduct = () => {
     }),
     price: faker.commerce.price(),
     description: faker.commerce.productDescription(),
-    material: faker.commerce.productMaterial()
+    material: faker.commerce.productMaterial(), 
+    category: 'Category1' 
   }
 }
 
