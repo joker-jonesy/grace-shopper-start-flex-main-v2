@@ -1,7 +1,7 @@
 {
   "name": "acme-shopping-2207-fsa-pt",
   "version": "1.0.0",
-  "description": "",
+  "description": "Grace Shopper Project",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
