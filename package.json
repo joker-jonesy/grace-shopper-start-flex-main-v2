@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "build:dev": "npm run build -- --watch --mode=development",
+    "build:dev": "webpack --watch --mode=development",
     "test": "JWT=shhhhh mocha",
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
-    "dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
+    "dev:server": "JWT=felix node server/index.js --ignore dist/ --ignore src/",
+    "dev:client": "npm run build:dev",
     "start": "node server/index.js",
     "format": "prettier --write src && prettier --write server"
   },
