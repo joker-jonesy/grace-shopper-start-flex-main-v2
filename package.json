@@ -9,8 +9,9 @@
     "test": "JWT=shhhhh mocha",
     "test:dev": "DATABASE_URL=postgres://localhost/acme_shopping_test_db npm run test -- --watch",
     "test:dev:quiet": "QUIET=true npm run test:dev",
-    "start:dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
-    "start": "node server/index.js"
+    "dev": "JWT=felix nodemon server/index.js --ignore dist/ --ignore src/ & npm run build:dev",
+    "start": "node server/index.js",
+    "format": "prettier --write src && prettier --write server"
   },
   "keywords": [],
   "author": "",
@@ -27,11 +28,18 @@
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/preset-react": "^7.18.6",
+    "autoprefixer": "^10.4.14",
     "axios": "^1.1.3",
     "babel-loader": "^9.0.0",
     "chai": "^4.3.6",
+    "css-loader": "^6.8.1",
+    "daisyui": "^3.0.3",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
+    "postcss": "^8.4.24",
+    "postcss-loader": "^7.3.2",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
@@ -39,7 +47,9 @@
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "style-loader": "^3.3.3",
     "supertest": "^6.3.1",
+    "tailwindcss": "^3.3.2",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
   }
