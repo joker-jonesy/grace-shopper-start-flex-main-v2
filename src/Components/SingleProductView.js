@@ -3,7 +3,9 @@ import React, { useState } from "react"
 const SingleProductView = () => {
   const [amount, setAmount] = useState(1)
 
-  const addToCart = () => {
+  const addToCart = (event) => {
+    event.preventDefault()
+    console.log(amount)
     //add to cart function
   }
 
@@ -16,7 +18,7 @@ const SingleProductView = () => {
       <form onSubmit={addToCart}>
         <input
           value={amount}
-          onChange={(event) => (amount = event.target.value)}
+          onChange={(event) => setAmount(event.target.value)}
         />
         <button>Add to Cart</button>
       </form>
