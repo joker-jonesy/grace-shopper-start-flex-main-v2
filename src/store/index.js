@@ -1,18 +1,19 @@
-import {configureStore} from "@reduxjs/toolkit";
-import auth from './auth';
-import cart from './cart';
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import auth from "./auth";
+import cart from "./cart";
 
 const reducer = combineReducers({
   auth,
-  cart
+  cart,
 });
 
 const store = configureStore({
-  reducer:{
+  reducer: {
     auth: auth,
-    cart: cart
-  }
+    cart: cart,
+  },
 });
 
 export default store;
-
+export { loginWithToken, attemptLogin, logout } from "./auth";
+export { fetchCart, addToCart, removeFromCart } from "./cart";
