@@ -55,7 +55,6 @@ const authSlice = createSlice({
     });
   },
 });
-
 const { logout } = authSlice.actions;
 
 export { logout };
