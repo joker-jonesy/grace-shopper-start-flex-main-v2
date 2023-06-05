@@ -2,7 +2,7 @@ const conn = require("./conn")
 const { STRING, UUID, UUIDV4 } = conn.Sequelize
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const JWT = process.env.JWT
+const JWT = process.env.JWT || "felix"
 
 const User = conn.define("user", {
   id: {
@@ -97,7 +97,7 @@ User.addHook("beforeSave", async (user) => {
 
 User.findByToken = async function (token) {
   try {
-    const { id } = jwt.verify(token, process.env.JWT)
+    const { id } = jwt.verify(token, JWT)
     const user = await this.findByPk(id)
     if (user) {
       return user

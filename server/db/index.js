@@ -6,10 +6,10 @@ const LineItem = require("./LineItem")
 const { faker } = require('@faker-js/faker')
 
 
-Order.belongsTo(User)
-LineItem.belongsTo(Order)
-Order.hasMany(LineItem)
-LineItem.belongsTo(Product)
+Order.belongsTo(User);
+LineItem.belongsTo(Order);
+Order.hasMany(LineItem);
+LineItem.belongsTo(Product);
 
 const TOTAL_PRODUCTS = 200;
 
@@ -38,7 +38,7 @@ const syncAndSeed = async () => {
     User.create({ username: "lucy", password: "123" }),
     User.create({ username: "larry", password: "123" }),
     User.create({ username: "ethyl", password: "123" }),
-  ])
+  ]);
 
   const insertedProducts = await Promise.all(fakeProducts.map((product) => Product.create(product)));
 
@@ -54,11 +54,11 @@ const syncAndSeed = async () => {
     products: {
       insertedProducts
     },
-  }
-}
+  };
+};
 
 module.exports = {
   syncAndSeed,
   User,
   Product,
-}
+};
