@@ -2,6 +2,7 @@ const conn = require("./conn")
 const { STRING, UUID, UUIDV4 } = conn.Sequelize
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const { BOOLEAN } = require("sequelize")
 const JWT = process.env.JWT || "felix"
 
 const User = conn.define("user", {
@@ -18,12 +19,25 @@ const User = conn.define("user", {
     },
     unique: true,
   },
+  email: {
+    type: STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+      isEmail: true,
+    },
+    unique: true,
+  },
   password: {
     type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
+  },
+  isAdmin: {
+    type: BOOLEAN,
+    defaultValue: false,
   },
 })
 
@@ -55,6 +69,12 @@ User.prototype.getCart = async function () {
     ],
   })
   return cart
+}
+
+User.prototype.setAdmin = async function (bool) {
+  this.isAdmin = bool
+  await this.save()
+  return this
 }
 
 User.prototype.addToCart = async function ({ product, quantity }) {
