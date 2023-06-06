@@ -1,2 +1,14 @@
-node_modules
+node_modules/*
+dist/*
+cache
+.cache
+package.json
+package-lock.json
+public
+CHANGELOG.md
+.yarn
 dist
+node_modules
+.next
+build
+.contentlayer
