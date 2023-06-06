@@ -3,6 +3,7 @@ import logger from "redux-logger"
 import auth from "./auth"
 import cart from "./cart"
 import products from "./products"
+import singleProduct from "./singleProduct"
 import users from "./users"
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     auth: auth,
     cart: cart,
     products: products,
+    singleProduct: singleProduct,
     users: users,
   },
 })
