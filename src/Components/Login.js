@@ -1,8 +1,12 @@
 import React, { useState } from "react"
 import { attemptLogin } from "../store"
-import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 
 const Login = () => {
+  const { auth } = useSelector((state) => state)
+  const navigate = useNavigate()
+
   const dispatch = useDispatch()
   const [credentials, setCredentials] = useState({
     username: "",
@@ -16,6 +20,9 @@ const Login = () => {
   const login = (ev) => {
     ev.preventDefault()
     dispatch(attemptLogin(credentials))
+  }
+  if (!!auth.id) {
+    navigate("/products")
   }
   return (
     <div className="mt-4 w-1/2">
