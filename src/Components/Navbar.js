@@ -1,16 +1,34 @@
 import React from "react"
-import { Link, redirect } from "react-router-dom"
 import { useDispatch } from "react-redux"
+import { useNavigate, Link } from "react-router-dom"
 import { logout } from "../store/auth"
 
 function Navbar({ auth }) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate("/")
+  }
+  const handleLogin = () => {
+    navigate("/login")
+  }
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link to={"/"} className="btn-ghost btn text-xl normal-case">
           GraceShopper
         </Link>
+        <ul className="menu menu-horizontal px-1">
+          {auth.isAdmin && (
+            <li>
+              <Link to={"/users"}>Users</Link>
+            </li>
+          )}
+          <li>
+            <Link to={"/products"}>Products</Link>
+          </li>
+        </ul>
       </div>
       <div className="flex-none">
         {auth.id && (
@@ -54,12 +72,19 @@ function Navbar({ auth }) {
           </div>
         )}
         {/* USER DROP DOWN */}
-        {auth.id && (
+        {auth.id ? (
           <button
             className="btn-secondary btn mr-2"
-            onClick={() => dispatch(logout())}
+            onClick={() => handleLogout()}
           >
             Logout
+          </button>
+        ) : (
+          <button
+            className="btn-secondary btn mr-2"
+            onClick={() => handleLogin()}
+          >
+            Login | Sign Up
           </button>
         )}
       </div>
