@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link } from "react-router-dom"
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate"
 
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state)
@@ -20,8 +20,8 @@ const PaginatedProducts = () => {
     console.log(
       `User requested page number ${event.selected}, which is offset ${newOffset}`
     )
-    setItemOffset(newOffset);
-    window.scrollTo(0,0);
+    setItemOffset(newOffset)
+    window.scrollTo(0, 0)
   }
 
   return (
@@ -45,7 +45,7 @@ const PaginatedProducts = () => {
   )
 }
 
-const Products = ({currentProducts}) => {
+const Products = ({ currentProducts }) => {
   return (
     <div className="m-12 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
