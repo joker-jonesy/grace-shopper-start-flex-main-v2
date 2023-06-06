@@ -33,10 +33,23 @@ const fakeProducts = faker.helpers.multiple(createFakeProduct, {
 const syncAndSeed = async () => {
   await conn.sync({ force: true })
   const [moe, lucy, larry, ethyl] = await Promise.all([
-    User.create({ username: "moe", password: "123" }),
-    User.create({ username: "lucy", password: "123" }),
-    User.create({ username: "larry", password: "123" }),
-    User.create({ username: "ethyl", password: "123" }),
+    User.create({
+      username: "moe",
+      password: "123",
+      email: "seed1@test.com",
+      isAdmin: true,
+    }),
+    User.create({ username: "lucy", password: "123", email: "seed2@test.com" }),
+    User.create({
+      username: "larry",
+      password: "123",
+      email: "seed3@test.com",
+    }),
+    User.create({
+      username: "ethyl",
+      password: "123",
+      email: "seed4@test.com",
+    }),
   ])
 
   const insertedProducts = await Promise.all(
