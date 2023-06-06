@@ -6,6 +6,7 @@ const LineItem = require("./LineItem")
 const { faker } = require("@faker-js/faker")
 
 Order.belongsTo(User)
+User.hasMany(Order)
 LineItem.belongsTo(Order)
 Order.hasMany(LineItem)
 LineItem.belongsTo(Product)
@@ -75,4 +76,5 @@ module.exports = {
   syncAndSeed,
   User,
   Product,
+  Order,
 }
