@@ -14,11 +14,9 @@ app.post("/", async (req, res, next) => {
 
 app.get("/", async (req, res, next) => {
   try {
-    res.send(
-      await User.findByToken(req.headers.authorization, {
-        attributes: ["id", "username", "email", "isAdmin"],
-      })
-    )
+    res.send(await User.findByToken(req.headers.authorization, {
+      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+    }))
   } catch (ex) {
     next(ex)
   }

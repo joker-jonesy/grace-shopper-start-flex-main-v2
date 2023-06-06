@@ -7,7 +7,7 @@ module.exports = app
 app.get("/:id", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
-    if (!user.isAdmin) {
+    if (!user.isAdmin || user.id !== req.params.id) {
       res.sendStatus(401)
       return
     }

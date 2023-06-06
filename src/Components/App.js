@@ -15,7 +15,7 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loginWithToken())
-    dispatch(fetchProducts());
+    dispatch(fetchProducts())
   }, [])
 
   useEffect(() => {
@@ -26,18 +26,17 @@ const App = () => {
   return (
     <>
       <Navbar auth={auth} />
-      <div className="flex justify-center">
-        <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/products" element={<Products/>} />
-            <Route path="/users" element={<Users/>} />
-            <Route path="/products/:id" element={<SingleProductView />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/products/:id" element={<SingleProductView />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </>
   )
