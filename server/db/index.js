@@ -3,34 +3,32 @@ const User = require("./User")
 const Product = require("./Product")
 const Order = require("./Order")
 const LineItem = require("./LineItem")
-const { faker } = require('@faker-js/faker')
+const { faker } = require("@faker-js/faker")
 
+Order.belongsTo(User)
+LineItem.belongsTo(Order)
+Order.hasMany(LineItem)
+LineItem.belongsTo(Product)
 
-Order.belongsTo(User);
-LineItem.belongsTo(Order);
-Order.hasMany(LineItem);
-LineItem.belongsTo(Product);
-
-const TOTAL_PRODUCTS = 200;
+const TOTAL_PRODUCTS = 200
 
 const createFakeProduct = () => {
   return {
     name: faker.commerce.productName(),
-    imageUrl: faker.image.url({
+    imageURL: faker.image.url({
       height: 400,
-      width: 400
+      width: 400,
     }),
     price: faker.commerce.price(),
     description: faker.commerce.productDescription(),
-    material: faker.commerce.productMaterial(), 
-    category: 'Category1' 
+    material: faker.commerce.productMaterial(),
+    category: "Category1",
   }
 }
 
 const fakeProducts = faker.helpers.multiple(createFakeProduct, {
   count: TOTAL_PRODUCTS,
-});
-
+})
 
 const syncAndSeed = async () => {
   await conn.sync({ force: true })
@@ -39,9 +37,11 @@ const syncAndSeed = async () => {
     User.create({ username: "lucy", password: "123" }),
     User.create({ username: "larry", password: "123" }),
     User.create({ username: "ethyl", password: "123" }),
-  ]);
+  ])
 
-  const insertedProducts = await Promise.all(fakeProducts.map((product) => Product.create(product)));
+  const insertedProducts = await Promise.all(
+    fakeProducts.map((product) => Product.create(product))
+  )
 
   const cart = await ethyl.getCart()
   await ethyl.addToCart({ product: insertedProducts[1], quantity: 3 })
@@ -53,13 +53,13 @@ const syncAndSeed = async () => {
       larry,
     },
     products: {
-      insertedProducts
+      insertedProducts,
     },
-  };
-};
+  }
+}
 
 module.exports = {
   syncAndSeed,
   User,
   Product,
-};
+}
