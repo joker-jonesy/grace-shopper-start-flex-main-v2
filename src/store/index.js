@@ -12,7 +12,7 @@ const store = configureStore({
     auth: auth,
     cart: cart,
     products: products,
-    singleProduct: singleProduct
+    singleProduct: singleProduct,
     users: users,
   },
 })
