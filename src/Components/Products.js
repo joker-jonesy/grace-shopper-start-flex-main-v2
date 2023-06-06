@@ -50,7 +50,7 @@ const Products = ({currentProducts}) => {
     <div className="m-12 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
         return (
-          <div className="card glass m-4 w-48" key={uuidv4()}>
+          <div className="card glass m-4 w-64" key={uuidv4()}>
             <figure>
               <img src={product.imageURL} alt="" />
             </figure>

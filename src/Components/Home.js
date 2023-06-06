@@ -11,6 +11,7 @@ const Home = () => {
       <h1>Home</h1>
       {auth.username ? <div>Welcome {auth.username}!!</div> : <></>}
       <Link to="/products">Products</Link>
+      <Link to="/login"> Login</Link>
     </div>
   )
 }
