@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express.Router()
-const { User } = require("../db")
+const { User, Order } = require("../db")
 
 module.exports = app
 
@@ -11,7 +11,9 @@ app.get("/:id", async (req, res, next) => {
       res.sendStatus(401)
       return
     }
-    const fetchedUser = await User.findByPk(req.params.id)
+    const fetchedUser = await User.findByPk(req.params.id, {
+      include: Order,
+    })
     res.send(fetchedUser)
   } catch (ex) {
     next(ex)
@@ -27,6 +29,7 @@ app.get("/", async (req, res, next) => {
     }
     const users = await User.findAll({
       attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+      include: Order,
     })
     res.send(users)
   } catch (ex) {

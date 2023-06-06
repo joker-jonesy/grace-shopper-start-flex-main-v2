@@ -24,6 +24,7 @@ const Users = () => {
               <th>Email</th>
               <th>Joined</th>
               <th>Admin</th>
+              <th>Total Orders</th>
             </tr>
           </thead>
           <tbody>
@@ -35,6 +36,7 @@ const Users = () => {
                     <td>{user.email}</td>
                     <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                     <td>{user.isAdmin ? "TRUE" : "FALSE"}</td>
+                    <td>{user.orders ? user.orders.length : 0}</td>
                   </tr>
                 )
               })}
