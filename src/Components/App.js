@@ -3,6 +3,7 @@ import Home from "./Home"
 import Login from "./Login"
 import Cart from "./Cart"
 import Products from "./Products"
+import CreateAccount from "./CreateAccount"
 import SingleProductView from "./SingleProductView"
 import { useSelector, useDispatch } from "react-redux"
 import { loginWithToken, fetchCart, fetchProducts } from "../store"
@@ -29,6 +30,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login/>} />
+            <Route path="/account/create" element={<CreateAccount />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/products" element={<Products/>} />
             <Route path="/products/:id" element={<SingleProductView />} />
