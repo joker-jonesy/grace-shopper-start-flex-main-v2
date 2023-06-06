@@ -35,11 +35,11 @@ const PaginatedProducts = () => {
         pageCount={pageCount}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
-        className="flex justify-center"
-        activeClassName="text-cyan-300 m-1"
-        pageClassName="text-xl m-1"
-        previousClassName="text-xl text-blue-600 m-1"
-        nextClassName="text-xl text-blue-600 m-1"
+        className="join flex justify-center"
+        activeClassName="btn-sm join-item bg-accent"
+        pageClassName="btn-sm join-item"
+        previousClassName="btn-sm join-item bg-primary"
+        nextClassName="btn-sm join-item bg-primary"
       />
     </>
   )
@@ -56,10 +56,10 @@ const Products = ({currentProducts}) => {
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
-                <h2 className="text-md">{product.name}</h2>
+                <h2 className="text-sm">{product.name}</h2>
               </Link>
               <div className="card-actions justify-end">
-                <button className="rounded-md bg-cyan-500 p-1 text-xs">
+                <button className="btn-sm bg-secondary rounded-btn">
                   Add to Cart
                 </button>
               </div>
