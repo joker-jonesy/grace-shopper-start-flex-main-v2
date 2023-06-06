@@ -25,7 +25,9 @@ app.get("/", async (req, res, next) => {
       res.sendStatus(401)
       return
     }
-    const users = await User.findAll()
+    const users = await User.findAll({
+      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+    })
     res.send(users)
   } catch (ex) {
     next(ex)
