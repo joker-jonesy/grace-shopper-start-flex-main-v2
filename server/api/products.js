@@ -79,3 +79,14 @@ app.put("/:id", async (req, res, next) => {
     next(error)
   }
 })
+
+// GET /products?category= - Get all products in a category
+app.get("/category/:category", async (req, res, next) => {
+  try {
+    const category = req.params.category
+    const products = await Product.findAll({ where: { category } })
+    res.send(products)
+  } catch (ex) {
+    next(ex)
+  }
+})
