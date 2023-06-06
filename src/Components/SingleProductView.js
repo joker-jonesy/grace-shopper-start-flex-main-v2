@@ -1,7 +1,17 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchSingleProduct } from "../store/singleProduct"
+import { useParams } from "react-router-dom"
 
 const SingleProductView = () => {
   const [amount, setAmount] = useState(1)
+  const product = useSelector(state => state.singleProduct)
+  const dispatch = useDispatch()
+  const { id } = useParams()
+
+  useEffect(() => {
+    dispatch(fetchSingleProduct(id))
+  }, [dispatch])
 
   const addToCart = (event) => {
     event.preventDefault()
@@ -10,10 +20,10 @@ const SingleProductView = () => {
 
   return (
     <div>
-      <h1>Name</h1>
-      <img></img>
-      <p>description</p>
-      <h3>price</h3>
+      <h1>{product.name}</h1>
+      <img src= {product.imageURL}/>
+      <p>{product.description}</p>
+      <h3>{product.price}</h3>
       <form onSubmit={addToCart}>
         <input
           value={amount}

@@ -19,6 +19,7 @@ app.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await Product.findByPk(id);
+    console.log("PRODUCT FROM API", product)
     if (!product) {
       res.sendStatus(404);
     } else {

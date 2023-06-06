@@ -3,6 +3,7 @@ import logger from "redux-logger"
 import auth from "./auth"
 import cart from "./cart"
 import products from "./products"
+import singleProduct from "./singleProduct"
 
 const store = configureStore({
   middleware: (defaultMiddleware) => defaultMiddleware().concat(logger),
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: auth,
     cart: cart,
     products: products,
+    singleProduct: singleProduct
   },
 })
 
