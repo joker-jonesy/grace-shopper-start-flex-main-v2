@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from "react";
-import { useSelector } from "react-redux";
-import { Products } from "./Products";
+import React, { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { Products } from "./Products"
 
 const Landing = () => {
   const { auth, products } = useSelector((state) => state)
+
   const [popularProducts, setPopularProducts] = useState([])
+
   useEffect(() => {
     if (Array.isArray(products)) {
-      setPopularProducts(products.slice(0, 4));
+      setPopularProducts(products.slice(0, 4))
     } else {
-      setPopularProducts([]);
+      setPopularProducts([])
     }
-  }, [products]);
+  }, [products])
 
-
-  
   return (
     <div className="">
       <div className="flex justify-center">
@@ -22,13 +22,13 @@ const Landing = () => {
           ACME Web Store
         </div>
       </div>
-      <p className="flex w-10/12 justify-center text-center m-auto mt-2 mb-2">
+      <p className="m-auto mb-2 mt-2 flex w-10/12 justify-center text-center">
         About: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni
         aliquid, delectus, illum illo id atque libero deleniti enim eius
         perferendis et! Expedita excepturi perspiciatis similique ipsum amet
         totam nulla sapiente!
       </p>
-      <h1 className="flex justify-center text-4xl mt-12">Popular Products</h1>
+      <h1 className="mt-12 flex justify-center text-4xl">Popular Products</h1>
       <Products currentProducts={popularProducts} />
     </div>
   )
