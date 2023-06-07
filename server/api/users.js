@@ -20,6 +20,27 @@ app.get("/:id", async (req, res, next) => {
   }
 })
 
+app.put("/:id", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization)
+    if (!user.isAdmin || user.id !== req.params.id) {
+      res.sendStatus(401)
+      return
+    }
+    const fetchedUser = await User.findByPk(req.params.id)
+    console.log(req.body.data)
+    await fetchedUser.update(req.body.data)
+    res.send(fetchedUser)
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(403)
+      res.send(error.errors[0].message)
+    } else {
+      next(error)
+    }
+  }
+})
+
 app.get("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
