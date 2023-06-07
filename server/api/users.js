@@ -49,7 +49,7 @@ app.get("/", async (req, res, next) => {
       return
     }
     const users = await User.findAll({
-      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+      attributes: ["id", "username", "email", "createdAt", "isAdmin", "stripeId"],
       include: Order,
     })
     res.send(users)

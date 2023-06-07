@@ -25,6 +25,7 @@ function AdminUserPage() {
                 <th>Email</th>
                 <th>Joined</th>
                 <th><input type="checkbox" checked="checked" className="checkbox w-4 h-4" /> Admin</th>
+                <th>Stripe ID</th>
                 <th>Total Orders and Carts</th>
               </tr>
             </thead>
@@ -41,6 +42,7 @@ function AdminUserPage() {
                       <td>{user.email}</td>
                       <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                       <td>{user.isAdmin ? "TRUE" : "FALSE"}</td>
+                      <td>{user.stripeId}</td>
                       <td>{user.orders ? user.orders.length : 0}</td>
                     </tr>
                   )

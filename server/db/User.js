@@ -45,6 +45,9 @@ const User = conn.define("user", {
     type: BOOLEAN,
     defaultValue: false,
   },
+  stripeId: {
+    type: STRING,
+  },
 })
 
 User.prototype.createOrder = async function () {
