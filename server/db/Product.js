@@ -1,5 +1,5 @@
-const conn = require("./conn");
-const { STRING, UUID, UUIDV4, ENUM, INTEGER, DECIMAL } = conn.Sequelize; // Float for decimal, Enum for predefined vals
+const conn = require("./conn")
+const { STRING, UUID, UUIDV4, ENUM, INTEGER, DECIMAL } = conn.Sequelize // Float for decimal, Enum for predefined vals
 // this is to define the model for the products table
 const Product = conn.define("product", {
   id: {
@@ -18,8 +18,8 @@ const Product = conn.define("product", {
     type: DECIMAL,
     allowNull: false,
     validate: {
-      min: 0.0
-    }
+      min: 0.0,
+    },
   },
   quantity: {
     type: INTEGER,
@@ -27,7 +27,8 @@ const Product = conn.define("product", {
   },
   imageURL: {
     type: STRING,
-    defaultValue: 'https://www.eteknix.com/wp-content/uploads/2013/04/anonymous.jpg'
+    defaultValue:
+      "https://www.eteknix.com/wp-content/uploads/2013/04/anonymous.jpg",
   },
   description: {
     type: STRING,
@@ -39,6 +40,6 @@ const Product = conn.define("product", {
   material: {
     type: STRING,
   },
-});
+})
 
-module.exports = Product;
+module.exports = Product
