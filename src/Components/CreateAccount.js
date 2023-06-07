@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { attemptLogin } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const CreateAccount = () => {
   const [username, setUsername] = useState("");
@@ -9,67 +12,75 @@ const CreateAccount = () => {
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/) ? setIsValidUsername(true) : setIsValidUsername(false)}, [username]);
   useEffect(() => {password.match(/^[A-Za-z]\w{7,14}$/) ? setIsValidPassword(true) : setIsValidPassword(false)}, [password])
   useEffect(() => {email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) ? setIsValidEmail(true) : setIsValidEmail(false)}, [email])
 
-  const createUser = async (newUser) => {
-    const response = await axios.post("/api/account/create", newUser);
-  }
-
-  const create = (event) => {
-    event.preventDefault();
-    const newUser = {username, password, email}
-    createUser(newUser);
+  const create = async (event) => {
+    try{
+      event.preventDefault();
+      const newUser = {username, password, email}
+      const response = await axios.post("/api/account/create", newUser);
+      dispatch(attemptLogin({username,password}));
+      navigate('/')
+    }catch(error){
+      if(error.response.status === 403){
+        window.alert(error.response.data);
+      }else{
+        throw error;
+      }
+    }
   }
 
   return (
-    <>
-      <form
-        className="flex flex-col justify-center"
-        onSubmit={create}
-      >
-        <h3>Username</h3>
-        <input
-          className={
-            isValidUsername
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-        <h3>Password</h3>
-        <input
-          className={
-            isValidPassword
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <h3>Email</h3>
-        <input
-          className={
-            isValidEmail
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <button
-          disabled={!isValidEmail || !isValidPassword || !isValidUsername}
-          className="btn-primary btn m-1"
-        >
-          Creat Account
-        </button>
-      </form>
-    </>
+    <div className="shadow-2x m-auto mb-4 mt-4 flex w-1/2 justify-center rounded-xl border-2 border-secondary bg-base-200">
+      <div className="card ">
+        <form className="flex flex-col justify-center" onSubmit={create}>
+          <h3>Username</h3>
+          <input
+            className={
+              isValidUsername
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black "
+            }
+            placeholder="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+          <h3>Password</h3>
+          <input
+            className={
+              isValidPassword
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
+            placeholder="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <h3>Email</h3>
+          <input
+            className={
+              isValidEmail
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
+            placeholder="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <button
+            disabled={!isValidEmail || !isValidPassword || !isValidUsername}
+            className="btn-primary btn m-1"
+          >
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }
 

@@ -17,7 +17,10 @@ const User = conn.define("user", {
     validate: {
       notEmpty: true,
     },
-    unique: true,
+    unique: {
+      args: true,
+      msg: "Username already in use.",
+    },
   },
   email: {
     type: STRING,
@@ -26,7 +29,10 @@ const User = conn.define("user", {
       notEmpty: true,
       isEmail: true,
     },
-    unique: true,
+    unique: {
+      args: true,
+      msg: "Email already in use.",
+    },
   },
   password: {
     type: STRING,

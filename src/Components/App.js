@@ -11,6 +11,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { loginWithToken, fetchCart, fetchProducts } from "../store"
 import { Link, Routes, Route } from "react-router-dom"
 import Navbar from "./Navbar"
+import Account from "./Account"
+import Landing from "./Landing"
+import Footer from "./Footer"
+
 const App = () => {
   const { auth } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -27,10 +31,10 @@ const App = () => {
   return (
     <>
       <Navbar auth={auth} />
-
       <div>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/account" element={<Account />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account/create" element={<CreateAccount />} />
@@ -40,6 +44,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <Footer/>
     </>
   )
 }

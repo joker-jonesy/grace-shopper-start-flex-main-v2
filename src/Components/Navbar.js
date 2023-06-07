@@ -7,29 +7,26 @@ import CartDropdown from "./CartDropdown"
 function Navbar({ auth }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const handleLogout = () => {
-    dispatch(logout())
-    navigate("/")
-  }
   const handleLogin = () => {
     navigate("/login")
   }
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar sticky top-0 z-10 bg-base-200">
       <div className="flex-1">
-        <Link to={"/"} className="btn-ghost btn text-xl normal-case">
-          GraceShopper
+        <Link to={"/"} className="text-md btn-ghost btn normal-case">
+          Home
         </Link>
-        <ul className="menu menu-horizontal px-1">
           {auth.isAdmin && (
-            <li>
-              <Link to={"/users"}>Users</Link>
-            </li>
+              <Link to={"/users"} className="text-md btn-ghost btn normal-case">
+                Users
+              </Link>
           )}
-          <li>
-            <Link to={"/products"}>Products</Link>
-          </li>
-        </ul>
+            <Link
+              to={"/products"}
+              className="text-md btn-ghost btn normal-case"
+            >
+              Products
+            </Link>
       </div>
       <div className="flex-none">
         {auth.id && (
@@ -56,20 +53,19 @@ function Navbar({ auth }) {
             </label>
             {/* CART DROP DOWN */}
             <CartDropdown />
-        
           </div>
         )}
         {/* USER DROP DOWN */}
         {auth.id ? (
           <button
-            className="btn-secondary btn mr-2"
-            onClick={() => handleLogout()}
+            className="btn-secondary btn-sm btn mr-2"
+            onClick={() => navigate("/account")}
           >
-            Logout
+            Account
           </button>
         ) : (
           <button
-            className="btn-secondary btn mr-2"
+            className="btn-secondary btn-sm btn mr-2"
             onClick={() => handleLogin()}
           >
             Login | Sign Up
