@@ -24,7 +24,7 @@ const createFakeProduct = () => {
     description: faker.commerce.productDescription(),
     material: faker.commerce.productMaterial(),
     category: "Category1",
-  }
+  }    
 }
 
 const fakeProducts = faker.helpers.multiple(createFakeProduct, {

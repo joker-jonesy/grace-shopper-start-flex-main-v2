@@ -15,7 +15,7 @@ const Product = conn.define("product", {
     },
   },
   price: {
-    type: DECIMAL,
+    type: DECIMAL(),
     allowNull: false,
     validate: {
       min: 0.0,
