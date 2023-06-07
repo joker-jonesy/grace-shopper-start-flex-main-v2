@@ -4,7 +4,7 @@ const CartDropdown = () => {
     return (
             <div
               tabIndex={0}
-              className="card dropdown-content card-compact mt-3 w-52 bg-base-100 shadow"
+              className="card dropdown-content card-compact mt-3 w-52 bg-base-100 shadow z-10"
             >
             <div className="card-body">
                 <span className="text-lg font-bold">8 Items</span>

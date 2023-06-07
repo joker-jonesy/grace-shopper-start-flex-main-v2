@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../store/auth";
 
 const Account = () => {
   const { auth } = useSelector((state) => state);
@@ -14,6 +15,11 @@ const Account = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate("/")
+  }
 
   useEffect(()=>{
     if(auth.id){
@@ -36,12 +42,16 @@ const Account = () => {
   if(auth.id){
     console.log(auth);
     return (
-      <>
-        <h1>Welcome {auth.username}</h1>
+      <div className="">
+        <div className="flex justify-center">
+          <div className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+            Welcome {auth.username}
+          </div>
+        </div>
         <>
           {!editAccount ? (
             <>
-              <h2>{auth.email}</h2>
+              <div>{auth.email}</div>
               <button
                 onClick={() => {
                   setEditAccount(true)
@@ -63,7 +73,8 @@ const Account = () => {
             </>
           )}
         </>
-      </>
+        <button onClick={() => handleLogout()}>logout</button>
+      </div>
     )
   }else{
     navigate("/account/create")

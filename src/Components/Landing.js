@@ -16,8 +16,8 @@ const Landing = () => {
   return (
     <div className="">
       <div className="flex justify-center">
-        <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-8xl font-extrabold text-transparent ">
-          Faker Web Store
+        <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-8xl font-extrabold text-transparent">
+          ACME Web Store
         </div>
       </div>
       <p className="flex w-10/12 justify-center text-center m-auto mt-2 mb-2">
@@ -26,7 +26,7 @@ const Landing = () => {
         perferendis et! Expedita excepturi perspiciatis similique ipsum amet
         totam nulla sapiente!
       </p>
-      <h1 className="flex justify-center text-4xl">Popular Products</h1>
+      <h1 className="flex justify-center text-4xl mt-12">Popular Products</h1>
       <Products currentProducts={popularProducts} />
     </div>
   )

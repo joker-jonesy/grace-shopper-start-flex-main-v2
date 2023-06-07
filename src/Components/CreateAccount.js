@@ -36,52 +36,51 @@ const CreateAccount = () => {
   }
 
   return (
-    <>
-      <form
-        className="flex flex-col justify-center"
-        onSubmit={create}
-      >
-        <h3>Username</h3>
-        <input
-          className={
-            isValidUsername
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-        <h3>Password</h3>
-        <input
-          className={
-            isValidPassword
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <h3>Email</h3>
-        <input
-          className={
-            isValidEmail
-              ? "input-bordered input-primary input m-1"
-              : "input-bordered input-warning input m-1"
-          }
-          placeholder="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <button
-          disabled={!isValidEmail || !isValidPassword || !isValidUsername}
-          className="btn-primary btn m-1"
-        >
-          Create Account
-        </button>
-      </form>
-    </>
+    <div className="shadow-2x m-auto mb-4 mt-4 flex w-1/2 justify-center rounded-xl border-2 border-secondary bg-base-200">
+      <div className="card ">
+        <form className="flex flex-col justify-center" onSubmit={create}>
+          <h3>Username</h3>
+          <input
+            className={
+              isValidUsername
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black "
+            }
+            placeholder="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+          <h3>Password</h3>
+          <input
+            className={
+              isValidPassword
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
+            placeholder="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <h3>Email</h3>
+          <input
+            className={
+              isValidEmail
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
+            placeholder="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <button
+            disabled={!isValidEmail || !isValidPassword || !isValidUsername}
+            className="btn-primary btn m-1"
+          >
+            Create Account
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }
 

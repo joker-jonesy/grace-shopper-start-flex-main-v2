@@ -25,27 +25,37 @@ const Login = () => {
     navigate("/products")
   }
   return (
-    <div className="mt-4 w-1/2">
-      <div className="card">
-        <Link to="/account/create">Sign Up</Link>
-        <h2 className="mb-2 text-3xl">Login</h2>
+    <div className="m-auto mb-4 mt-4 flex w-1/2 justify-center rounded-xl border-2 border-secondary bg-base-200 shadow-2xl">
+      <div className="card ">
+        <h2 className="mb-2 mt-2 text-3xl">Login</h2>
         <form onSubmit={login} className="form-control ">
           <input
             placeholder="username"
             value={credentials.username}
             name="username"
             onChange={onChange}
-            className="input my-5 p-2"
+            className={
+              credentials.username.length > 0
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
           />
           <input
             placeholder="password"
             name="password"
             value={credentials.password}
             onChange={onChange}
-            className="input my-4 p-2"
+            className={
+              credentials.password.length > 0
+                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
+                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+            }
           />
           <button className="btn-primary btn">Login</button>
         </form>
+        <Link to="/account/create" className="mb-2">
+          No Account? Sign Up Here
+        </Link>
       </div>
     </div>
   )

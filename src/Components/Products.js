@@ -47,7 +47,7 @@ const PaginatedProducts = () => {
 
 export const Products = ({currentProducts}) => {
   return (
-    <div className="m-12 flex flex-shrink flex-wrap justify-center">
+    <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
         return (
           <div className="card glass m-4 w-64" key={uuidv4()}>
