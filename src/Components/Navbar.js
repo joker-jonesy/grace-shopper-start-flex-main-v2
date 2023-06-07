@@ -1,8 +1,10 @@
-import React from "react"
-import { useDispatch } from "react-redux"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, Link } from "react-router-dom"
 import { logout } from "../store/auth"
 import CartDropdown from "./CartDropdown"
+import { cartQuantity } from "../util"
+import { fetchCart } from "../store"
 
 function Navbar({ auth }) {
   const dispatch = useDispatch()
@@ -10,6 +12,15 @@ function Navbar({ auth }) {
   const handleLogin = () => {
     navigate("/login")
   }
+
+  const { cart } = useSelector((state) => state)
+
+  useEffect(() => {
+    dispatch(fetchCart())
+  }, [])
+
+  const cartDisplayQuantity = cartQuantity(cart.lineItems)
+
   return (
     <div className="navbar sticky top-0 z-10 bg-base-200">
       <div className="flex-1">
@@ -48,7 +59,7 @@ function Navbar({ auth }) {
                   />
                 </svg>
                 {/* CART TOTAL ITEMS */}
-                <span className="badge badge-sm indicator-item">8</span>
+                <span className="badge badge-sm indicator-item">{cartDisplayQuantity}</span>
               </div>
             </label>
             {/* CART DROP DOWN */}
