@@ -4,7 +4,6 @@ import Login from "./Login"
 import Cart from "./Cart"
 import Products from "./Products"
 import CreateAccount from "./CreateAccount"
-import Users from "./Users"
 import NotFound from "./NotFound"
 import SingleProductView from "./SingleProductView"
 import { useSelector, useDispatch } from "react-redux"
@@ -14,6 +13,9 @@ import Navbar from "./Navbar"
 import Account from "./Account"
 import Landing from "./Landing"
 import Footer from "./Footer"
+import AdminPage from "./pages/AdminPage"
+import AdminUserPage from "./pages/AdminUserPage"
+import AdminProductPage from "./pages/AdminProductPage"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
@@ -34,17 +36,20 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/account" element={<Account />} /> 
+          <Route path="/account" element={<Account />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account/create" element={<CreateAccount />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/users" element={<Users />} />
+          <Route path="/admin" element={<AdminPage />}>
+            <Route path="/admin/users" element={<AdminUserPage />} />
+            <Route path="/admin/products" element={<AdminProductPage />} />
+          </Route>
           <Route path="/products/:id" element={<SingleProductView />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </>
   )
 }

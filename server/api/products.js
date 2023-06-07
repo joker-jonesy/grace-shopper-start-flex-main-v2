@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express.Router()
-const { Product } = require("../db")
+const { Product, User } = require("../db")
 // this is for the product(s) route
 module.exports = app
 
@@ -66,14 +66,14 @@ app.delete("/:id", async (req, res, next) => {
 
 app.put("/:id", async (req, res, next) => {
   try {
+    console.log(req.body)
     const user = await User.findByToken(req.headers.authorization)
     if (!user.isAdmin) {
       res.sendStatus(401)
       return
     }
     const product = await Product.findByPk(req.params.id)
-    const edit = {}
-    await product.update(edit)
+    await product.update(req.body)
     res.send(product)
   } catch (error) {
     next(error)
