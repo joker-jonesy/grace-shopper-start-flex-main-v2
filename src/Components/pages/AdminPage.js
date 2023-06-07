@@ -1,6 +1,6 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, NavLink } from "react-router-dom"
 
 const AdminPage = () => {
   const { auth } = useSelector((state) => state)
@@ -27,13 +27,34 @@ const AdminPage = () => {
           <ul className="menu h-full w-40 bg-base-300 p-4 text-base-content">
             {/* Sidebar content here */}
             <li>
-              <Link to={"/admin/users"}>Users</Link>
+              <NavLink
+                to="/admin/users"
+                className={({ isActive }) =>
+                  isActive ? "active" : ""
+                }
+              >
+                Users
+              </NavLink>
             </li>
             <li>
-              <Link to={"/admin/products"}>Products</Link>
+              <NavLink
+                to="/admin/products"
+                className={({ isActive }) =>
+                  isActive ? "active" : ""
+                }
+              >
+                Products
+              </NavLink>
             </li>
             <li>
-              <Link to={"/admin/orders"}>Orders</Link>
+              <NavLink
+                to="/admin/orders"
+                className={({ isActive }) =>
+                  isActive ? "active" : ""
+                }
+              >
+                Orders
+              </NavLink>
             </li>
           </ul>
         </div>

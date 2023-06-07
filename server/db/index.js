@@ -13,6 +13,14 @@ LineItem.belongsTo(Product)
 
 const TOTAL_PRODUCTS = 200
 
+getRandomCategory = () => {
+  const categories = [
+    "Category1",
+    "Category2",
+  ]
+  return categories[Math.floor(Math.random() * categories.length)]
+}
+
 const createFakeProduct = () => {
   return {
     name: faker.commerce.productName(),
@@ -23,7 +31,10 @@ const createFakeProduct = () => {
     price: faker.commerce.price(),
     description: faker.commerce.productDescription(),
     material: faker.commerce.productMaterial(),
-    category: "Category1",
+    category: getRandomCategory(),
+    quantity: faker.number.int({
+      max: 499
+    }),
   }
 }
 

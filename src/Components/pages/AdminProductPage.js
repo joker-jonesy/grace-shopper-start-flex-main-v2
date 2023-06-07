@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchProducts } from "../../store"
+import { fetchProducts, updateProduct, deleteProduct } from "../../store"
 import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
 
@@ -55,6 +55,7 @@ function AdminProductPage() {
   const handleDetailsClick = (product) => {
     setSelectedProduct(product)
     setFormData({
+      id: product.id,
       name: product.name,
       description: product.description,
       material: product.material,
@@ -68,7 +69,11 @@ function AdminProductPage() {
     const { name, value } = event.target
     setFormData((formData) => ({ ...formData, [name]: value }))
     setPendingChanges(true)
+  }
 
+  const handleSubmit = () => {
+    dispatch(updateProduct(formData))
+    setPendingChanges(false)
   }
 
   return (
@@ -77,17 +82,27 @@ function AdminProductPage() {
         {/**THIS IS THE LEFT SIDE PANEL */}
         <h1>Products</h1>
         <div className="flex flex-row justify-evenly">
-          <select className="select select-bordered w-full max-w-xs" onChange={handleCategoryChange}>
-            <option disabled selected>Category</option>
-            {uniqueCategories.map((category) => {
-              return <option key={category}>{category}</option>
-            })}
-          </select>
-          <select className="select select-bordered w-full max-w-xs">
-            <option disabled selected>Price</option>
-            <option>{`<$100`}</option>
-            <option>{`<$1000`}</option>
-          </select>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Category</span>
+            </label>
+            <select className="select select-bordered w-full max-w-xs" defaultValue={"All"} onChange={handleCategoryChange}>
+              <option>All</option>
+              {uniqueCategories.map((category) => {
+                return <option key={category}>{category}</option>
+              })}
+            </select>
+          </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Price</span>
+            </label>
+            <select className="select select-bordered w-full max-w-xs" defaultValue="All">
+              <option>All</option>
+              <option>{`<$100`}</option>
+              <option>{`<$1000`}</option>
+            </select>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -179,47 +194,47 @@ function AdminProductPage() {
                 <label className="label">
                   <span className="label-text">Product Name</span>
                 </label>
-                <input type="text" placeholder="Product Name" className="input input-bordered w-full max-w-xs" value={formData.name} onChange={handleInputChange} />
+                <input type="text" placeholder="Product Name" name="name" className="input input-bordered w-full max-w-xs" value={formData.name} onChange={handleInputChange} />
               </div>
 
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Material</span>
                 </label>
-                <input type="text" placeholder="Product Material" className="input input-bordered w-full max-w-xs" value={formData.material} onChange={handleInputChange} />
+                <input type="text" placeholder="Product Material" name="material" className="input input-bordered w-full max-w-xs" value={formData.material} onChange={handleInputChange} />
               </div>
 
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Price</span>
                 </label>
-                <input type="number" placeholder="Price" className="input input-bordered w-full max-w-xs" value={formData.price} onChange={handleInputChange} />
+                <input type="number" placeholder="Price" name="price" className="input input-bordered w-full max-w-xs" value={formData.price} onChange={handleInputChange} />
               </div>
 
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Category</span>
                 </label>
-                <select placeholder="Category" className="select select-bordered w-full max-w-xs" value={formData.category} onChange={handleInputChange} />
+                <select placeholder="Category" name="category" className="select select-bordered w-full max-w-xs" value={formData.category} onChange={handleInputChange} />
               </div>
 
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Image URL</span>
                 </label>
-                <input type="text" placeholder="Image" className="input input-bordered w-full max-w-xs" value={formData.imageURL} onChange={handleInputChange} />
+                <input type="text" placeholder="Image" name="imageURL" className="input input-bordered w-full max-w-xs" value={formData.imageURL} onChange={handleInputChange} />
               </div>
 
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Product Description</span>
                 </label>
-                <textarea placeholder="Description" className="textarea text-area-bordered w-full" value={formData.description} onChange={handleInputChange} />
+                <textarea placeholder="Description" name="description" className="textarea text-area-bordered w-full" value={formData.description} onChange={handleInputChange} />
               </div>
             </div>
 
             <div className="card-footer">
-              <button className="btn btn-primary" disabled={!pendingChanges}>
+              <button className="btn btn-primary" disabled={!pendingChanges} onClick={() => handleSubmit()}>
                 Save
               </button>
             </div>
