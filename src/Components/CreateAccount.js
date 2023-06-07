@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { attemptLogin } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const CreateAccount = () => {
   const [username, setUsername] = useState("");
@@ -9,18 +12,27 @@ const CreateAccount = () => {
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/) ? setIsValidUsername(true) : setIsValidUsername(false)}, [username]);
   useEffect(() => {password.match(/^[A-Za-z]\w{7,14}$/) ? setIsValidPassword(true) : setIsValidPassword(false)}, [password])
   useEffect(() => {email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) ? setIsValidEmail(true) : setIsValidEmail(false)}, [email])
 
-  const createUser = async (newUser) => {
-    const response = await axios.post("/api/account/create", newUser);
-  }
-
-  const create = (event) => {
-    event.preventDefault();
-    const newUser = {username, password, email}
-    createUser(newUser);
+  const create = async (event) => {
+    try{
+      event.preventDefault();
+      const newUser = {username, password, email}
+      const response = await axios.post("/api/account/create", newUser);
+      dispatch(attemptLogin({username,password}));
+      navigate('/')
+    }catch(error){
+      if(error.response.status === 403){
+        window.alert(error.response.data);
+      }else{
+        throw error;
+      }
+    }
   }
 
   return (
@@ -66,7 +78,7 @@ const CreateAccount = () => {
           disabled={!isValidEmail || !isValidPassword || !isValidUsername}
           className="btn-primary btn m-1"
         >
-          Creat Account
+          Create Account
         </button>
       </form>
     </>

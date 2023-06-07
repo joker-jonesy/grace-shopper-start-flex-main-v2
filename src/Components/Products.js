@@ -45,7 +45,7 @@ const PaginatedProducts = () => {
   )
 }
 
-const Products = ({currentProducts}) => {
+export const Products = ({currentProducts}) => {
   return (
     <div className="m-12 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {

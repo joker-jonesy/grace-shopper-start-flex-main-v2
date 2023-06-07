@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { attemptLogin } from "../store"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 
 const Login = () => {
@@ -27,6 +27,7 @@ const Login = () => {
   return (
     <div className="mt-4 w-1/2">
       <div className="card">
+        <Link to="/account/create">Sign Up</Link>
         <h2 className="mb-2 text-3xl">Login</h2>
         <form onSubmit={login} className="form-control ">
           <input

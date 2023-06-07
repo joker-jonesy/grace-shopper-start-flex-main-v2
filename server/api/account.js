@@ -4,10 +4,15 @@ const { User } = require('../db');
 
 app.post('/create', async (req, res, next)=>{
   try{
-    console.log(req.body);
-    const newUser = User.create(req.body);
-  }catch(error){
-    next(error)
+    const newUser = await User.create(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    if(error.name === 'SequelizeUniqueConstraintError'){
+      res.status(403);
+      res.send(error.errors[0].message);
+    }else{
+      next(error);
+    }
   }
 })
 
