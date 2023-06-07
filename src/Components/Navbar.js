@@ -16,17 +16,14 @@ function Navbar({ auth }) {
         <Link to={"/"} className="text-md btn-ghost btn normal-case">
           Home
         </Link>
-          {auth.isAdmin && (
-              <Link to={"/users"} className="text-md btn-ghost btn normal-case">
-                Users
-              </Link>
-          )}
-            <Link
-              to={"/products"}
-              className="text-md btn-ghost btn normal-case"
-            >
-              Products
-            </Link>
+        {auth.isAdmin && (
+          <Link to={"/admin"} className="text-md btn-ghost btn normal-case">
+            Admin
+          </Link>
+        )}
+        <Link to={"/products"} className="text-md btn-ghost btn normal-case">
+          Products
+        </Link>
       </div>
       <div className="flex-none">
         {auth.id && (

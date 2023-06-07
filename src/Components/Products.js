@@ -26,7 +26,9 @@ const PaginatedProducts = () => {
 
   const filterProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
-    : products
+    : products.length > 0
+    ? products
+    : []
 
   const currentProducts = filterProducts.slice(itemOffset, endOffset)
   const pageCount = Math.ceil(filterProducts.length / itemsPerPage)
@@ -66,7 +68,7 @@ const PaginatedProducts = () => {
   )
 }
 
-export const Products = ({currentProducts}) => {
+export const Products = ({ currentProducts }) => {
   return (
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
