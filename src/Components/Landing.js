@@ -3,13 +3,15 @@ import { useSelector } from "react-redux";
 import { Products } from "./Products";
 
 const Landing = () => {
-  const {auth, products} = useSelector(state=>state)
-
-  const [popularProducts, setPopularProducts] = useState([]);
-
-  useEffect(()=>{
-    setPopularProducts(products.slice(0, 4))
-  },[products])
+  const { auth, products } = useSelector((state) => state)
+  const [popularProducts, setPopularProducts] = useState([])
+  useEffect(() => {
+    if (Array.isArray(products)) {
+      setPopularProducts(products.slice(0, 4));
+    } else {
+      setPopularProducts([]);
+    }
+  }, [products]);
 
 
   

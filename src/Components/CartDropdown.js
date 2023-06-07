@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const CartDropdown = () => {
     return (
@@ -10,9 +11,11 @@ const CartDropdown = () => {
                 <span className="text-lg font-bold">8 Items</span>
                 <span className="text-info">Subtotal: $999</span>
                 <div className="card-actions">
+                <Link to="/cart">
                   <button className="btn-primary btn-block btn">
                     View cart
                   </button>
+                </Link>         
                 </div>
             </div>
             </div>
