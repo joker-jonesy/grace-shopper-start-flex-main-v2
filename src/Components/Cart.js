@@ -13,10 +13,15 @@ const Cart = () => {
     if (auth.id) {
       dispatch(fetchUserCart())
     } else {
-      dispatch(fetchGuestCart())
+      const guestCart = JSON.parse(localStorage.getItem("guestCart"))
+      if (guestCart) {
+        dispatch(fetchGuestCart(guestCart))
+      } else {
+        dispatch(fetchGuestCart())
+      }
     }
   }, [])
-            
+
   const totalPrice = cartTotal(cart.cartItems)
   const totalItems = cartQuantity(cart.cartItems)
 
@@ -36,7 +41,7 @@ const Cart = () => {
         ))}
         <div className="flex-row">
           <div> Total: ${totalPrice}</div>
-          <div>{totalItems} Items</div>  
+          <div>{totalItems} Items</div>
         </div>
       </div>
       <button className="btn-primary btn-block btn">Checkout</button>

@@ -154,4 +154,36 @@ User.authenticate = async function ({ username, password }) {
   throw error
 }
 
+// Guest Cart Methods - addToGuestCart, createGuestCart, getGuestCart
+User.prototype.addToGuestCart = async function ({ product, quantity }) {
+  let cart = await this.getGuestCart()
+  if (!cart) {
+    // Create a new guest cart
+    cart = await this.createGuestCart()
+  }
+  let lineItem = cart.lineItems.find((lineItem) => {
+    return lineItem.productId === product.id
+  })
+  if (lineItem) {
+    lineItem.quantity += quantity
+    await lineItem.save()
+  } else {
+    await conn.models.lineItem.create({
+      orderId: cart.id,
+      productId: product.id,
+      quantity,
+    })
+  }
+  return this.getGuestCart()
+}
+
+// Modify the createGuestCart method
+User.prototype.createGuestCart = async function () {
+  const cart = await conn.models.order.create({
+    userId: null,
+    isCart: true,
+  })
+  return cart
+}
+
 module.exports = User
