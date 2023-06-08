@@ -83,9 +83,9 @@ export const Products = ({ currentProducts }) => {
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
         return (
-          <div className="card glass m-4 w-64" key={uuidv4()}>
+          <div className="card card-compact sm:card-normal glass m-4 w-64" key={uuidv4()}>
             <figure>
-              <img src={product.imageURL} alt="" />
+              <img src={product.imageURL} alt={product.name} />
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>

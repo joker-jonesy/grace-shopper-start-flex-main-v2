@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import Rating from "../Components/ui/Rating"
+import Rating from "./Rating"
 
 function UserDetails({ user }) {
   const [selectedTab, setSelectedTab] = useState(1)
