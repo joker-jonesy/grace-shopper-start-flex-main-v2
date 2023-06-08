@@ -1,42 +1,44 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { fetchGuestCart, fetchUserCart, logout } from "../store"
-import { Link } from "react-router-dom"
-import { cartQuantity, cartTotal } from "../util"
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchGuestCart, fetchUserCart, logout } from "../store";
+import { Link } from "react-router-dom";
+import { cartQuantity, cartTotal } from "../util";
+import Spinner from "./Spinner";
 
 const Cart = () => {
-  const { cart } = useSelector((state) => state)
-  // console.log("KART", cart.lineItems);
-  const dispatch = useDispatch()
+  const { cart, auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (auth.id) {
-      dispatch(fetchUserCart())
+      dispatch(fetchUserCart());
     } else {
-      const guestCart = JSON.parse(localStorage.getItem("guestCart"))
-      if (guestCart) {
-        dispatch(fetchGuestCart(guestCart))
-      } else {
-        dispatch(fetchGuestCart())
-      }
+      dispatch(fetchGuestCart());
     }
-  }, [])
+  }, []);
 
-  const totalPrice = cartTotal(cart.cartItems)
-  const totalItems = cartQuantity(cart.cartItems)
+  useEffect(() => {
+    if (!auth.id) {
+      localStorage.setItem("guestCart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  const cartItems = cart && cart.cartItems ? cart.cartItems : [];
+  const totalPrice = cartTotal(cart.cartItems);
+  const totalItems = cartQuantity(cart.cartItems);
 
   return (
     <div>
       <h1>Cart</h1>
       <div className="m-4 flex flex-shrink flex-wrap justify-center">
-        {cart.lineItems.map((item) => (
+        {cartItems.map((item) => (
           <div className="card glass m-4 w-64" key={item.product.id}>
             <div className="card-body p-2">
               <span>{item.product.name}</span>
               <span>{item.product.price}</span>
               <span>{item.quantity}</span>
             </div>
-            <img src={item.product.imageURL} />
+            <img src={item.product.imageURL} alt={item.product.name} />
           </div>
         ))}
         <div className="flex-row">
@@ -46,7 +48,7 @@ const Cart = () => {
       </div>
       <button className="btn-primary btn-block btn">Checkout</button>
     </div>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

@@ -6,25 +6,16 @@ module.exports = app
 
 app.post("/", async (req, res, next) => {
   try {
-    const { username, password } = req.body
-    const token = await User.authenticate({ username, password })
-
-    // Check if there is a guest cart
-    if (req.session.cart) {
-      const guestCart = req.session.cart
-      req.session.cart = null // Clear guest cart after merging
-
-      // Merge the guest cart with the logged-in user's cart
-      const user = await User.findByToken(token)
-      const userCart = await user.getCart()
-      await userCart.mergeCart(guestCart)
+    const token = await User.authenticate(req.body)
+    const user = await User.findByToken(token)
+    if (req.session && req.session.cartId) {
+      const guestCart = await User.getGuestCart(req.session.cartId)
+      if (guestCart) {
+        await user.mergeGuestCart(guestCart)
+      }
+      req.session.cartId = null
     }
-
-    res.send(
-      await User.findByToken(token, {
-        attributes: ["id", "username", "email", "createdAt", "isAdmin"],
-      })
-    )
+    res.send(token)
   } catch (ex) {
     next(ex)
   }
@@ -32,11 +23,17 @@ app.post("/", async (req, res, next) => {
 
 app.get("/", async (req, res, next) => {
   try {
-    res.send(
-      await User.findByToken(req.headers.authorization, {
-        attributes: ["id", "username", "email", "createdAt", "isAdmin"],
-      })
-    )
+    const user = await User.findByToken(req.headers.authorization, {
+      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+    })
+    if (req.session && req.session.cartId) {
+      const guestCart = await User.getGuestCart(req.session.cartId)
+      if (guestCart) {
+        await user.mergeGuestCart(guestCart)
+      }
+      req.session.cartId = null
+    }
+    res.send(user)
   } catch (ex) {
     next(ex)
   }
