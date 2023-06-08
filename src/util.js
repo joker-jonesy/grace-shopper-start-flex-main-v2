@@ -1,5 +1,6 @@
 export const cartTotal = (cartArr) => {
     let total = 0
+  if (!cartArr) return total
     console.log(cartArr)
     if(cartArr.length > 0){
         for (let item of cartArr) {
@@ -11,6 +12,7 @@ export const cartTotal = (cartArr) => {
 
 export const cartQuantity = (cartArr) => {
     let quantity = 0
+  if (!cartArr) return quantity
     if (cartArr.length > 0){
         for (let item of cartArr) {
           quantity += item.quantity
