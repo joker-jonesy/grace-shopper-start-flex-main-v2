@@ -1,13 +1,15 @@
 const express = require("express")
 const app = express.Router()
-const { Product, User } = require("../db")
+const { Product, User, Review } = require("../db")
 // this is for the product(s) route
 module.exports = app
 
 // GET /products - Get all products
 app.get("/", async (req, res, next) => {
   try {
-    const products = await Product.findAll()
+    const products = await Product.findAll({
+      include: Review,
+    })
     res.send(products)
   } catch (ex) {
     next(ex)
