@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { fetchProducts, updateProduct, deleteProduct } from "../../store"
 import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
+import { Modal, ModalHeader, ModalActions } from "../ui/Modal"
 
 function AdminProductPage() {
   const { products } = useSelector((state) => state)
@@ -25,7 +26,6 @@ function AdminProductPage() {
   //TODO: add search
   //TODO: add filter
 
-
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchProducts())
@@ -38,10 +38,9 @@ function AdminProductPage() {
   }
 
   //get categories list from products, then filter out duplicates
-  const categories = products.length > 0 ? products.map((product) => product.category) : []
+  const categories =
+    products.length > 0 ? products.map((product) => product.category) : []
   const uniqueCategories = [...new Set(categories)]
-
-
 
   const currentProducts =
     products.length > 0 ? products.slice(itemOffset, endOffset) : []
@@ -50,7 +49,7 @@ function AdminProductPage() {
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value)
   }
-  const handleDeleteClick = () => { }
+  const handleDeleteClick = () => {}
 
   const handleDetailsClick = (product) => {
     setSelectedProduct(product)
@@ -77,16 +76,140 @@ function AdminProductPage() {
   }
 
   return (
-    <div className="flex w-full flex-col md:flex-row">
-      <div className="w-1/2 p-2">
-        {/**THIS IS THE LEFT SIDE PANEL */}
+    <div className="flex w-full flex-col">
+      <div className="p-2">
+        <Modal
+          open={selectedProduct}
+          className="w-full"
+          responsive
+          onClickBackdrop={() => setSelectedProduct(null)}
+        >
+          <ModalHeader className="font-bold">
+            Congratulations random Interner user!
+          </ModalHeader>
+          {selectedProduct ? (
+            <div className="card m-4 p-4">
+              <figure>
+                <img
+                  src={selectedProduct.imageURL}
+                  alt={selectedProduct.name}
+                  className="h-20 w-20 rounded-lg md:h-32 md:w-32"
+                />
+              </figure>
+              <div className="card-body p-2">
+                <div className="form-control w-full max-w-xs">
+                  <label className="label">
+                    <span className="label-text">Product Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    name="name"
+                    className="input-bordered input w-full max-w-xs"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-control w-full max-w-xs">
+                  <label className="label">
+                    <span className="label-text">Material</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Product Material"
+                    name="material"
+                    className="input-bordered input w-full max-w-xs"
+                    value={formData.material}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-control w-full max-w-xs">
+                  <label className="label">
+                    <span className="label-text">Price</span>
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    name="price"
+                    className="input-bordered input w-full max-w-xs"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-control w-full max-w-xs">
+                  <label className="label">
+                    <span className="label-text">Category</span>
+                  </label>
+                  <select
+                    placeholder="Category"
+                    name="category"
+                    className="select-bordered select w-full max-w-xs"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-control w-full max-w-xs">
+                  <label className="label">
+                    <span className="label-text">Image URL</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Image"
+                    name="imageURL"
+                    className="input-bordered input w-full max-w-xs"
+                    value={formData.imageURL}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Product Description</span>
+                  </label>
+                  <textarea
+                    placeholder="Description"
+                    name="description"
+                    className="text-area-bordered textarea w-full"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
+              <div className="card-footer">
+                <button
+                  className="btn-primary btn"
+                  disabled={!pendingChanges}
+                  onClick={() => handleSubmit()}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          ) : (
+            <h1>Select a Product</h1>
+          )}
+          <ModalActions>
+            <button onClick={() => console.log("here")}>Yay!</button>
+          </ModalActions>
+        </Modal>
+      </div>
+      <div className="p-2">
         <h1>Products</h1>
         <div className="flex flex-row justify-evenly">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Category</span>
             </label>
-            <select className="select select-bordered w-full max-w-xs" defaultValue={"All"} onChange={handleCategoryChange}>
+            <select
+              className="select-bordered select w-full max-w-xs"
+              defaultValue={"All"}
+              onChange={handleCategoryChange}
+            >
               <option>All</option>
               {uniqueCategories.map((category) => {
                 return <option key={category}>{category}</option>
@@ -97,7 +220,10 @@ function AdminProductPage() {
             <label className="label">
               <span className="label-text">Price</span>
             </label>
-            <select className="select select-bordered w-full max-w-xs" defaultValue="All">
+            <select
+              className="select-bordered select w-full max-w-xs"
+              defaultValue="All"
+            >
               <option>All</option>
               <option>{`<$100`}</option>
               <option>{`<$1000`}</option>
@@ -119,7 +245,14 @@ function AdminProductPage() {
               {currentProducts.length > 0 &&
                 currentProducts.map((product) => {
                   return (
-                    <tr key={product.id} className={`${selectedProduct && selectedProduct.id === product.id && "bg-base-200"}`} >
+                    <tr
+                      key={product.id}
+                      className={`${
+                        selectedProduct &&
+                        selectedProduct.id === product.id &&
+                        "bg-base-200"
+                      }`}
+                    >
                       <td>
                         <div className="flex items-center space-x-3">
                           <div className="avatar">
@@ -148,13 +281,13 @@ function AdminProductPage() {
                       <th>
                         <div className="flex flex-row justify-evenly">
                           <button
-                            className="btn-error btn-xs btn px-1 mx-1"
+                            className="btn-error btn-xs btn mx-1 px-1"
                             onClick={() => handleDeleteClick(product)}
                           >
                             delete
                           </button>
                           <button
-                            className="btn-neutral btn-xs btn px-1 mx-1"
+                            className="btn-neutral btn-xs btn mx-1 px-1"
                             onClick={() => handleDetailsClick(product)}
                           >
                             details
@@ -181,67 +314,6 @@ function AdminProductPage() {
             nextClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
           />
         </div>
-      </div>
-      <div className="w-1/2 p-2">
-        {/**THIS IS THE RIDE SIDE PANEL */}
-        {selectedProduct ? (
-          <div className="card glass m-4 p-4">
-            <figure>
-              <img src={selectedProduct.imageURL} alt={selectedProduct.name} className="rounded-lg h-20 w-20 md:h-32 md:w-32" />
-            </figure>
-            <div className="card-body p-2">
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Product Name</span>
-                </label>
-                <input type="text" placeholder="Product Name" name="name" className="input input-bordered w-full max-w-xs" value={formData.name} onChange={handleInputChange} />
-              </div>
-
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Material</span>
-                </label>
-                <input type="text" placeholder="Product Material" name="material" className="input input-bordered w-full max-w-xs" value={formData.material} onChange={handleInputChange} />
-              </div>
-
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Price</span>
-                </label>
-                <input type="number" placeholder="Price" name="price" className="input input-bordered w-full max-w-xs" value={formData.price} onChange={handleInputChange} />
-              </div>
-
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Category</span>
-                </label>
-                <select placeholder="Category" name="category" className="select select-bordered w-full max-w-xs" value={formData.category} onChange={handleInputChange} />
-              </div>
-
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Image URL</span>
-                </label>
-                <input type="text" placeholder="Image" name="imageURL" className="input input-bordered w-full max-w-xs" value={formData.imageURL} onChange={handleInputChange} />
-              </div>
-
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text">Product Description</span>
-                </label>
-                <textarea placeholder="Description" name="description" className="textarea text-area-bordered w-full" value={formData.description} onChange={handleInputChange} />
-              </div>
-            </div>
-
-            <div className="card-footer">
-              <button className="btn btn-primary" disabled={!pendingChanges} onClick={() => handleSubmit()}>
-                Save
-              </button>
-            </div>
-          </div>
-
-
-        ) : <h1>Select a Product</h1>}
       </div>
     </div>
   )
