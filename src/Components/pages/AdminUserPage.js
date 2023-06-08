@@ -11,7 +11,7 @@ function AdminUserPage() {
     dispatch(fetchUsers())
   }, [])
   return (
-    <div className="flex w-full flex-col md:flex-row">
+    <div className="flex w-full flex-row">
       <div className="w-1/2 p-2">
         <h2 className="p-2 text-sm">
           Select a user to view orders, carts, and reviews.

@@ -4,10 +4,9 @@ import { v4 as uuidv4 } from "uuid"
 import { Link } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import Rating from "./ui/Rating"
+import Socials from "./ui/Socials"
 
 const PaginatedProducts = () => {
-
-
   const { products } = useSelector((state) => state)
   const [selectedCategory, setSelectedCategory] = useState("")
 
@@ -83,24 +82,35 @@ export const Products = ({ currentProducts }) => {
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
         return (
-          <div className="card card-compact sm:card-normal glass m-4 w-64" key={uuidv4()}>
+          <div
+            className="card glass card-compact m-4 w-64 sm:card-normal"
+            key={uuidv4()}
+          >
             <figure>
               <img src={product.imageURL} alt={product.name} />
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
-                <h2 className="text-md hover:text-base-200">{product.name}</h2>
+                <h2 className="text-md min-h-full hover:text-base-200">
+                  {product.name}
+                </h2>
               </Link>
-              <div className="card-actions justify-between">
-                <Rating rating={getAverageRating(product.reviews)} />
-                <span className="badge badge-ghost">
-                  <span className="text-lg font-bold">$</span><span className="font-bold">{product.price}</span>
-                </span>
-
+            </div>
+            <div className="card-actions flex flex-col">
+              <div className="flex flex-row w-full">
+                <div className="flex-none px-2">
+                  <Rating rating={getAverageRating(product.reviews)} />
+                </div>
+                <div className="grow"></div>
+                <div className="flex-none px-2">
+                  <span className="badge badge-ghost">
+                    <span className="text-lg font-bold">$</span>
+                    <span className="font-bold">{product.price}</span>
+                  </span>
+                </div>
               </div>
-              <div className="card-actions justify-end">
-
-                <button className="btn btn-secondary btn-sm text-base-300">
+              <div className="flex flex-row-reverse w-full p-2">
+                <button className="btn-secondary btn-sm btn text-base-300">
                   Add to Cart
                 </button>
               </div>
