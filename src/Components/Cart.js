@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchCart, logout } from "../store"
+import { fetchGuestCart, fetchUserCart, logout } from "../store"
 import { Link } from "react-router-dom"
 import { cartQuantity, cartTotal } from "../util"
 
@@ -10,11 +10,15 @@ const Cart = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchCart())
+    if (auth.id) {
+      dispatch(fetchUserCart())
+    } else {
+      dispatch(fetchGuestCart())
+    }
   }, [])
             
-  const totalPrice = cartTotal(cart.lineItems)
-  const totalItems = cartQuantity(cart.lineItems)
+  const totalPrice = cartTotal(cart.cartItems)
+  const totalItems = cartQuantity(cart.cartItems)
 
   return (
     <div>

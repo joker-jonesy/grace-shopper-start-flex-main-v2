@@ -58,25 +58,22 @@ User.prototype.createOrder = async function () {
 }
 
 User.prototype.getCart = async function () {
-  let cart = await conn.models.order.findOne({
+  let cart = await conn.models.cart.findOne({
     where: {
       userId: this.id,
-      isCart: true,
     },
-  })
-  if (!cart) {
-    cart = await conn.models.order.create({
-      userId: this.id,
-    })
-  }
-  cart = await conn.models.order.findByPk(cart.id, {
     include: [
       {
-        model: conn.models.lineItem,
+        model: conn.models.cartItem,
         include: [conn.models.product],
       },
     ],
   })
+  if (!cart) {
+    cart = await conn.models.cart.create({
+      userId: this.id,
+    })
+  }
   return cart
 }
 
@@ -88,14 +85,14 @@ User.prototype.setAdmin = async function (bool) {
 
 User.prototype.addToCart = async function ({ product, quantity }) {
   const cart = await this.getCart()
-  let lineItem = cart.lineItems.find((lineItem) => {
-    return lineItem.productId === product.id
+  let cartItem = cart.cartItems.find((cartItem) => {
+    return cartItem.productId === product.id
   })
-  if (lineItem) {
-    lineItem.quantity += quantity
-    await lineItem.save()
+  if (cartItem) {
+    cartItem.quantity += quantity
+    await cartItem.save()
   } else {
-    await conn.models.lineItem.create({
+    await conn.models.cartItem.create({
       orderId: cart.id,
       productId: product.id,
       quantity,
@@ -106,14 +103,14 @@ User.prototype.addToCart = async function ({ product, quantity }) {
 
 User.prototype.removeFromCart = async function ({ product, quantityToRemove }) {
   const cart = await this.getCart()
-  const lineItem = cart.lineItems.find((lineItem) => {
-    return lineItem.productId === product.id
+  const cartItem = cart.cartItems.find((lineItem) => {
+    return cartItem.productId === product.id
   })
-  lineItem.quantity = lineItem.quantity - quantityToRemove
-  if (lineItem.quantity > 0) {
-    await lineItem.save()
+  cartItem.quantity = cartItem.quantity - quantityToRemove
+  if (cartItem.quantity > 0) {
+    await cartItem.save()
   } else {
-    await lineItem.destroy()
+    await cartItem.destroy()
   }
   return this.getCart()
 }
