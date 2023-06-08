@@ -16,5 +16,6 @@ app.use('/api/products', require('./api/products'))
 app.use("/api/account", require('./api/account'))
 app.use("/api/users", require("./api/users"))
 app.use("/api/reviews", require("./api/reviews"))
+app.use("/api/cart", require("./api/cart"))
 
 module.exports = app

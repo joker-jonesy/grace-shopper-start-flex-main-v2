@@ -1,22 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { v4 as uuidv4 } from "uuid"
 import axios from "axios"
 
 const initialState = {
-  lineItems: [],
+  cartItems: [],
 }
 
-export const fetchCart = createAsyncThunk("fetchCart", async () => {
+export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
   try {
     const token = window.localStorage.getItem("token")
-    const response = await axios.get("/api/orders/cart", {
+    const response = await axios.get("/api/cart", {
       headers: {
         authorization: token,
       },
     })
+    console.log(response.data)
     return response.data
   } catch (err) {
     console.log(err)
   }
+})
+
+export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
+  let cart = window.localStorage.getItem("cart");
+  if(!cart){
+    window.localStorage.setItem("cart", JSON.stringify({id: uuidv4(), userId: null}))
+    cart = window.localStorage.getItem("cart");
+  }
+  return JSON.parse(cart)
 })
 
 const cartSlice = createSlice({
@@ -24,7 +35,10 @@ const cartSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCart.fulfilled, (state, action) => {
+    builder.addCase(fetchGuestCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(fetchUserCart.fulfilled, (state, action) => {
       return action.payload
     })
   },
