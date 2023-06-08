@@ -1,19 +1,14 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchCart } from "../store"
 import { cartQuantity, cartTotal } from "../util"
 
 const CartDropdown = () => {
     const { cart } = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchCart())
-  }, [])
-
-  const totalPrice = cartTotal(cart.lineItems)
-  const totalQuantity = cartQuantity(cart.lineItems)
+  const totalPrice = cartTotal(cart.cartItems)
+  const totalQuantity = cartQuantity(cart.cartItems)
     return (
             <div
               tabIndex={0}

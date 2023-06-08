@@ -1,7 +1,7 @@
 const conn = require("./conn")
 const { STRING, BOOLEAN, UUID, UUIDV4 } = conn.Sequelize
 
-const Order = conn.define("order", {
+const Cart = conn.define("cart", {
   id: {
     type: UUID,
     primaryKey: true,
@@ -13,4 +13,4 @@ const Order = conn.define("order", {
   },
 })
 
-module.exports = Order
+module.exports = Cart

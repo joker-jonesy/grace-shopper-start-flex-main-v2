@@ -3,8 +3,9 @@ const User = require("./User")
 const Product = require("./Product")
 const Order = require("./Order")
 const LineItem = require("./LineItem")
+const Cart = require("./Cart")
+const CartItem = require("./CartItem")
 const Review = require("./Review")
-
 const { faker } = require("@faker-js/faker")
 
 Order.belongsTo(User)
@@ -12,20 +13,20 @@ User.hasMany(Order)
 LineItem.belongsTo(Order)
 Order.hasMany(LineItem)
 LineItem.belongsTo(Product)
+Product.hasMany(LineItem)
+Product.hasMany(CartItem)
+User.hasOne(Cart)
+Cart.belongsTo(User)
+Cart.hasMany(CartItem)
+CartItem.belongsTo(Cart)
+CartItem.belongsTo(Product);
 Review.belongsTo(Product)
 Review.belongsTo(User)
-Product.hasMany(Review)
-User.hasMany(Review)
-
-
 
 const TOTAL_PRODUCTS = 200
 
 getRandomCategory = () => {
-  const categories = [
-    "Category1",
-    "Category2",
-  ]
+  const categories = ["Category1", "Category2"]
   return categories[Math.floor(Math.random() * categories.length)]
 }
 
@@ -41,91 +42,193 @@ const createFakeProduct = () => {
     material: faker.commerce.productMaterial(),
     category: getRandomCategory(),
     quantity: faker.number.int({
-      max: 499
+      max: 499,
     }),
   }
 }
 
-const createFakeReview = (user, product) => {
+const createFakeReview = (userId, productId) => {
   return {
     description: faker.lorem.paragraph(),
     rating: faker.number.int({
       min: 1,
-      max: 5
+      max: 5,
     }),
-    userId: user.id,
-    productId: product.id
+    userId: userId,
+    productId: productId,
   }
 }
 
-const fakeProducts = faker.helpers.multiple(createFakeProduct, {
-  count: TOTAL_PRODUCTS,
-})
+const createFakeOrder = (userId) => {
+  return {
+    userId: userId,
+  }
+}
 
-const syncAndSeed = async () => {
-  await conn.sync({ force: true })
+const createFakeLineItem = (orderId, productId) => {
+  return {
+    quantity: 1,
+    orderId: orderId,
+    productId: productId,
+  }
+}
+
+const createFakeCart = (userId) => {
+  return {
+    userId: userId,
+  }
+}
+
+const createFakeCartItem = (cartId, productId) => {
+  return {
+    quantity: 1,
+    cartId: cartId,
+    productId: productId,
+  }
+}
+
+const addCartAndOrders = async () => {
+  const users = await User.findAll({ attributes: ["id"] })
+  let orders = []
+  let carts = []
+  for (let user of users) {
+    const o = faker.helpers.multiple(
+      () => createFakeOrder(user.dataValues.id),
+      {
+        count: 2,
+      }
+    )
+    orders.push(...o)
+    const c = faker.helpers.multiple(() => createFakeCart(user.dataValues.id), {
+      count: 1,
+    })
+    carts.push(...c)
+  }
+  await Promise.all(orders.map((order) => Order.create(order)))
+  await Promise.all(carts.map((cart) => Cart.create(cart)))
+}
+
+const addItemsToCart = async () => {
+  const products = await Product.findAll({ attributes: ["id"] })
+  const carts = await Cart.findAll({ attributes: ["id"] })
+  let items = []
+  for (let cart of carts) {
+    const i = faker.helpers.multiple(
+      () =>
+        createFakeCartItem(
+          cart.dataValues.id,
+          faker.helpers.arrayElement(products).dataValues.id
+        ),
+      { count: 2 }
+    )
+    items.push(...i)
+  }
+  await Promise.all(items.map((itm) => CartItem.create(itm)))
+}
+
+const addItemsToOrder = async () => {
+  const products = await Product.findAll({ attributes: ["id"] })
+  const orders = await Order.findAll({ attributes: ["id"] })
+  let items = []
+  for (let order of orders) {
+    const i = faker.helpers.multiple(
+      () =>
+        createFakeLineItem(
+          order.dataValues.id,
+          faker.helpers.arrayElement(products).dataValues.id
+        ),
+      {
+        count: 2,
+      }
+    )
+    i.map((itm) => {
+      items.push(itm)
+    })
+  }
+  await Promise.all(items.map((itm) => LineItem.create(itm)))
+}
+
+const addReviewsToProducts = async () => {
+  const products = await Product.findAll({ attributes: ["id"] })
+  const users = await User.findAll({ attributes: ["id"] })
+
+  let reviews = [];
+
+  for(let product of products){
+    const r = faker.helpers.multiple(
+      () =>
+        createFakeReview(
+          faker.helpers.arrayElement(users).dataValues.id,
+          product.dataValues.id
+        ),
+      {
+        count: 2,
+      }
+    )
+    r.map((itm) => {
+      reviews.push(itm)
+    })
+  }
+
+  await Promise.all(reviews.map((rvw) => Review.create(rvw)))
+
+}
+
+const seedProducts = async () => {
+  const fakeProducts = faker.helpers.multiple(createFakeProduct, {
+    count: TOTAL_PRODUCTS,
+  })
+  await Promise.all(fakeProducts.map((product) => Product.create(product)))
+}
+
+const seedUsers = async () => {
   const [moe, lucy, larry, ethyl] = await Promise.all([
     User.create({
       username: "moe",
       password: "123",
       email: "seed1@test.com",
       isAdmin: true,
-      stripeId: "cus_O2a2nOTbV2IKx8"
+      stripeId: "cus_O2a2nOTbV2IKx8",
     }),
-    User.create({ username: "lucy", password: "123", email: "seed2@test.com", stripeId: "cus_O2aA5XZxwpruPF" }),
-    User.create({ username: "dudedude", password: "123", email: "seed5@test.com", stripeId: "cus_O2aBih6vn7wbEa" }),
+    User.create({
+      username: "lucy",
+      password: "123",
+      email: "seed2@test.com",
+      stripeId: "cus_O2aA5XZxwpruPF",
+    }),
+    User.create({
+      username: "dudedude",
+      password: "123",
+      email: "seed5@test.com",
+      stripeId: "cus_O2aBih6vn7wbEa",
+    }),
     User.create({
       username: "larry",
       password: "123",
       email: "seed3@test.com",
-      stripeId: "cus_O2aBxuGDPfPlD2"
+      stripeId: "cus_O2aBxuGDPfPlD2",
     }),
     User.create({
       username: "ethyl",
       password: "123",
       email: "seed4@test.com",
-      stripeId: "cus_O2aCVXnQzwXMri"
+      stripeId: "cus_O2aCVXnQzwXMri",
     }),
   ])
+  await addCartAndOrders()
+  await addItemsToCart()
+  await addItemsToOrder()
+  await addReviewsToProducts()
+}
 
+const seed = async () => {
+  await seedProducts()
+  await seedUsers()
+}
 
-  const insertedProducts = await Promise.all(
-    fakeProducts.map((product) => Product.create(product))
-  )
-
-  const fakeReviews = [
-    createFakeReview(moe, insertedProducts[0]),
-    createFakeReview(moe, insertedProducts[1]),
-    createFakeReview(moe, insertedProducts[2]),
-    createFakeReview(moe, insertedProducts[3]),
-    createFakeReview(lucy, insertedProducts[4]),
-    createFakeReview(lucy, insertedProducts[5]),
-    createFakeReview(lucy, insertedProducts[6]),
-    createFakeReview(larry, insertedProducts[7]),
-    createFakeReview(larry, insertedProducts[8]),
-    createFakeReview(larry, insertedProducts[9]),
-    createFakeReview(ethyl, insertedProducts[10]),
-    createFakeReview(ethyl, insertedProducts[11]),
-    createFakeReview(ethyl, insertedProducts[12]),
-  ]
-
-  const insertedReviews = await Promise.all(
-    fakeReviews.map((review) => Review.create(review))
-  )
-
-  const cart = await ethyl.getCart()
-  await ethyl.addToCart({ product: insertedProducts[1], quantity: 3 })
-  await ethyl.addToCart({ product: insertedProducts[2], quantity: 2 })
-  return {
-    users: {
-      moe,
-      lucy,
-      larry,
-    },
-    products: {
-      insertedProducts,
-    },
-  }
+const syncAndSeed = async () => {
+  await conn.sync({ force: true })
+  await seed()
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { logout } from "../store/auth"
 import CartDropdown from "./CartDropdown"
 import { cartQuantity } from "../util"
-import { fetchCart } from "../store"
+import { fetchGuestCart, fetchUserCart } from "../store"
 
 function Navbar({ auth }) {
   const dispatch = useDispatch()
@@ -15,11 +15,7 @@ function Navbar({ auth }) {
 
   const { cart } = useSelector((state) => state)
 
-  useEffect(() => {
-    dispatch(fetchCart())
-  }, [])
-
-  const cartDisplayQuantity = cartQuantity(cart.lineItems)
+  const cartDisplayQuantity = cartQuantity(cart.cartItems)
 
   return (
     <div className="navbar sticky top-0 z-10 bg-base-200">
