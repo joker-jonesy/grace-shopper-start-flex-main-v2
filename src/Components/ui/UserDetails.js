@@ -1,11 +1,10 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
-import Rating from "../Components/ui/Rating"
+import Rating from "./Rating"
 
 function UserDetails({ user }) {
   const [selectedTab, setSelectedTab] = useState(1)
   if (!user) return null
-
   return (
     <>
       <h2 className="font-bold">{user.username}'s Details</h2>
@@ -130,7 +129,11 @@ function UserDetails({ user }) {
                             {new Date(review.createdAt).toLocaleDateString()}
                           </td>
                           <td>
-                            <Rating rating={review.rating} id={review.id} />
+                            <Rating
+                              rating={review.rating}
+
+
+                            />
                           </td>
                           <td>{review.description}</td>
                         </tr>

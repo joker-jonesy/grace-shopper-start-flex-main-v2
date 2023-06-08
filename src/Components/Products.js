@@ -3,8 +3,11 @@ import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link } from "react-router-dom"
 import ReactPaginate from "react-paginate"
+import Rating from "./ui/Rating"
 
 const PaginatedProducts = () => {
+
+
   const { products } = useSelector((state) => state)
   const [selectedCategory, setSelectedCategory] = useState("")
 
@@ -69,20 +72,35 @@ const PaginatedProducts = () => {
 }
 
 export const Products = ({ currentProducts }) => {
+  const getAverageRating = (reviews) => {
+    if (!reviews || reviews.length === 0) return 0
+    const sum = reviews.reduce((acc, review) => {
+      return acc + review.rating
+    }, 0)
+    return Math.floor(sum / reviews.length)
+  }
   return (
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
         return (
-          <div className="card glass m-4 w-64" key={uuidv4()}>
+          <div className="card card-compact sm:card-normal glass m-4 w-64" key={uuidv4()}>
             <figure>
-              <img src={product.imageURL} alt="" />
+              <img src={product.imageURL} alt={product.name} />
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
-                <h2 className="text-sm">{product.name}</h2>
+                <h2 className="text-md hover:text-base-200">{product.name}</h2>
               </Link>
+              <div className="card-actions justify-between">
+                <Rating rating={getAverageRating(product.reviews)} />
+                <span className="badge badge-ghost">
+                  <span className="text-lg font-bold">$</span><span className="font-bold">{product.price}</span>
+                </span>
+
+              </div>
               <div className="card-actions justify-end">
-                <button className="rounded-btn btn-sm bg-secondary">
+
+                <button className="btn btn-secondary btn-sm text-base-300">
                   Add to Cart
                 </button>
               </div>

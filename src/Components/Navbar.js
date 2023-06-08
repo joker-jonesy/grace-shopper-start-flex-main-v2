@@ -15,7 +15,7 @@ function Navbar({ auth }) {
 
   const { cart } = useSelector((state) => state)
 
-  const cartDisplayQuantity = cartQuantity(cart.cartItems)
+  const cartDisplayQuantity = cartQuantity(cart.cartItems ? cart.cartItems : [])
 
   return (
     <div className="navbar sticky top-0 z-10 bg-base-200">

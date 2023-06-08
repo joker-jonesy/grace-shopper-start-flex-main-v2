@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import UserDetails from "../UserDetails"
+import UserDetails from "../ui/UserDetails"
 import { fetchUsers } from "../../store/users"
 
 function AdminUserPage() {
@@ -11,13 +11,13 @@ function AdminUserPage() {
     dispatch(fetchUsers())
   }, [])
   return (
-    <div className="flex w-full flex-row">
+    <div className="flex w-full flex-col md:flex-row">
       <div className="w-1/2 p-2">
         <h2 className="p-2 text-sm">
           Select a user to view orders, carts, and reviews.
         </h2>
         <div className="flex flex-row justify-evenly"></div>
-        <div className="card bg-base-100 shadow-xl">
+        <div className="bg-base-100 shadow-xl">
           <div className="overflow-x-auto">
             <table className="table">
               <thead>

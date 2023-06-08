@@ -2,10 +2,18 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { cartQuantity, cartTotal } from "../util"
+import { fetchGuestCart, fetchUserCart } from "../store"
 
 const CartDropdown = () => {
-    const { cart } = useSelector((state) => state)
+  const { cart, auth } = useSelector((state) => state)
   const dispatch = useDispatch()
+  useEffect(() => {
+    if (auth.id) {
+      dispatch(fetchUserCart())
+    } else {
+      dispatch(fetchGuestCart())
+    }
+  }, [])
 
   const totalPrice = cartTotal(cart.cartItems)
   const totalQuantity = cartQuantity(cart.cartItems)
