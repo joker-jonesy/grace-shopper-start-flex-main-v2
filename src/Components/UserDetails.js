@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import Rating from "../Components/ui/Rating"
 
 function UserDetails({ user }) {
   const [selectedTab, setSelectedTab] = useState(1)
@@ -18,7 +20,13 @@ function UserDetails({ user }) {
           className={`tab ${selectedTab === 2 && "tab-active"}`}
           onClick={() => setSelectedTab(2)}
         >
-          Cart
+          Carts
+        </a>
+        <a
+          className={`tab ${selectedTab === 3 && "tab-active"}`}
+          onClick={() => setSelectedTab(3)}
+        >
+          Reviews
         </a>
       </div>
       <div className="card bg-base-100 shadow-xl">
@@ -93,6 +101,41 @@ function UserDetails({ user }) {
                           </tr>
                         )
                       })}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {selectedTab === 3 && (
+            <div className="overflow-x-auto">
+              <table className="table-xs table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Created At</th>
+                    <th>Rating</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {user.reviews &&
+                    user.reviews.map((review) => {
+                      return (
+                        <tr key={review.id}>
+                          <td>
+                            <Link to={`/products/${review.product.id}`}>
+                              {review.product.name}
+                            </Link>
+                          </td>
+                          <td>
+                            {new Date(review.createdAt).toLocaleDateString()}
+                          </td>
+                          <td>
+                            <Rating rating={review.rating} id={review.id} />
+                          </td>
+                          <td>{review.description}</td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </table>
             </div>

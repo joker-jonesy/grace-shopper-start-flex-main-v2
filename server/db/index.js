@@ -3,6 +3,8 @@ const User = require("./User")
 const Product = require("./Product")
 const Order = require("./Order")
 const LineItem = require("./LineItem")
+const Review = require("./Review")
+
 const { faker } = require("@faker-js/faker")
 
 Order.belongsTo(User)
@@ -10,6 +12,12 @@ User.hasMany(Order)
 LineItem.belongsTo(Order)
 Order.hasMany(LineItem)
 LineItem.belongsTo(Product)
+Review.belongsTo(Product)
+Review.belongsTo(User)
+Product.hasMany(Review)
+User.hasMany(Review)
+
+
 
 const TOTAL_PRODUCTS = 200
 
@@ -35,6 +43,18 @@ const createFakeProduct = () => {
     quantity: faker.number.int({
       max: 499
     }),
+  }
+}
+
+const createFakeReview = (user, product) => {
+  return {
+    description: faker.lorem.paragraph(),
+    rating: faker.number.int({
+      min: 1,
+      max: 5
+    }),
+    userId: user.id,
+    productId: product.id
   }
 }
 
@@ -68,8 +88,29 @@ const syncAndSeed = async () => {
     }),
   ])
 
+
   const insertedProducts = await Promise.all(
     fakeProducts.map((product) => Product.create(product))
+  )
+
+  const fakeReviews = [
+    createFakeReview(moe, insertedProducts[0]),
+    createFakeReview(moe, insertedProducts[1]),
+    createFakeReview(moe, insertedProducts[2]),
+    createFakeReview(moe, insertedProducts[3]),
+    createFakeReview(lucy, insertedProducts[4]),
+    createFakeReview(lucy, insertedProducts[5]),
+    createFakeReview(lucy, insertedProducts[6]),
+    createFakeReview(larry, insertedProducts[7]),
+    createFakeReview(larry, insertedProducts[8]),
+    createFakeReview(larry, insertedProducts[9]),
+    createFakeReview(ethyl, insertedProducts[10]),
+    createFakeReview(ethyl, insertedProducts[11]),
+    createFakeReview(ethyl, insertedProducts[12]),
+  ]
+
+  const insertedReviews = await Promise.all(
+    fakeReviews.map((review) => Review.create(review))
   )
 
   const cart = await ethyl.getCart()
@@ -92,4 +133,6 @@ module.exports = {
   User,
   Product,
   Order,
+  LineItem,
+  Review,
 }
