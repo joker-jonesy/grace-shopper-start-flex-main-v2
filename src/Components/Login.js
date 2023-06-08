@@ -43,6 +43,7 @@ const Login = () => {
           <input
             placeholder="password"
             name="password"
+            type="password"
             value={credentials.password}
             onChange={onChange}
             className={

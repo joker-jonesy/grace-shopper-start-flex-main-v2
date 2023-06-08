@@ -16,6 +16,7 @@ import Footer from "./Footer"
 import AdminPage from "./pages/AdminPage"
 import AdminUserPage from "./pages/AdminUserPage"
 import AdminProductPage from "./pages/AdminProductPage"
+import Spinner from "./Spinner"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
