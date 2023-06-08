@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express.Router()
-const { User, Order } = require("../db")
+const { User, Order, Review, Product } = require("../db")
 
 module.exports = app
 
@@ -49,8 +49,21 @@ app.get("/", async (req, res, next) => {
       return
     }
     const users = await User.findAll({
-      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
-      include: Order,
+      attributes: [
+        "id",
+        "username",
+        "email",
+        "createdAt",
+        "isAdmin",
+        "stripeId",
+      ],
+      include: [
+        Order,
+        {
+          model: Review,
+          include: Product,
+        },
+      ],
     })
     res.send(users)
   } catch (ex) {

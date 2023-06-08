@@ -29,9 +29,7 @@ const AdminPage = () => {
             <li>
               <NavLink
                 to="/admin/users"
-                className={({ isActive }) =>
-                  isActive ? "active" : ""
-                }
+                className={({ isActive }) => (isActive ? "active" : "")}
               >
                 Users
               </NavLink>
@@ -39,9 +37,7 @@ const AdminPage = () => {
             <li>
               <NavLink
                 to="/admin/products"
-                className={({ isActive }) =>
-                  isActive ? "active" : ""
-                }
+                className={({ isActive }) => (isActive ? "active" : "")}
               >
                 Products
               </NavLink>
@@ -49,11 +45,17 @@ const AdminPage = () => {
             <li>
               <NavLink
                 to="/admin/orders"
-                className={({ isActive }) =>
-                  isActive ? "active" : ""
-                }
+                className={({ isActive }) => (isActive ? "active" : "")}
               >
                 Orders
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/reviews"
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Reviews
               </NavLink>
             </li>
           </ul>
