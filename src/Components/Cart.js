@@ -9,14 +9,6 @@ const Cart = () => {
   const { cart } = useSelector((state) => state)
   // console.log("KART", cart.lineItems);
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (auth.id) {
-      dispatch(fetchUserCart())
-    } else {
-      dispatch(fetchGuestCart())
-    }
-  }, [])
             
   const totalPrice = cartTotal(cart.cartItems)
   const totalItems = cartQuantity(cart.cartItems)
@@ -25,7 +17,7 @@ const Cart = () => {
     <div>
       <h1>Cart</h1>
       <div className="m-4 flex flex-shrink flex-wrap justify-center">
-        {cart.lineItems.map((item) => (
+        {cart.cartItems.map((item) => (
           <div className="card glass m-4 w-64" key={item.product.id}>
             <div className="card-body p-2">
               <span>{item.product.name}</span>
