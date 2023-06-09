@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate"
 import Rating from "./ui/Rating"
 import Socials from "./ui/Socials"
 import { getAverageRating } from "../util"
+import AddToCartButton from "./AddToCartButton"
 
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state.products)
@@ -107,11 +108,7 @@ export const Products = ({ currentProducts }) => {
                   </span>
                 </div>
               </div>
-              <div className="flex w-full flex-row-reverse p-2">
-                <button className="btn-secondary btn-sm btn text-base-300">
-                  Add to Cart
-                </button>
-              </div>
+              <AddToCartButton product={product} quantity={1}/>
             </div>
           </div>
         )

@@ -106,7 +106,7 @@ User.prototype.addToCart = async function ({ product, quantity }) {
     await cartItem.save()
   } else {
     await conn.models.cartItem.create({
-      orderId: cart.id,
+      cartId: cart.id,
       productId: product.id,
       quantity,
     })
