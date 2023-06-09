@@ -6,9 +6,13 @@ import products from "./products"
 import singleProduct from "./singleProduct"
 import users from "./users"
 import reviews from "./reviews"
+import toasts from "./toasts"
+
+const persistedCart = localStorage.getItem("cart")
+  ? JSON.parse(localStorage.getItem("cart"))
+  : { lineItems: [] }
 
 const store = configureStore({
-  middleware: (defaultMiddleware) => defaultMiddleware().concat(logger),
   reducer: {
     auth: auth,
     cart: cart,
@@ -16,6 +20,11 @@ const store = configureStore({
     singleProduct: singleProduct,
     users: users,
     reviews: reviews,
+    toasts: toasts,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  preloadedState: {
+    cart: persistedCart,
   },
 })
 
@@ -25,3 +34,5 @@ export * from "./cart"
 export * from "./products"
 export * from "./users"
 export * from "./reviews"
+export * from "./toasts"
+

@@ -33,7 +33,7 @@ function Navbar({ auth }) {
         </Link>
       </div>
       <div className="flex-none">
-        {auth.id && (
+        {
           <div className="dropdown-end dropdown">
             <label tabIndex={0} className="btn-ghost btn-circle btn">
               <div className="indicator">
@@ -52,13 +52,15 @@ function Navbar({ auth }) {
                   />
                 </svg>
                 {/* CART TOTAL ITEMS */}
-                <span className="badge badge-sm indicator-item">{cartDisplayQuantity}</span>
+                <span className="badge badge-sm indicator-item">
+                  {cartDisplayQuantity}
+                </span>
               </div>
             </label>
             {/* CART DROP DOWN */}
             <CartDropdown />
           </div>
-        )}
+        }
         {/* USER DROP DOWN */}
         {auth.id ? (
           <button
@@ -66,6 +68,7 @@ function Navbar({ auth }) {
             onClick={() => navigate("/account")}
           >
             Account
+            {auth.avatar && <img src={auth.avatar} className="avatar h-8 w-8 rounded-full" />}
           </button>
         ) : (
           <button

@@ -2,7 +2,7 @@ const conn = require("./conn")
 const { STRING, UUID, UUIDV4 } = conn.Sequelize
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const { BOOLEAN } = require("sequelize")
+const { BOOLEAN, TEXT } = require("sequelize")
 const JWT = process.env.JWT || "felix"
 
 const User = conn.define("user", {
@@ -48,6 +48,9 @@ const User = conn.define("user", {
   stripeId: {
     type: STRING,
   },
+  avatar: {
+    type: TEXT,
+  }
 })
 
 User.prototype.createOrder = async function () {
@@ -152,6 +155,79 @@ User.authenticate = async function ({ username, password }) {
   const error = new Error("bad credentials")
   error.status = 401
   throw error
+}
+
+User.prototype.createOrder = async function () {
+  const cart = await this.getCart()
+  cart.isCart = false
+  await cart.save()
+  return cart
+}
+
+User.prototype.getCart = async function () {
+  let cart = await conn.models.cart.findOne({
+    where: {
+      userId: this.id,
+    },
+    include: [
+      {
+        model: conn.models.cartItem,
+        include: [conn.models.product],
+      },
+    ],
+  })
+  if (!cart) {
+    cart = await conn.models.cart.create({
+      userId: this.id,
+    })
+  }
+  return cart
+}
+
+// guest cart methods below - createGuestCart, addToGuestCart, getGuestCart
+User.prototype.createGuestCart = async function () {
+  const cart = await conn.models.cart.create({
+    userId: null,
+    isCart: true,
+  })
+  return cart
+}
+
+User.prototype.addToGuestCart = async function ({ product, quantity }) {
+  let cart = await this.getGuestCart()
+  if (!cart) {
+    cart = await this.createGuestCart()
+  }
+  let lineItem = cart.lineItems.find((lineItem) => {
+    return lineItem.productId === product.id
+  })
+  if (lineItem) {
+    lineItem.quantity += quantity
+    await lineItem.save()
+  } else {
+    await conn.models.lineItem.create({
+      orderId: cart.id,
+      productId: product.id,
+      quantity,
+    })
+  }
+  return this.getGuestCart()
+}
+
+User.prototype.getGuestCart = async function () {
+  const cart = await conn.models.cart.findOne({
+    where: {
+      userId: null,
+      isCart: true,
+    },
+    include: [
+      {
+        model: conn.models.lineItem,
+        include: [conn.models.product],
+      },
+    ],
+  })
+  return cart
 }
 
 module.exports = User

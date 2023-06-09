@@ -7,6 +7,7 @@ const Cart = require("./Cart")
 const CartItem = require("./CartItem")
 const Review = require("./Review")
 const { faker } = require("@faker-js/faker")
+const { avatarImage } = require("../images")
 
 Order.belongsTo(User)
 Order.hasMany(LineItem)
@@ -17,6 +18,7 @@ Product.hasMany(CartItem)
 Product.hasMany(Review)
 User.hasOne(Cart)
 User.hasMany(Order)
+User.hasMany(Review)
 Cart.belongsTo(User)
 Cart.hasMany(CartItem)
 CartItem.belongsTo(Cart)
@@ -190,30 +192,36 @@ const seedUsers = async () => {
       email: "seed1@test.com",
       isAdmin: true,
       stripeId: "cus_O2a2nOTbV2IKx8",
+      avatar: avatarImage
+
     }),
     User.create({
       username: "lucy",
       password: "123",
       email: "seed2@test.com",
       stripeId: "cus_O2aA5XZxwpruPF",
+      avatar: avatarImage
     }),
     User.create({
       username: "dudedude",
       password: "123",
       email: "seed5@test.com",
       stripeId: "cus_O2aBih6vn7wbEa",
+      avatar: avatarImage
     }),
     User.create({
       username: "larry",
       password: "123",
       email: "seed3@test.com",
       stripeId: "cus_O2aBxuGDPfPlD2",
+      avatar: avatarImage
     }),
     User.create({
       username: "ethyl",
       password: "123",
       email: "seed4@test.com",
       stripeId: "cus_O2aCVXnQzwXMri",
+      avatar: avatarImage
     }),
   ])
   await addCartAndOrders()
