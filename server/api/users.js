@@ -56,6 +56,7 @@ app.get("/", async (req, res, next) => {
         "createdAt",
         "isAdmin",
         "stripeId",
+        "avatar",
       ],
       include: [
         Order,

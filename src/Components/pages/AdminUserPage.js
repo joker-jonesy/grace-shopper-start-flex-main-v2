@@ -22,6 +22,7 @@ function AdminUserPage() {
             <table className="table">
               <thead>
                 <tr>
+                  <th></th>
                   <th>Username</th>
                   <th>Email</th>
                   <th>Joined</th>
@@ -46,6 +47,11 @@ function AdminUserPage() {
                         className="hover cursor-pointer"
                         onClick={() => setSelectedUser(user)}
                       >
+                        <th><div className="avatar">
+                          <div className="mask mask-squircle h-12 w-12">
+                            <img src={user.avatar} alt={user.username} />
+                          </div>
+                        </div></th>
                         <th>{user.username}</th>
                         <td>{user.email}</td>
                         <td>{new Date(user.createdAt).toLocaleDateString()}</td>

@@ -27,7 +27,7 @@ app.post("/", async (req, res, next) => {
 app.get("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization, {
-      attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+      attributes: ["id", "username", "email", "createdAt", "isAdmin", "avatar"],
     })
     if (req.session && req.session.cartId) {
       // Check if req.session exists and has cartId property
