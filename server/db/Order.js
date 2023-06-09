@@ -9,7 +9,30 @@ const Order = conn.define("order", {
   },
   userId: {
     type: UUID,
+  },
+  firstName: {
+    type: STRING,
     allowNull: false,
+  },
+  lastName: {
+    type: STRING,
+    allowNull: false,
+  },
+  street: {
+    type: STRING
+    , allowNull: false 
+  },
+  city: { 
+    type: STRING, 
+    allowNull: false 
+  },
+  state: { 
+    type: STRING, 
+    allowNull: false 
+  },
+  zip: { 
+    type: STRING, 
+    allowNull: false 
   },
 })
 

@@ -18,6 +18,7 @@ import AdminUserPage from "./pages/AdminUserPage"
 import AdminProductPage from "./pages/AdminProductPage"
 import { ToastProvider } from "./ui/ToastProvider"
 import { useToast } from "../hooks/useToast"
+import CheckoutPage from "./pages/CheckoutPage"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
@@ -51,6 +52,7 @@ const App = () => {
             <Route path="/admin/products" element={<AdminProductPage />} />
           </Route>
           <Route path="/products/:id" element={<SingleProductView />} />
+          <Route path="/orders/create" element={<CheckoutPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
