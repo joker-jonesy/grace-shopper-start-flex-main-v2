@@ -56,15 +56,23 @@ const CheckoutPage = () => {
 
   const OrderCreated = (
     <div>
-      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">Order Created</h1>
+      <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+        Order Created
+      </h1>
       <p>{order}</p>
-      <button onClick={()=>{navigate("/account")}}>Return to Account</button>
+      <button
+        onClick={() => {
+          navigate("/account")
+        }}
+      >
+        Return to Account
+      </button>
     </div>
   )
 
   const OrderFailed = (
     <div>
-      <h1 className="bg-gradient-to-r from-error to-warnning bg-clip-text text-9xl font-extrabold text-transparent">
+      <h1 className="bg-gradient-to-r from-error to-warning bg-clip-text text-9xl font-extrabold text-transparent">
         Order Failed
       </h1>
       <button
