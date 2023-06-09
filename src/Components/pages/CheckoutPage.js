@@ -1,10 +1,14 @@
 import axios from 'axios';
 import React, {useState} from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { fetchUserCart } from '../../store';
 
 const CheckoutPage = () => {
 
-  const {auth, cart} = useSelector(state => state);
+  const {auth} = useSelector(state => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const[firstName,setFirstName] = useState("");
   const[lastName,setLastName] = useState("");
@@ -16,20 +20,66 @@ const CheckoutPage = () => {
   const[exp,setExp] = useState("");
   const[ccv,setCcv] = useState("");
 
+  const[status, setStatus] = useState("pending");
+
+  let order = "";
+
   const submit = async (event) => {
-    event.preventDefault();
-    const newOrder = {firstName, lastName, street, city, state, zip, userId: auth.id};
-    const token = window.localStorage.getItem("token")
-    const order = await axios.post("/api/order", {data: newOrder},{
-      headers: {
-        authorization: token,
-      },
-    })
-    
+    try {
+      event.preventDefault()
+      const newOrder = {
+        firstName,
+        lastName,
+        street,
+        city,
+        state,
+        zip,
+        userId: auth.id,
+      }
+      const token = window.localStorage.getItem("token")
+      order = await axios.post(
+        "/api/order",
+        { data: newOrder },
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      )
+      console.log(order);
+      dispatch(fetchUserCart())
+      setStatus("created")
+    } catch (error) {
+      setStatus("error")
+    }
   }
 
-  return (
+  const OrderCreated = (
+    <div>
+      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">Order Created</h1>
+      <p>{order}</p>
+      <button onClick={()=>{navigate("/account")}}>Return to Account</button>
+    </div>
+  )
+
+  const OrderFailed = (
+    <div>
+      <h1 className="bg-gradient-to-r from-error to-warnning bg-clip-text text-9xl font-extrabold text-transparent">
+        Order Failed
+      </h1>
+      <button
+        onClick={() => {
+          setStatus("pending")
+        }}
+      >
+        Try Again
+      </button>
+    </div>
+  )
+
+  const form = (
     <div className="card">
+      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">Enter Details</h1>
       <form  className="flex flex-col justify-center" onSubmit={submit}>
         <h3>First Name</h3>
         <input
@@ -98,6 +148,14 @@ const CheckoutPage = () => {
       </form>
     </div>
   )
+
+  if(status === "pending"){
+    return form
+  }else if(status === "created"){
+    return OrderCreated
+  }else{
+    return OrderFailed
+  }
 }
 
 export default CheckoutPage
