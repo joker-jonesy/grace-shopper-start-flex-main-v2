@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchProducts, updateProduct, deleteProduct } from "../../store"
+import {
+  fetchProducts,
+  updateProduct,
+  deleteProduct,
+  createProduct,
+} from "../../store"
 import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
 import { Modal, ModalHeader, ModalActions } from "../ui/Modal"
+import ProductDetails from "../ui/ProductDetails"
 
 function AdminProductPage() {
-  const { products } = useSelector((state) => state)
+  const { products } = useSelector((state) => state.products)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(24)
   const [itemOffset, setItemOffset] = useState(0)
   const [pendingChanges, setPendingChanges] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    material: "",
-    category: "",
-    price: "",
-    imageURL: "",
-  })
+  const [isAdding, setIsAdding] = useState(false)
+
   const endOffset = itemOffset + itemsPerPage
 
   //TODO: add pagination
@@ -49,55 +49,88 @@ function AdminProductPage() {
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value)
   }
-  const handleDeleteClick = () => {}
+  const handleDeleteClick = (product) => {
+    dispatch(deleteProduct(product.id))
+  }
 
   const handleDetailsClick = (product) => {
     setSelectedProduct(product)
-    setFormData({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      material: product.material,
-      category: product.category,
-      price: product.price,
-      imageURL: product.imageURL,
+  }
+
+  const onFileChange = (event) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(event.target.files[0])
+    reader.onload = () => {
+      setSelectedProduct({ ...selectedProduct, imageURL: reader.result })
+    }
+    reader.onerror = function (error) {
+      console.log("Error: ", error)
+    }
+  }
+  const handleAddProductClick = () => {
+    setIsAdding(true)
+    setSelectedProduct({
+      name: "",
+      category: "Category1",
+      price: 0.0,
+      material: "",
+      quantity: 0,
+      description: "",
+      imageURL: "",
     })
   }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    setFormData((formData) => ({ ...formData, [name]: value }))
-    setPendingChanges(true)
+    setSelectedProduct({ ...selectedProduct, [name]: value })
+    if (isAdding) {
+      if (
+        selectedProduct.name !== "" &&
+        selectedProduct.category !== "" &&
+        selectedProduct.price !== 0 &&
+        selectedProduct.material !== "" &&
+        selectedProduct.quantity !== 0 &&
+        selectedProduct.description !== "" &&
+        selectedProduct.imageURL !== ""
+      ) {
+        setPendingChanges(true)
+      }
+    } else {
+      setPendingChanges(true)
+    }
   }
 
   const handleSubmit = () => {
-    dispatch(updateProduct(formData))
+    dispatch(updateProduct(selectedProduct))
     setPendingChanges(false)
+    setSelectedProduct(null)
+  }
+
+  const handleAdd = () => {
+    console.log(selectedProduct)
+    dispatch(createProduct(selectedProduct))
+    setPendingChanges(false)
+    setSelectedProduct(null)
   }
 
   return (
     <div className="flex w-full flex-col">
       <div className="p-2">
-        <Modal
-          open={selectedProduct}
-          className="w-full"
-          responsive
-          onClickBackdrop={() => setSelectedProduct(null)}
-        >
-          <ModalHeader className="font-bold">
-            Congratulations random Interner user!
-          </ModalHeader>
-          {selectedProduct ? (
-            <div className="card m-4 p-4">
-              <figure>
-                <img
-                  src={selectedProduct.imageURL}
-                  alt={selectedProduct.name}
-                  className="h-20 w-20 rounded-lg md:h-32 md:w-32"
-                />
-              </figure>
-              <div className="card-body p-2">
-                <div className="form-control w-full max-w-xs">
+        {selectedProduct && (
+          <Modal
+            open={selectedProduct}
+            className="md:min-w-6xl lg:min-w-7xl w-3/4"
+            responsive
+            onClickBackdrop={() => setSelectedProduct(null)}
+          >
+            <ModalHeader className="font-bold">
+              {selectedProduct && selectedProduct.name}
+            </ModalHeader>
+            <div className="card">
+              <ProductDetails product={selectedProduct} />
+              <div className="w-full border-b-2 pb-5"></div>
+              <div className="flex w-full flex-row">
+                <div className="form-control w-full px-1">
                   <label className="label">
                     <span className="label-text">Product Name</span>
                   </label>
@@ -105,27 +138,30 @@ function AdminProductPage() {
                     type="text"
                     placeholder="Product Name"
                     name="name"
-                    className="input-bordered input w-full max-w-xs"
-                    value={formData.name}
+                    className="input-bordered input"
+                    value={selectedProduct.name}
                     onChange={handleInputChange}
                   />
                 </div>
-
-                <div className="form-control w-full max-w-xs">
+              </div>
+              <div className="flex w-full flex-row">
+                <div className="form-control w-1/2 px-1">
                   <label className="label">
-                    <span className="label-text">Material</span>
+                    <span className="label-text">Category</span>
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Product Material"
-                    name="material"
-                    className="input-bordered input w-full max-w-xs"
-                    value={formData.material}
+                  <select
+                    placeholder="Category"
+                    name="category"
+                    className="select-bordered select"
+                    value={selectedProduct.category}
                     onChange={handleInputChange}
-                  />
+                  >
+                    {uniqueCategories.map((category) => {
+                      return <option key={category}>{category}</option>
+                    })}
+                  </select>
                 </div>
-
-                <div className="form-control w-full max-w-xs">
+                <div className="form-control w-1/2 px-1">
                   <label className="label">
                     <span className="label-text">Price</span>
                   </label>
@@ -133,70 +169,92 @@ function AdminProductPage() {
                     type="number"
                     placeholder="Price"
                     name="price"
-                    className="input-bordered input w-full max-w-xs"
-                    value={formData.price}
+                    min={0}
+                    step="0.01"
+                    className="input-bordered input"
+                    value={selectedProduct.price}
                     onChange={handleInputChange}
+                    onFocus={() => {
+                      if (selectedProduct.price === 0) {
+                        setSelectedProduct({ ...selectedProduct, price: "" })
+                      }
+                    }}
                   />
                 </div>
-
-                <div className="form-control w-full max-w-xs">
+              </div>
+              <div className="flex w-full flex-row">
+                <div className="form-control w-1/2 px-1">
                   <label className="label">
-                    <span className="label-text">Category</span>
-                  </label>
-                  <select
-                    placeholder="Category"
-                    name="category"
-                    className="select-bordered select w-full max-w-xs"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="form-control w-full max-w-xs">
-                  <label className="label">
-                    <span className="label-text">Image URL</span>
+                    <span className="label-text">Product Material</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Image"
-                    name="imageURL"
-                    className="input-bordered input w-full max-w-xs"
-                    value={formData.imageURL}
+                    placeholder="Product Material"
+                    name="material"
+                    className="input-bordered input"
+                    value={selectedProduct.material}
                     onChange={handleInputChange}
                   />
                 </div>
-
-                <div className="form-control w-full">
+                <div className="form-control w-1/2 px-1">
                   <label className="label">
-                    <span className="label-text">Product Description</span>
+                    <span className="label-text">Quantity Available</span>
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Quantity"
+                    name="quantity"
+                    min={0}
+                    step={1}
+                    className="input-bordered input"
+                    value={selectedProduct.quantity}
+                    onChange={handleInputChange}
+                    onFocus={() => {
+                      if (selectedProduct.quantity === 0) {
+                        setSelectedProduct({ ...selectedProduct, quantity: "" })
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row">
+                <div className="form-control w-3/4 px-1">
+                  <label className="label">
+                    <span className="label-text">Product Image</span>
+                  </label>
+                  <input
+                    type="file"
+                    className="file-input-bordered file-input w-3/4"
+                    onChange={onFileChange}
+                  />
+                </div>
+              </div>
+              <div className="flex w-full flex-row">
+                <div className="form-control w-full px-1">
+                  <label className="label">
+                    <span className="label-text">Description</span>
                   </label>
                   <textarea
                     placeholder="Description"
                     name="description"
-                    className="text-area-bordered textarea w-full"
-                    value={formData.description}
+                    className="input-bordered textarea"
+                    value={selectedProduct.description}
                     onChange={handleInputChange}
                   />
                 </div>
               </div>
-
-              <div className="card-footer">
+              <ModalActions>
                 <button
                   className="btn-primary btn"
                   disabled={!pendingChanges}
-                  onClick={() => handleSubmit()}
+                  onClick={() => (isAdding ? handleAdd() : handleSubmit())}
                 >
-                  Save
+                  {isAdding ? "Create" : "Save"}
                 </button>
-              </div>
+              </ModalActions>
             </div>
-          ) : (
-            <h1>Select a Product</h1>
-          )}
-          <ModalActions>
-            <button onClick={() => console.log("here")}>Yay!</button>
-          </ModalActions>
-        </Modal>
+          </Modal>
+        )}
       </div>
       <div className="p-2">
         <h1>Products</h1>
@@ -228,6 +286,17 @@ function AdminProductPage() {
               <option>{`<$100`}</option>
               <option>{`<$1000`}</option>
             </select>
+          </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Actions</span>
+            </label>
+            <button
+              className="btn-primary btn-sm btn"
+              onClick={() => handleAddProductClick()}
+            >
+              Add Product
+            </button>
           </div>
         </div>
 
