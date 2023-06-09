@@ -168,11 +168,16 @@ function AdminProductPage() {
                     type="number"
                     placeholder="Price"
                     name="price"
-                    min={"0.01"}
+                    min={0}
                     step="0.01"
                     className="input-bordered input"
                     value={selectedProduct.price}
                     onChange={handleInputChange}
+                    onFocus={() => {
+                      if (selectedProduct.price === 0) {
+                        setSelectedProduct({ ...selectedProduct, price: "" })
+                      }
+                    }}
                   />
                 </div>
               </div>
@@ -203,6 +208,11 @@ function AdminProductPage() {
                     className="input-bordered input"
                     value={selectedProduct.quantity}
                     onChange={handleInputChange}
+                    onFocus={() => {
+                      if (selectedProduct.quantity === 0) {
+                        setSelectedProduct({ ...selectedProduct, quantity: "" })
+                      }
+                    }}
                   />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link, NavLink } from "react-router-dom"
 import { logout } from "../store/auth"
 import CartDropdown from "./CartDropdown"
 import { cartQuantity } from "../util"
@@ -20,17 +20,34 @@ function Navbar({ auth }) {
   return (
     <div className="navbar sticky top-0 z-10 bg-base-200">
       <div className="flex-1">
-        <Link to={"/"} className="text-md btn-ghost btn normal-case">
+        <NavLink
+          to={"/"}
+          className={({ isActive, isPending }) =>
+            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+          }
+        >
           Home
-        </Link>
+        </NavLink>
         {auth.isAdmin && (
-          <Link to={"/admin"} className="text-md btn-ghost btn normal-case">
+          <NavLink
+            to={"/admin"}
+            className={({ isActive, isPending }) =>
+              `text-md btn-ghost btn normal-case ${
+                isActive ? "btn-active" : ""
+              }`
+            }
+          >
             Admin
-          </Link>
+          </NavLink>
         )}
-        <Link to={"/products"} className="text-md btn-ghost btn normal-case">
+        <NavLink
+          to={"/products"}
+          className={({ isActive, isPending }) =>
+            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+          }
+        >
           Products
-        </Link>
+        </NavLink>
       </div>
       <div className="flex-none">
         {
@@ -68,7 +85,9 @@ function Navbar({ auth }) {
             onClick={() => navigate("/account")}
           >
             Account
-            {auth.avatar && <img src={auth.avatar} className="avatar h-8 w-8 rounded-full" />}
+            {auth.avatar && (
+              <img src={auth.avatar} className="avatar h-8 w-8 rounded-full" />
+            )}
           </button>
         ) : (
           <button
