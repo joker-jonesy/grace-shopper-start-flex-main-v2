@@ -28,7 +28,7 @@ export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
     cart = window.localStorage.getItem("cart");
   }
   return JSON.parse(cart)
-})
+}) 
 
 const cartSlice = createSlice({
   name: "cart",

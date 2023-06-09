@@ -1,7 +1,6 @@
 export const cartTotal = (cartArr) => {
     let total = 0
   if (!cartArr) return total
-    console.log(cartArr)
     if(cartArr.length > 0){
         for (let item of cartArr) {
           total += parseInt(item.product.price) * item.quantity

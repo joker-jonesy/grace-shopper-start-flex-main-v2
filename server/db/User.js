@@ -53,11 +53,21 @@ const User = conn.define("user", {
   }
 })
 
-User.prototype.createOrder = async function () {
+User.prototype.createOrder = async function (data) {
   const cart = await this.getCart()
-  cart.isCart = false
-  await cart.save()
-  return cart
+  const order = await conn.models.order.create(data);
+
+  const orderItems = [];
+
+  for(let item of cart.cartItems){
+    const creatLineItem = async ()=> {
+      await conn.models.lineItem.create({productId: item.dataValues.productId, quantity: item.dataValues.quantity, orderId: order.id})
+      await item.destroy();
+    }
+    orderItems.push(creatLineItem());
+  }
+  await Promise.all(orderItems);
+  return order;
 }
 
 User.prototype.getCart = async function () {
@@ -155,33 +165,6 @@ User.authenticate = async function ({ username, password }) {
   const error = new Error("bad credentials")
   error.status = 401
   throw error
-}
-
-User.prototype.createOrder = async function () {
-  const cart = await this.getCart()
-  cart.isCart = false
-  await cart.save()
-  return cart
-}
-
-User.prototype.getCart = async function () {
-  let cart = await conn.models.cart.findOne({
-    where: {
-      userId: this.id,
-    },
-    include: [
-      {
-        model: conn.models.cartItem,
-        include: [conn.models.product],
-      },
-    ],
-  })
-  if (!cart) {
-    cart = await conn.models.cart.create({
-      userId: this.id,
-    })
-  }
-  return cart
 }
 
 // guest cart methods below - createGuestCart, addToGuestCart, getGuestCart
