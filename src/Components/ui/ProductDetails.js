@@ -5,12 +5,13 @@ import { getAverageRating } from "../../util"
 
 function ProductDetails({ product, children }) {
   if (!product) return null
+  console.log(product)
   return (
     <div className="container mx-auto px-5">
-      <div className="mx-auto flex flex-wrap lg:w-4/5">
+      <div className="min-w-xl mx-auto flex flex-wrap lg:w-4/5">
         {product.imageURL && (
           <img
-            className="h-8 w-full rounded object-cover object-center lg:h-auto lg:w-1/3"
+            className="h-1/2 w-full self-center rounded object-cover object-center  lg:w-1/2"
             src={product.imageURL}
             alt={product.name}
           />
@@ -23,8 +24,8 @@ function ProductDetails({ product, children }) {
             {product.name}
           </h1>
           <div className="mb-4 flex items-center">
-            {product.rating && (
-              <Rating rating={getAverageRating(product.rating)} />
+            {product.reviews && (
+              <Rating rating={getAverageRating(product.reviews)} />
             )}
             {product.id && (
               <span className="ml-3 flex border-l-2 border-gray-200 py-2 pl-3">
@@ -41,6 +42,7 @@ function ProductDetails({ product, children }) {
               <span className="title-font text-2xl font-medium text-secondary">{`$${product.price}`}</span>
             </div>
           </div>
+
           {children}
         </div>
       </div>

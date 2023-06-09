@@ -119,7 +119,7 @@ function AdminProductPage() {
         {selectedProduct && (
           <Modal
             open={selectedProduct}
-            className="w-5/6"
+            className="md:min-w-6xl lg:min-w-7xl w-3/4"
             responsive
             onClickBackdrop={() => setSelectedProduct(null)}
           >
@@ -128,6 +128,7 @@ function AdminProductPage() {
             </ModalHeader>
             <div className="card">
               <ProductDetails product={selectedProduct} />
+              <div className="w-full border-b-2 pb-5"></div>
               <div className="flex w-full flex-row">
                 <div className="form-control w-full px-1">
                   <label className="label">
