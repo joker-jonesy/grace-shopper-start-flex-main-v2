@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { fetchGuestCart, fetchUserCart, logout } from "../store"
 import { Link } from "react-router-dom"
 import { cartQuantity, cartTotal } from "../util"
+import Spinner from "./Spinner"
 
 const Cart = () => {
   const { cart } = useSelector((state) => state)
