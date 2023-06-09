@@ -30,6 +30,34 @@ export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
   return JSON.parse(cart)
 }) 
 
+export const addToCart = createAsyncThunk("addToCart", async (payload) => {
+  try {
+    const token = window.localStorage.getItem("token")
+    const response = await axios.post("/api/cart", payload, {
+      headers: {
+        authorization: token
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
+  try {
+    const token = window.localStorage.getItem("token")
+    const response = await axios.put("/api/cart", payload, {
+      headers: {
+        authorization: token
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -39,6 +67,12 @@ const cartSlice = createSlice({
       return action.payload
     })
     builder.addCase(fetchUserCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(addToCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(removeFromCart.fulfilled, (state, action) => {
       return action.payload
     })
   },

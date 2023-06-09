@@ -68,7 +68,6 @@ app.delete("/:id", async (req, res, next) => {
 
 app.put("/:id", async (req, res, next) => {
   try {
-    console.log(req.body)
     const user = await User.findByToken(req.headers.authorization)
     if (!user.isAdmin) {
       res.sendStatus(401)
