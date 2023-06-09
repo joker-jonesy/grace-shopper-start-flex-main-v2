@@ -1,8 +1,7 @@
 import React from "react"
 
 function Modal({ open, responsive, onClickBackdrop, className, children }) {
-    const containerClasses = `modal ${open ? "modal-open" : ""} ${responsive ? "modal-bottom sm:modal-middle" : ""
-        }`
+    const containerClasses = `modal ${open ? "modal-open" : ""} ${responsive ? "modal-bottom sm:modal-middle" : ""} `
     return (
         <>
             <div
@@ -21,7 +20,7 @@ function Modal({ open, responsive, onClickBackdrop, className, children }) {
                 }}
             >
 
-                <div className={`modal-box w-11/12 max-w-5xl ${className}`}>
+                <div className={`modal-box w-full ${className}`}>
                     <button className="btn absolute btn-circle right-0 top-0 btn-ghost" onClick={onClickBackdrop}>X</button>{children}</div>
             </div>
         </>

@@ -40,7 +40,7 @@ app.post("/", async (req, res, next) => {
       res.sendStatus(401)
       return
     }
-    const product = await Product.create(req.body.product)
+    const product = await Product.create(req.body)
     res.send(product)
   } catch (error) {
     next(error)

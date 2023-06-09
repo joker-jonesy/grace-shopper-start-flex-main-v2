@@ -19,3 +19,12 @@ export const cartQuantity = (cartArr) => {
     }
     return quantity
 }
+
+
+export const getAverageRating = (reviews) => {
+  if (!reviews || reviews.length === 0) return 0
+  const sum = reviews.reduce((acc, review) => {
+    return acc + review.rating
+  }, 0)
+  return Math.floor(sum / reviews.length)
+}

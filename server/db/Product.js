@@ -1,5 +1,5 @@
 const conn = require("./conn")
-const { STRING, UUID, UUIDV4, ENUM, INTEGER, DECIMAL } = conn.Sequelize // Float for decimal, Enum for predefined vals
+const { STRING, TEXT, UUID, UUIDV4, ENUM, INTEGER, DECIMAL } = conn.Sequelize // Float for decimal, Enum for predefined vals
 // this is to define the model for the products table
 const Product = conn.define("product", {
   id: {
@@ -26,7 +26,7 @@ const Product = conn.define("product", {
     defaultValue: 0,
   },
   imageURL: {
-    type: STRING,
+    type: TEXT,
     defaultValue:
       "https://www.eteknix.com/wp-content/uploads/2013/04/anonymous.jpg",
   },

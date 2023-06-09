@@ -5,9 +5,10 @@ import { Link } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import Rating from "./ui/Rating"
 import Socials from "./ui/Socials"
+import { getAverageRating } from "../util"
 
 const PaginatedProducts = () => {
-  const { products } = useSelector((state) => state)
+  const { products } = useSelector((state) => state.products)
   const [selectedCategory, setSelectedCategory] = useState("")
 
   //pagination variables
@@ -71,13 +72,6 @@ const PaginatedProducts = () => {
 }
 
 export const Products = ({ currentProducts }) => {
-  const getAverageRating = (reviews) => {
-    if (!reviews || reviews.length === 0) return 0
-    const sum = reviews.reduce((acc, review) => {
-      return acc + review.rating
-    }, 0)
-    return Math.floor(sum / reviews.length)
-  }
   return (
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
@@ -86,8 +80,12 @@ export const Products = ({ currentProducts }) => {
             className="card glass card-compact m-4 w-64 sm:card-normal"
             key={uuidv4()}
           >
-            <figure>
-              <img src={product.imageURL} alt={product.name} />
+            <figure className="min-h-12">
+              <img
+                src={product.imageURL}
+                alt={product.name}
+                className="mask-square aspect-square h-full w-full"
+              />
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
@@ -97,7 +95,7 @@ export const Products = ({ currentProducts }) => {
               </Link>
             </div>
             <div className="card-actions flex flex-col">
-              <div className="flex flex-row w-full">
+              <div className="flex w-full flex-row">
                 <div className="flex-none px-2">
                   <Rating rating={getAverageRating(product.reviews)} />
                 </div>
@@ -109,7 +107,7 @@ export const Products = ({ currentProducts }) => {
                   </span>
                 </div>
               </div>
-              <div className="flex flex-row-reverse w-full p-2">
+              <div className="flex w-full flex-row-reverse p-2">
                 <button className="btn-secondary btn-sm btn text-base-300">
                   Add to Cart
                 </button>

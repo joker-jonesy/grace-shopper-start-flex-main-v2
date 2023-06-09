@@ -24,7 +24,7 @@ function Rating({ rating, onSelect }) {
     const stars = []
 
     for (let i = 1; i <= 5; i++) {
-      const rand = Math.floor(Math.random() * (10000 - 1) + 1);
+      const rand = Math.floor(Math.random() * 10000000)
       stars.push(
         <div
           key={i + rand}
