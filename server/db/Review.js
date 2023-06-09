@@ -1,4 +1,4 @@
-const { INTEGER } = require("sequelize")
+const { INTEGER, TEXT } = require("sequelize")
 const conn = require("./conn")
 const { UUID, UUIDV4, STRING } = conn.Sequelize
 
@@ -19,7 +19,7 @@ const Review = conn.define("review", {
 
     },
     description: {
-        type: STRING,
+        type: TEXT,
     },
     rating: {
         type: INTEGER,
