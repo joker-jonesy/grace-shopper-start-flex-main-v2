@@ -16,7 +16,7 @@ app.get("/", async (req, res, next) => {
   try {
     res.send(
       await User.findByToken(req.headers.authorization, {
-        attributes: ["id", "username", "email", "createdAt", "isAdmin"],
+        attributes: ["id", "username", "email", "createdAt", "isAdmin", "avatar"],
       })
     )
   } catch (ex) {

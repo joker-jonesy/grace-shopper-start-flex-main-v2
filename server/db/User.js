@@ -2,7 +2,7 @@ const conn = require("./conn")
 const { STRING, UUID, UUIDV4 } = conn.Sequelize
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const { BOOLEAN } = require("sequelize")
+const { BOOLEAN, TEXT } = require("sequelize")
 const JWT = process.env.JWT || "felix"
 
 const User = conn.define("user", {
@@ -48,6 +48,9 @@ const User = conn.define("user", {
   stripeId: {
     type: STRING,
   },
+  avatar: {
+    type: TEXT,
+  }
 })
 
 User.prototype.createOrder = async function () {

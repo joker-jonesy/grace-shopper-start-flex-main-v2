@@ -11,10 +11,12 @@ const Review = conn.define("review", {
     productId: {
         type: UUID,
         allowNull: false,
+
     },
     userId: {
         type: UUID,
         allowNull: false,
+
     },
     description: {
         type: STRING,

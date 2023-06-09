@@ -66,6 +66,7 @@ function Navbar({ auth }) {
             onClick={() => navigate("/account")}
           >
             Account
+            {auth.avatar && <img src={auth.avatar} className="avatar h-8 w-8 rounded-full" />}
           </button>
         ) : (
           <button
