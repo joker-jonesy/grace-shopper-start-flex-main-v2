@@ -4,11 +4,13 @@ const { User } = require("../db")
 
 module.exports = app
 
+// User authentication
 app.post("/", async (req, res, next) => {
   try {
     const token = await User.authenticate(req.body)
     const user = await User.findByToken(token)
     if (req.session && req.session.cartId) {
+      // Check if req.session exists and has cartId property
       const guestCart = await User.getGuestCart(req.session.cartId)
       if (guestCart) {
         await user.mergeGuestCart(guestCart)
@@ -21,12 +23,14 @@ app.post("/", async (req, res, next) => {
   }
 })
 
+// Get user information
 app.get("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization, {
       attributes: ["id", "username", "email", "createdAt", "isAdmin"],
     })
     if (req.session && req.session.cartId) {
+      // Check if req.session exists and has cartId property
       const guestCart = await User.getGuestCart(req.session.cartId)
       if (guestCart) {
         await user.mergeGuestCart(guestCart)
