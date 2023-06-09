@@ -2,6 +2,7 @@ const express = require("express")
 const app = express.Router()
 const { User } = require("../db")
 
+// Get the user's cart
 app.get("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
@@ -11,6 +12,7 @@ app.get("/", async (req, res, next) => {
   }
 })
 
+// Add an item to the user's cart
 app.post("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
@@ -20,6 +22,7 @@ app.post("/", async (req, res, next) => {
   }
 })
 
+// Remove an item from the user's cart
 app.put("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
