@@ -16,10 +16,13 @@ import Footer from "./Footer"
 import AdminPage from "./pages/AdminPage"
 import AdminUserPage from "./pages/AdminUserPage"
 import AdminProductPage from "./pages/AdminProductPage"
+import { ToastProvider } from "./ui/ToastProvider"
+import { useToast } from "../hooks/useToast"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
   const dispatch = useDispatch()
+  const { toasts } = useToast()
   useEffect(() => {
     dispatch(loginWithToken())
     dispatch(fetchProducts())
@@ -51,6 +54,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      <ToastProvider toasts={toasts} />
       <Footer />
     </>
   )
