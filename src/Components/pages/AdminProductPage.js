@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, Suspense } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import {
   fetchProducts,
@@ -16,6 +16,7 @@ function AdminProductPage() {
   const { products } = useSelector((state) => state.products)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null)
   const [itemsPerPage, setItemsPerPage] = useState(24)
   const [itemOffset, setItemOffset] = useState(0)
   const [pendingChanges, setPendingChanges] = useState(false)
@@ -38,17 +39,46 @@ function AdminProductPage() {
     window.scrollTo(0, 0)
   }
 
+  const priceFilter = (product) => {
+    if (selectedPriceFilter === "<$100") {
+      return product.price < 100
+    } else if (selectedPriceFilter === "<$1000") {
+      return product.price < 1000
+    } else {
+      return true
+    }
+  }
+
   //get categories list from products, then filter out duplicates
+  const filterProducts = selectedPriceFilter ? products.filter(priceFilter) :
+    selectedCategory
+      ? products.filter((product) => product.category === selectedCategory)
+      : products.length > 0
+        ? products
+        : []
+
   const categories =
     products.length > 0 ? products.map((product) => product.category) : []
   const uniqueCategories = [...new Set(categories)]
 
   const currentProducts =
-    products.length > 0 ? products.slice(itemOffset, endOffset) : []
-  const pageCount = Math.ceil(currentProducts.length / itemsPerPage)
+    filterProducts.length > 0 ? filterProducts.slice(itemOffset, endOffset) : []
+  const pageCount = Math.ceil(filterProducts.length / itemsPerPage)
 
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value)
+    if (event.target.value === "All") setSelectedCategory(null)
+    else {
+      setSelectedCategory(event.target.value)
+    }
+
+  }
+
+  const handlePriceChange = (event) => {
+    if (event.target.value === "All") setSelectedPriceFilter(null)
+    else {
+      setSelectedPriceFilter(event.target.value)
+    }
+
   }
   const handleDeleteClick = (product) => {
     dispatch(deleteProduct(product.id))
@@ -108,7 +138,6 @@ function AdminProductPage() {
   }
 
   const handleAdd = () => {
-    console.log(selectedProduct)
     dispatch(createProduct(selectedProduct))
     setPendingChanges(false)
     setSelectedProduct(null)
@@ -282,6 +311,7 @@ function AdminProductPage() {
             <select
               className="select-bordered select w-full max-w-xs"
               defaultValue="All"
+              onChange={handlePriceChange}
             >
               <option>All</option>
               <option>{`<$100`}</option>
@@ -312,7 +342,7 @@ function AdminProductPage() {
               </tr>
             </thead>
             <tbody>
-              {currentProducts.length > 0 ?
+              {currentProducts.length > 0 ? (
                 currentProducts.map((product) => {
                   return (
                     <tr
@@ -325,11 +355,16 @@ function AdminProductPage() {
                     >
                       <td>
                         <div className="flex items-center space-x-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle h-12 w-12">
-                              <img src={product.imageURL} alt={product.name} />
+                          <Suspense fallback={<Spinner />}>
+                            <div className="avatar">
+                              <div className="mask mask-squircle h-12 w-12">
+                                <img
+                                  src={product.imageURL}
+                                  alt={product.name}
+                                />
+                              </div>
                             </div>
-                          </div>
+                          </Suspense>
                           <div>
                             <div className="font-bold">{product.name}</div>
                             <div className="text-sm opacity-50">
@@ -366,7 +401,10 @@ function AdminProductPage() {
                       </th>
                     </tr>
                   )
-                }) : <Spinner />}
+                })
+              ) : (
+                <Spinner />
+              )}
             </tbody>
           </table>
           <ReactPaginate

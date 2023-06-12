@@ -67,53 +67,63 @@ function AdminReviewsPage() {
                         {reviews.length > 0 ?
                             reviews.map((review) => {
                                 return (
-                                    <tr
-                                        key={review.id}
-                                        className={`${selectedReview &&
-                                            selectedReview.id === review.id &&
-                                            "bg-base-200"
-                                            }`}
-                                    >
-                                        <td>
-                                            <div className="flex items-center space-x-3">
-                                                <div className="avatar">
-                                                    <div className="mask mask-squircle h-12 w-12">
-                                                        <img
-                                                            src={review.user.avatar}
-                                                            alt={review.user.username}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div className="font-bold">
-                                                        {review.user.username}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                                <Link className="link link-primary" to={`/products/${review.productId}`}> {review.product.name}</Link>
-                                            </td>
-                                            <td>
-                                                <Rating rating={review.rating} />
-                                            </td>
-                                            <td>
-                                                <span className="w-4 text-ellipsis">
-                                                    {review.description}
-                                                </span>
-                                            </td>
-                                            <th>
-                                                <div className="flex flex-row justify-evenly">
-                                                    <button
-                                                        className="btn-error btn-xs btn mx-1 px-1"
-                                                        onClick={() => handleDeleteClick(review)}
-                                                    >
-                                                        delete
-                                                    </button>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                    )
+                                  <tr
+                                    key={review.id}
+                                    className={`${
+                                      selectedReview &&
+                                      selectedReview.id === review.id &&
+                                      "bg-base-200"
+                                    }`}
+                                  >
+                                    <td>
+                                      <div className="flex items-center space-x-3">
+                                        <div className="avatar">
+                                          <div className="mask mask-squircle h-12 w-12">
+                                            <img
+                                              src={review.user.avatar}
+                                              alt={review.user.username}
+                                            />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <div className="font-bold">
+                                            {review.user.username}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <Link
+                                        className="link-primary link"
+                                        to={`/products/${review.productId}`}
+                                      >
+                                        {review.product.name}
+                                      </Link>
+                                    </td>
+                                    <td>
+                                      <Suspense fallback={<Spinner />}>
+                                        <Rating rating={review.rating} />
+                                      </Suspense>
+                                    </td>
+                                    <td>
+                                      <span className="w-4 text-ellipsis">
+                                        {review.description}
+                                      </span>
+                                    </td>
+                                    <th>
+                                      <div className="flex flex-row justify-evenly">
+                                        <button
+                                          className="btn-error btn-xs btn mx-1 px-1"
+                                          onClick={() =>
+                                            handleDeleteClick(review)
+                                          }
+                                        >
+                                          delete
+                                        </button>
+                                      </div>
+                                    </th>
+                                  </tr>
+                                )
                                 }) : <Spinner />}
 
                     </tbody>
