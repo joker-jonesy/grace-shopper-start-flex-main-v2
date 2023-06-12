@@ -1,3 +1,19 @@
-{
-    !!auth.id && cart.lineItems.find((item) => item.productId === product.id) && <button onClick={() => dispatch(removeFromCart({product, quantityToRemove:1}))}>Remove From Cart</button>
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { removeFromCart } from '../store'
+
+const RemoveFromCartButton = (props) => {
+    const dispatch = useDispatch()
+    return (
+        <div className="flex flex-row-reverse w-full p-2">
+            <button onClick={() => dispatch(removeFromCart(props))}className="btn-error btn-sm btn text-base-300 hover:bg-red-400">
+                Remove From Cart
+            </button>
+        </div>
+    )
 }
+
+export default RemoveFromCartButton
+
+
+// dispatch(removeFromCart({product, quantityToRemove:1}))}
