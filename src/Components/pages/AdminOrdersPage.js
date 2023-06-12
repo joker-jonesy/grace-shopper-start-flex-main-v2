@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
 import Spinner from "../Spinner"
-import { deleteOrder, fetchOrders } from "../../store"
+import { fetchOrders } from "../../store"
 import { Modal, ModalHeader, ModalActions } from "../ui/Modal"
 import { Link } from "react-router-dom"
 
@@ -21,10 +21,6 @@ function AdminOrdersPage() {
         const newOffset = (event.selected * itemsPerPage) % products.length
         setItemOffset(newOffset)
         window.scrollTo(0, 0)
-    }
-
-    const handleDeleteClick = (order) => {
-        dispatch(deleteOrder(order.id))
     }
     const handleDetailsClick = (order) => {
         setSelectedOrder(order)
@@ -174,12 +170,6 @@ function AdminOrdersPage() {
                                         </td>
                                         <th>
                                             <div className="flex flex-row justify-evenly">
-                                                <button
-                                                    className="btn-error btn-xs btn mx-1 px-1"
-                                                    onClick={() => handleDeleteClick(order)}
-                                                >
-                                                    delete
-                                                </button>
                                                 <button
                                                     className="btn-neutral btn-xs btn mx-1 px-1"
                                                     onClick={() => handleDetailsClick(order)}
