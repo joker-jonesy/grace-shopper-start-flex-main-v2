@@ -114,12 +114,12 @@ User.prototype.addToCart = async function ({ product, quantity }) {
   return this.getCart()
 }
 
-User.prototype.removeFromCart = async function ({ product, quantityToRemove }) {
+User.prototype.removeFromCart = async function ({ product, quantity }) {
   const cart = await this.getCart()
-  const cartItem = cart.cartItems.find((lineItem) => {
-    return cartItem.productId === product.id
+  const cartItem = cart.cartItems.find((cartItem) => {
+    return cartItem.id === product.id
   })
-  cartItem.quantity = cartItem.quantity - quantityToRemove
+  cartItem.quantity = cartItem.quantity - quantity
   if (cartItem.quantity > 0) {
     await cartItem.save()
   } else {
