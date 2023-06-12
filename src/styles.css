@@ -1,4 +1,26 @@
 @tailwind base;
+* {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--s)) hsl(var(--p));
+  }
+  
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: hsl(var(--p));
+    border-radius: 5px;
+    opacity: 0.3;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--s));
+    border-radius: 5px;
+    opacity: 0.3;
+    border: 3px solid hsl(var(--s));
+  }
 @tailwind components;
 @tailwind utilities;
 @layer utilities {

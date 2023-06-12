@@ -119,7 +119,7 @@ function AdminProductPage() {
         {selectedProduct && (
           <Modal
             open={selectedProduct}
-            className="md:min-w-6xl lg:min-w-7xl w-3/4"
+            className="md:min-w-2xl lg:min-w-4xl w-3/4"
             responsive
             onClickBackdrop={() => setSelectedProduct(null)}
           >

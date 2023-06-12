@@ -18,9 +18,9 @@ function AdminUserPage() {
         </h2>
         <div className="flex flex-row justify-evenly"></div>
         <div className="bg-base-100 shadow-xl">
-          <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
+          <div className="overflow-x-auto  rounded-lg">
+            <table className="table ">
+              <thead className="bg-base-200">
                 <tr>
                   <th></th>
                   <th>Username</th>
