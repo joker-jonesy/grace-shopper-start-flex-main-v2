@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
 import { Modal, ModalHeader, ModalActions } from "../ui/Modal"
 import ProductDetails from "../ui/ProductDetails"
+import Spinner from "../Spinner"
 
 function AdminProductPage() {
   const { products } = useSelector((state) => state.products)
@@ -311,7 +312,7 @@ function AdminProductPage() {
               </tr>
             </thead>
             <tbody>
-              {currentProducts.length > 0 &&
+              {currentProducts.length > 0 ?
                 currentProducts.map((product) => {
                   return (
                     <tr
@@ -365,7 +366,7 @@ function AdminProductPage() {
                       </th>
                     </tr>
                   )
-                })}
+                }) : <Spinner />}
             </tbody>
           </table>
           <ReactPaginate

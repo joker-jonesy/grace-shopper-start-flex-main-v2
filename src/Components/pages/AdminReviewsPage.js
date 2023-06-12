@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import { deleteReview, fetchReviews } from "../../store"
 import { useSelector, useDispatch } from "react-redux"
 import ReactPaginate from "react-paginate"
 import { ArrowBigLeftDashIcon, ArrowBigRightDashIcon } from "lucide-react"
 import Rating from "../ui/Rating"
 import { Link } from "react-router-dom"
+import Spinner from "../Spinner"
 
 function AdminReviewsPage() {
     const dispatch = useDispatch()
@@ -62,7 +63,8 @@ function AdminReviewsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {reviews.length > 0 &&
+
+                        {reviews.length > 0 ?
                             reviews.map((review) => {
                                 return (
                                     <tr
@@ -90,29 +92,30 @@ function AdminReviewsPage() {
                                             </div>
                                         </td>
                                         <td>
-                                            <Link to={`/products/${review.productId}`}> {review.product.name}</Link>
-                                        </td>
-                                        <td>
-                                            <Rating rating={review.rating} />
-                                        </td>
-                                        <td>
-                                            <span className="w-4 text-ellipsis">
-                                                {review.description}
-                                            </span>
-                                        </td>
-                                        <th>
-                                            <div className="flex flex-row justify-evenly">
-                                                <button
-                                                    className="btn-error btn-xs btn mx-1 px-1"
-                                                    onClick={() => handleDeleteClick(review)}
-                                                >
-                                                    delete
-                                                </button>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                )
-                            })}
+                                                <Link className="link link-primary" to={`/products/${review.productId}`}> {review.product.name}</Link>
+                                            </td>
+                                            <td>
+                                                <Rating rating={review.rating} />
+                                            </td>
+                                            <td>
+                                                <span className="w-4 text-ellipsis">
+                                                    {review.description}
+                                                </span>
+                                            </td>
+                                            <th>
+                                                <div className="flex flex-row justify-evenly">
+                                                    <button
+                                                        className="btn-error btn-xs btn mx-1 px-1"
+                                                        onClick={() => handleDeleteClick(review)}
+                                                    >
+                                                        delete
+                                                    </button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    )
+                                }) : <Spinner />}
+
                     </tbody>
                 </table>
                 <ReactPaginate
