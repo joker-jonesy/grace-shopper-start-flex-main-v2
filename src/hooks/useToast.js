@@ -1,22 +1,31 @@
 import { useDispatch, useSelector } from "react-redux"
 import { createToast, removeToast } from "../store"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 
 
 export const useToast = () => {
-    const dispatch = useDispatch()
-    const toasts = useSelector((state) => state.toasts.toasts)
+    const dispatch = useDispatch();
+    const toasts = useSelector((state) => state.toasts.toasts);
+    const timeoutIdsRef = useRef([]);
 
     useEffect(() => {
-        if (!toasts.length > 0) return
+        // Clear previous timeouts
+        timeoutIdsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
+        timeoutIdsRef.current = [];
+
         toasts.forEach((toast) => {
-            const timer = setTimeout(() => {
-                dispatch(removeToast(toast.id))
-            }, toast.timeout)
-            return () => clearTimeout(timer)
-        })
-    }, [toasts])
+            const timeoutId = setTimeout(() => {
+                dispatch(removeToast(toast.id));
+            }, toast.timeout);
+            timeoutIdsRef.current.push(timeoutId);
+        });
+
+        // Cleanup timeouts on component unmount
+        return () => {
+            timeoutIdsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
+        };
+    }, [dispatch, toasts]);
 
     /**
      * @param {string} message displayed message

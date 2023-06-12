@@ -1,16 +1,17 @@
 const express = require("express")
 const app = express.Router()
-const { Review, User } = require("../db")
+const { Review, User, Product } = require("../db")
 
 module.exports = app
 
 app.get("/", async (req, res, next) => {
   try {
+
     const reviews = await Review.findAll({
       include: [
         {
           model: User,
-          attributes: ["username", "id", "email"],
+          attributes: ["username", "id", "email", "avatar"],
         },
         {
           model: Product,
