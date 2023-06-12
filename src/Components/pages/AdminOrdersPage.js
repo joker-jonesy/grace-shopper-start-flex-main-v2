@@ -79,7 +79,7 @@ function AdminOrdersPage() {
                             <div className="py-4 font-bold">Items:</div>
                             {selectedOrder.lineItems.map((item) => {
                                 return (
-                                    <div className="flex flex-row justify-between border border-primary p-2 my-2">
+                                    <div className="flex flex-row justify-between border border-primary p-2 my-2" key={item.id}>
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-10 w-10">
                                                 <img src={item.product.imageURL} alt={item.product.name} />
