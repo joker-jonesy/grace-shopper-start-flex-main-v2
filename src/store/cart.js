@@ -14,6 +14,7 @@ export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
         authorization: token,
       },
     })
+    console.log(response.data)
     return response.data
   } catch (err) {
     console.log(err)
@@ -45,7 +46,6 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
 
 export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
   try {
-    console.log("PAYLOAD", payload)
     const token = window.localStorage.getItem("token")
     const response = await axios.put("/api/cart", payload, {
       headers: {
