@@ -7,6 +7,7 @@ import Rating from "./ui/Rating"
 import Socials from "./ui/Socials"
 import { getAverageRating } from "../util"
 import AddToCartButton from "./AddToCartButton"
+import WishListButton from "./ui/WishListButton"
 
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state.products)
@@ -108,7 +109,12 @@ export const Products = ({ currentProducts }) => {
                   </span>
                 </div>
               </div>
-              <AddToCartButton product={product} quantity={1}/>
+              <div className="w-full flex flex-row p-3 justify-center items-center">
+                <WishListButton product={product} />
+                <AddToCartButton product={product} quantity={1} />
+
+              </div>
+
             </div>
           </div>
         )

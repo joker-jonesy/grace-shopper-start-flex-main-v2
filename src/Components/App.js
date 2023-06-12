@@ -16,9 +16,12 @@ import Footer from "./Footer"
 import AdminPage from "./pages/AdminPage"
 import AdminUserPage from "./pages/AdminUserPage"
 import AdminProductPage from "./pages/AdminProductPage"
+import AdminOrdersPage from "./pages/AdminOrdersPage"
+import AdminReviewsPage from "./pages/AdminReviewsPage"
 import { ToastProvider } from "./ui/ToastProvider"
 import { useToast } from "../hooks/useToast"
 import CheckoutPage from "./pages/CheckoutPage"
+import Orders from "./pages/OrdersPage"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
@@ -50,8 +53,11 @@ const App = () => {
           <Route path="/admin" element={<AdminPage />}>
             <Route path="/admin/users" element={<AdminUserPage />} />
             <Route path="/admin/products" element={<AdminProductPage />} />
+            <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            <Route path="/admin/reviews" element={<AdminReviewsPage />} />
           </Route>
           <Route path="/products/:id" element={<SingleProductView />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/orders/create" element={<CheckoutPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -90,6 +90,21 @@ User.prototype.getCart = async function () {
   return cart
 }
 
+User.prototype.getOrders = async function () {
+  let orders = await conn.models.order.findAll({
+    where: {
+      userId: this.id,
+    },
+    include: [
+      {
+        model: conn.models.lineItem,
+        include: [conn.models.product],
+      },
+    ],
+  })
+  return orders
+}
+
 User.prototype.setAdmin = async function (bool) {
   this.isAdmin = bool
   await this.save()

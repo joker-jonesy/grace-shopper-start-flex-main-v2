@@ -48,6 +48,14 @@ function Navbar({ auth }) {
         >
           Products
         </NavLink>
+        <NavLink
+          to={"/orders"}
+          className={({ isActive, isPending }) =>
+            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+          }
+        >
+          Orders
+        </NavLink>
       </div>
       <div className="flex-none">
         {

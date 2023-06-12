@@ -1,16 +1,26 @@
 import React from "react"
-import { useDispatch } from "react-redux";
-import { addToCart } from "../store";
+import { useDispatch } from "react-redux"
+import { addToCart } from "../store"
+import { useToast } from "../hooks/useToast"
 
 const AddToCartButton = (props) => {
     const dispatch = useDispatch()
-    return (        
-                <div className="flex flex-row-reverse w-full p-2">
-                    <button  onClick={() => dispatch(addToCart(props))} className="btn-secondary btn-sm btn text-base-300">
-                        Add to Cart
-                    </button>
-                </div>
-            )
+    const { notify } = useToast()
+
+    const handleAddToCart = () => {
+        dispatch(addToCart(props))
+        notify("Added to cart", "success")
+    }
+    return (
+        <div className="flex w-full flex-row-reverse p-2">
+            <button
+                onClick={() => handleAddToCart()}
+                className="btn-secondary btn-sm btn text-base-300"
+            >
+                Add to Cart
+            </button>
+        </div>
+    )
 }
 
 export default AddToCartButton
