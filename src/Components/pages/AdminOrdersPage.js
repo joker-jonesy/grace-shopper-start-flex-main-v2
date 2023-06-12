@@ -186,6 +186,7 @@ function AdminOrdersPage() {
                             <img
                               src={order.user.avatar}
                               alt={order.user.username}
+                              loading="lazy"
                             />
                           </div>
                         </div>

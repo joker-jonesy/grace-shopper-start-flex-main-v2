@@ -50,12 +50,13 @@ function AdminProductPage() {
   }
 
   //get categories list from products, then filter out duplicates
-  const filterProducts = selectedPriceFilter ? products.filter(priceFilter) :
-    selectedCategory
-      ? products.filter((product) => product.category === selectedCategory)
-      : products.length > 0
-        ? products
-        : []
+  const filterProducts = selectedPriceFilter
+    ? products.filter(priceFilter)
+    : selectedCategory
+    ? products.filter((product) => product.category === selectedCategory)
+    : products.length > 0
+    ? products
+    : []
 
   const categories =
     products.length > 0 ? products.map((product) => product.category) : []
@@ -70,7 +71,6 @@ function AdminProductPage() {
     else {
       setSelectedCategory(event.target.value)
     }
-
   }
 
   const handlePriceChange = (event) => {
@@ -78,7 +78,6 @@ function AdminProductPage() {
     else {
       setSelectedPriceFilter(event.target.value)
     }
-
   }
   const handleDeleteClick = (product) => {
     dispatch(deleteProduct(product.id))
@@ -342,7 +341,7 @@ function AdminProductPage() {
               </tr>
             </thead>
             <tbody>
-              {currentProducts.length > 0 ? (
+              {currentProducts.length > 0 &&
                 currentProducts.map((product) => {
                   return (
                     <tr
@@ -361,6 +360,7 @@ function AdminProductPage() {
                                 <img
                                   src={product.imageURL}
                                   alt={product.name}
+                                  loading="lazy"
                                 />
                               </div>
                             </div>
@@ -401,10 +401,7 @@ function AdminProductPage() {
                       </th>
                     </tr>
                   )
-                })
-              ) : (
-                <Spinner />
-              )}
+                })}
             </tbody>
           </table>
           <ReactPaginate

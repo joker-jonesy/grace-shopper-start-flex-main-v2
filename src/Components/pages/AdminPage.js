@@ -6,7 +6,9 @@ const AdminPage = () => {
   const { auth } = useSelector((state) => state)
 
   if (!auth.isAdmin) {
-    return <h1>Not Authorized</h1>
+    return (<div className="drawer-content flex flex-col items-center ">
+      <h1>Not Authorized</h1>
+    </div>)
   }
   return (
     <div className="">
