@@ -7,7 +7,7 @@ const Cart = require("./Cart")
 const CartItem = require("./CartItem")
 const Review = require("./Review")
 const { faker, fa } = require("@faker-js/faker")
-const { avatarImage } = require("../images")
+const { avatarImage, avatarImage2 } = require("../images")
 
 Order.belongsTo(User)
 Order.hasMany(LineItem)
@@ -206,7 +206,7 @@ const seedUsers = async () => {
       password: "123",
       email: "seed2@test.com",
       stripeId: "cus_O2aA5XZxwpruPF",
-      avatar: avatarImage
+      avatar: avatarImage2
     }),
     User.create({
       username: "dudedude",
@@ -220,7 +220,7 @@ const seedUsers = async () => {
       password: "123",
       email: "seed3@test.com",
       stripeId: "cus_O2aBxuGDPfPlD2",
-      avatar: avatarImage
+      avatar: avatarImage2
     }),
     User.create({
       username: "ethyl",
