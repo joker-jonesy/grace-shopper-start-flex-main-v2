@@ -1,13 +1,14 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { fetchGuestCart, fetchUserCart, logout } from "../store"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { cartQuantity, cartTotal } from "../util"
 import Spinner from "./Spinner"
 
 const Cart = () => {
   const { cart, auth } = useSelector((state) => state)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (auth.id) {
@@ -46,7 +47,7 @@ const Cart = () => {
           <div>{totalItems} Items</div>
         </div>
       </div>
-      <button className="btn-primary btn-block btn">Checkout</button>
+      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/create")}}>Checkout</button>
     </div>
   )
 }

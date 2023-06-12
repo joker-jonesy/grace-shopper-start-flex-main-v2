@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Products } from "./Products"
+import axios from "axios"
 
 const Landing = () => {
   const { products } = useSelector((state) => state.products)
