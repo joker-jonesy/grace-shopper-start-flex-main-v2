@@ -39,6 +39,30 @@ app.get("/all", async (req, res, next) => {
   }
 })
 
+app.get("/", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization)
+    const orders = await user.getOrders()
+    res.send(orders)
+  } catch (error) {
+    next(error)
+  }
+})
+
+//used for getting guest orders
+app.get("/:id", async (req, res, next) => {
+  try {
+    const order = await Order.findOne({where:{lookUpId:req.params.id}})
+    if(order.dataValues.email === req.headers.authorization){
+      res.send(order)
+    }else{
+      res.sendStatus(404)
+    }
+  } catch (error) {
+    next(error);
+  }
+})
+
 // Retrieve the guest cart
 app.get("/guest-cart", async (req, res, next) => {
   try {
