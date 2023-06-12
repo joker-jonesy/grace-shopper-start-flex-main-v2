@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express.Router()
-const { User } = require("../db")
+const { User, Order } = require("../db")
+const conn = require("../db/conn")
 
 module.exports = app
 
@@ -12,6 +13,26 @@ app.post("/", async (req, res, next) => {
     res.send(order)
   } catch (ex) {
     next(ex)
+  }
+})
+
+app.get("/all", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization)
+    if(user.dataValues.isAdmin){
+      res.send(await Order.findAll({
+        include: [
+          {
+            model: conn.models.lineItem,
+            include: [conn.models.product],
+          },
+        ],
+      }))
+    } else {
+      res.sendStatus(401);
+    }
+  }catch (error){
+    next(error)
   }
 })
 
