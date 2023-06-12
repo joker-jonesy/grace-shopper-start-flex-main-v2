@@ -6,6 +6,7 @@ const LineItem = require("./LineItem")
 const Cart = require("./Cart")
 const CartItem = require("./CartItem")
 const Review = require("./Review")
+const Wishlist = require("./Wishlist")
 const { faker, fa } = require("@faker-js/faker")
 const { avatarImage, avatarImage2 } = require("../images")
 
@@ -16,15 +17,21 @@ LineItem.belongsTo(Product)
 Product.hasMany(LineItem)
 Product.hasMany(CartItem)
 Product.hasMany(Review)
+Product.hasMany(Wishlist)
 User.hasOne(Cart)
 User.hasMany(Order)
 User.hasMany(Review)
+User.hasMany(Wishlist)
 Cart.belongsTo(User)
 Cart.hasMany(CartItem)
 CartItem.belongsTo(Cart)
 CartItem.belongsTo(Product)
 Review.belongsTo(Product)
 Review.belongsTo(User)
+Wishlist.belongsTo(User)
+Wishlist.belongsTo(Product)
+
+
 
 const TOTAL_PRODUCTS = 200
 
@@ -255,4 +262,5 @@ module.exports = {
   Review,
   Cart,
   CartItem,
+  Wishlist
 }

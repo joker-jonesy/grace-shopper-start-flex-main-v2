@@ -8,7 +8,9 @@ const {
   Product,
   LineItem,
   CartItem,
+  Wishlist
 } = require("../db")
+
 
 module.exports = app
 
@@ -89,6 +91,10 @@ app.get("/", async (req, res, next) => {
             },
           ],
         },
+        {
+          model: Wishlist,
+          include: [Product],
+        }
       ],
     })
     res.send(users)
