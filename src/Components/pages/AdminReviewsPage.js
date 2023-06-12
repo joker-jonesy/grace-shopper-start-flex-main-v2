@@ -12,21 +12,49 @@ function AdminReviewsPage() {
     const { reviews } = useSelector((state) => state.reviews)
     const [itemsPerPage, setItemsPerPage] = useState(24)
     const [selectedReview, setSelectedReview] = useState(null)
+  const [selectedFilter, setSelectedFilter] = useState(null)
     const [itemOffset, setItemOffset] = useState(0)
-    const pageCount = Math.ceil(reviews.length / itemsPerPage)
+
+
+  const endOffset = itemOffset + itemsPerPage
 
     useEffect(() => {
         dispatch(fetchReviews())
     }, [])
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % products.length
+      const newOffset = (event.selected * itemsPerPage) % reviews.length
         setItemOffset(newOffset)
         window.scrollTo(0, 0)
     }
     const handleDeleteClick = (review) => {
-        dispatch(deleteReview(review.id));
-
+      dispatch(deleteReview(review.id));
+  }
+  const handleRatingFilterChange = (event) => {
+    if (event.target.value === "ALL") {
+      setSelectedFilter(null);
     }
+    if (event.target.value === "☆") {
+      setSelectedFilter(1);
+    }
+    if (event.target.value === "☆☆") {
+      setSelectedFilter(2);
+    }
+    if (event.target.value === "☆☆☆") {
+      setSelectedFilter(3);
+    }
+    if (event.target.value === "☆☆☆☆") {
+      setSelectedFilter(4);
+    }
+    if (event.target.value === "☆☆☆☆☆") {
+      setSelectedFilter(5);
+    }
+  }
+
+  const filteredReviers = selectedFilter ? reviews.filter((review) => review.rating === selectedFilter) : reviews
+
+  const currentReviews = filteredReviers.length > 0 ? filteredReviers.slice(itemOffset, endOffset) : []
+  const pageCount = Math.ceil(filteredReviers.length / itemsPerPage)
+
 
     return (
         <div className="p-2">
@@ -38,17 +66,19 @@ function AdminReviewsPage() {
                     </label>
                     <select
                         className="select-bordered select w-full max-w-xs"
+              onChange={handleRatingFilterChange}
                         defaultValue="All"
                     >
                         <option>All</option>
-                        <option>{`<$100`}</option>
-                        <option>{`<$1000`}</option>
+              <option>☆</option>
+              <option>☆☆</option>
+              <option>☆☆☆</option>
+              <option>☆☆☆☆</option>
+              <option>☆☆☆☆☆</option>
                     </select>
                 </div>
                 <div className="form-control w-full">
-                    <label className="label">
-                        <span className="label-text">Actions</span>
-                    </label>
+
                 </div>
             </div>
 
@@ -64,8 +94,8 @@ function AdminReviewsPage() {
                     </thead>
                     <tbody>
 
-                        {reviews.length > 0 ?
-                            reviews.map((review) => {
+              {currentReviews.length > 0 ?
+                currentReviews.map((review) => {
                                 return (
                                   <tr
                                     key={review.id}
@@ -133,6 +163,7 @@ function AdminReviewsPage() {
                     nextLabel={<ArrowBigRightDashIcon size={24} alt="Next" />}
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
+            initialPage={1}
                     pageCount={pageCount}
                     previousLabel={<ArrowBigLeftDashIcon size={24} alt="Previous" />}
                     renderOnZeroPageCount={null}

@@ -13,7 +13,8 @@ function AdminOrdersPage() {
   const [itemsPerPage, setItemsPerPage] = useState(24)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [itemOffset, setItemOffset] = useState(0)
-  const pageCount = Math.ceil(orders.length / itemsPerPage)
+  const [searchTerm, setSearchTerm] = useState("")
+  const endOffset = itemOffset + itemsPerPage
   useEffect(() => {
     dispatch(fetchOrders())
   }, [])
@@ -25,6 +26,27 @@ function AdminOrdersPage() {
   const handleDetailsClick = (order) => {
     setSelectedOrder(order)
   }
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value.toLowerCase())
+  }
+  const filteredOrders = orders.filter((order) => {
+    const fullName = `${order.lastName}, ${order.firstName}`
+    const shippingAddress = `${order.street}, ${order.city}, ${order.state} ${order.zip}`
+    let filtered = false;
+    if (fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+      filtered = true
+    }
+    if (shippingAddress.toLowerCase().includes(searchTerm.toLowerCase())) {
+      filtered = true
+    }
+    return filtered
+  })
+
+  const currentOrders =
+    filteredOrders.length > 0 ? filteredOrders.slice(itemOffset, endOffset) : []
+
+  const pageCount = Math.ceil(filteredOrders.length / itemsPerPage)
+
 
   return (
     <div className="p-2">
@@ -113,7 +135,14 @@ function AdminOrdersPage() {
         </Modal>
       )}
       <h1>Orders</h1>
-      <div className="flex flex-row justify-evenly">{/* filters */}</div>
+      <div className="flex flex-row justify-evenly">
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Search</span>
+          </label>
+          <input type="text" placeholder="Search Orders" onChange={handleSearch} className="input input-bordered input-primary w-1/3" />
+        </div>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="table">
@@ -129,8 +158,8 @@ function AdminOrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {orders.length > 0 ? (
-              orders.map((order) => {
+            {currentOrders.length > 0 ? (
+              currentOrders.map((order) => {
                 const address = `${order.street}, ${order.city}, ${order.state} ${order.zip}`
                 const totalItems = order.lineItems.reduce(
                   (acc, item) => acc + item.quantity,
