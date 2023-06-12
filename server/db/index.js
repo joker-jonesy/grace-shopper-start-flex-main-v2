@@ -6,8 +6,9 @@ const LineItem = require("./LineItem")
 const Cart = require("./Cart")
 const CartItem = require("./CartItem")
 const Review = require("./Review")
+const Wishlist = require("./Wishlist")
 const { faker, fa } = require("@faker-js/faker")
-const { avatarImage } = require("../images")
+const { avatarImage, avatarImage2 } = require("../images")
 
 Order.belongsTo(User)
 Order.hasMany(LineItem)
@@ -16,15 +17,21 @@ LineItem.belongsTo(Product)
 Product.hasMany(LineItem)
 Product.hasMany(CartItem)
 Product.hasMany(Review)
+Product.hasMany(Wishlist)
 User.hasOne(Cart)
 User.hasMany(Order)
 User.hasMany(Review)
+User.hasMany(Wishlist)
 Cart.belongsTo(User)
 Cart.hasMany(CartItem)
 CartItem.belongsTo(Cart)
 CartItem.belongsTo(Product)
 Review.belongsTo(Product)
 Review.belongsTo(User)
+Wishlist.belongsTo(User)
+Wishlist.belongsTo(Product)
+
+
 
 const TOTAL_PRODUCTS = 200
 
@@ -206,7 +213,7 @@ const seedUsers = async () => {
       password: "123",
       email: "seed2@test.com",
       stripeId: "cus_O2aA5XZxwpruPF",
-      avatar: avatarImage
+      avatar: avatarImage2
     }),
     User.create({
       username: "dudedude",
@@ -220,7 +227,7 @@ const seedUsers = async () => {
       password: "123",
       email: "seed3@test.com",
       stripeId: "cus_O2aBxuGDPfPlD2",
-      avatar: avatarImage
+      avatar: avatarImage2
     }),
     User.create({
       username: "ethyl",
@@ -262,4 +269,7 @@ module.exports = {
   Order,
   LineItem,
   Review,
+  Cart,
+  CartItem,
+  Wishlist
 }

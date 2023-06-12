@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express.Router()
-const { User, Order } = require("../db")
+const { User, Order, LineItem, Product } = require("../db")
 const conn = require("../db/conn")
 
 module.exports = app
@@ -19,13 +19,16 @@ app.post("/", async (req, res, next) => {
 app.get("/all", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
-    if(user.dataValues.isAdmin){
+    if (user.isAdmin) {
       res.send(await Order.findAll({
         include: [
           {
-            model: conn.models.lineItem,
-            include: [conn.models.product],
+            model: LineItem,
+            include: Product,
           },
+          User,
+
+
         ],
       }))
     } else {
