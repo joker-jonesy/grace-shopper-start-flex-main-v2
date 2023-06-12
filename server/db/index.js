@@ -230,6 +230,15 @@ const seedUsers = async () => {
       avatar: avatarImage
     }),
   ])
+  await Order.create({
+    email: "test123@gmail.com",
+    firstName: "test",
+    lastName: "testing",
+    street: "test st",
+    city: "test town",
+    state: "Oregon",
+    zip: "12345"
+  })
   await addCartAndOrders()
   await addItemsToCart()
   await addItemsToOrder()

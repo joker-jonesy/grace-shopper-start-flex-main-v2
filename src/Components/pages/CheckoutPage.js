@@ -19,10 +19,11 @@ const CheckoutPage = () => {
   const[number,setNumber] = useState("");
   const[exp,setExp] = useState("");
   const[ccv,setCcv] = useState("");
+  const[email, setEmail] = useState("");
 
   const[status, setStatus] = useState("pending");
 
-  let order = "";
+  const[order, setOrder] = useState({data:{createdAt:""}});
 
   const submit = async (event) => {
     try {
@@ -35,10 +36,11 @@ const CheckoutPage = () => {
         state,
         zip,
         userId: auth.id,
+        email,
       }
       const token = window.localStorage.getItem("token")
-      order = await axios.post(
-        "/api/order",
+      const response = await axios.post(
+        "/api/orders",
         { data: newOrder },
         {
           headers: {
@@ -46,6 +48,7 @@ const CheckoutPage = () => {
           },
         }
       )
+      setOrder(response)
       console.log(order);
       dispatch(fetchUserCart())
       setStatus("created")
@@ -59,7 +62,16 @@ const CheckoutPage = () => {
       <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
         Order Created
       </h1>
-      <p>{order}</p>
+      <h2>
+        Thank you {firstName} {lastName} for shopping with us.
+      </h2>
+      <h4>Order Placed at: {order.data.createdAt}</h4>
+      <h4>shipping to:</h4>
+      <h4>{street}</h4>
+      <h4>
+        {city}, {state} {zip}
+      </h4>
+      <h4>Arriving in: 2 days</h4>
       <button
         onClick={() => {
           navigate("/account")
@@ -86,74 +98,116 @@ const CheckoutPage = () => {
   )
 
   const form = (
-    <div className="card">
-      <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">Enter Details</h1>
-      <form  className="flex flex-col justify-center" onSubmit={submit}>
-        <h3>First Name</h3>
-        <input
-          type="text"
-          className = "input"
-          value={firstName}
-          onChange={event => setFirstName(event.target.value)}
-        />
-        <h3>Last Name</h3>
-        <input
-          type="text"
-          className = "input"
-          value={lastName}
-          onChange={event => setLastName(event.target.value) }
-        />
-        <h3>Street</h3>
-        <input
-          type="text"
-          className = "input"
-          value={street}
-          onChange={event => setStreet(event.target.value) }
-        />
-        <h3>City</h3>
-        <input
-          type="text"
-          className = "input"
-          value={city}
-          onChange={event => setCity(event.target.value)}
-        />
-        <h3>State</h3>
-        <input
-          type="text"
-          className = "input"
-          value={state}
-          onChange={event => setState(event.target.value) }
-        />
-        <h3>Zip</h3>
-        <input
-          type="text"
-          className = "input"
-          value={zip}
-          onChange={event => setZip(event.target.value) }
-        />
-        <h3>CC Number</h3>
-        <input
-          type="text"
-          className = "input"
-          value={number}
-          onChange={event => setNumber(event.target.value)}
-        />
-        <h3>Exp.</h3>
-        <input
-          type="text"
-          className = "input"
-          value={exp}
-          onChange={event => setExp(event.target.value) }
-        />
-        <h3>CCV</h3>
-        <input
-          type="text"
-          className = "input"
-          value={ccv}
-          onChange={event => setCcv(event.target.value) }
-        />
-        <button>Submit</button>
-      </form>
+    <div className="mx-auto flex w-11/12 justify-center rounded-xl border-2 border-secondary bg-base-200 my-4">
+      <div className="flex flex-col justify-center">
+        <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+          Enter Details
+        </h1>
+        <form className="" onSubmit={submit}>
+          <div className="flex">
+            <div className="w-1/2">
+              <h3 className="m-2">First Name</h3>
+              <input
+                type="text"
+                className="input m-2 w-11/12"
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="m-2">Last Name</h3>
+              <input
+                type="text"
+                className="input m-2 w-full"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </div>
+          </div>
+          <div className="w-full">
+            <h3 className="m-2">Email</h3>
+            <input
+              type="text"
+              className="input m-2 w-full"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </div>
+          <div className="w-full">
+            <h3 className="m-2">Street</h3>
+            <input
+              type="text"
+              className="input m-2 w-full"
+              value={street}
+              onChange={(event) => setStreet(event.target.value)}
+            />
+          </div>
+          <div className="flex">
+            <div className="w-1/3">
+              <h3 className="m-2">City</h3>
+              <input
+                type="text"
+                className="input m-2 w-11/12"
+                value={city}
+                onChange={(event) => setCity(event.target.value)}
+              />
+            </div>
+            <div className="w-1/3">
+              <h3 className="m-2">State</h3>
+              <input
+                type="text"
+                className="input m-2 w-11/12"
+                value={state}
+                onChange={(event) => setState(event.target.value)}
+              />
+            </div>
+            <div className="w-1/3">
+              <h3 className="m-2">Zip</h3>
+              <input
+                type="text"
+                className="input m-2 w-full"
+                value={zip}
+                onChange={(event) => setZip(event.target.value)}
+              />
+            </div>
+          </div>
+          <h3 className="m-2 w-full">CC Number</h3>
+          <input
+            type="text"
+            className="input m-2 w-full"
+            value={number}
+            onChange={(event) => setNumber(event.target.value)}
+          />
+          <div className="flex">
+            <div className="w-1/2">
+              <h3 className="m-2">Exp.</h3>
+              <input
+                type="text"
+                className="input m-2 w-11/12"
+                value={exp}
+                onChange={(event) => setExp(event.target.value)}
+              />
+            </div>
+            <div className="w-1/2">
+              <h3 className="m-2">CCV</h3>
+              <input
+                type="text"
+                className="input m-2 w-full"
+                value={ccv}
+                onChange={(event) => setCcv(event.target.value)}
+              />
+            </div>
+          </div>
+          <div className="flex">
+            <button 
+              className="btn-primary btn m-2 w-full" 
+              disabled = { firstName === "" || lastName === "" || street === "" || email === "" || city=== "" || zip === "" ||  number === "" ||  ccv === "" || exp === "" || state === "" }
+            >
+              Create Order
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 
