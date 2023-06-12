@@ -253,4 +253,6 @@ module.exports = {
   Order,
   LineItem,
   Review,
+  Cart,
+  CartItem,
 }

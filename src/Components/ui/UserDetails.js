@@ -19,7 +19,7 @@ function UserDetails({ user }) {
           className={`tab ${selectedTab === 2 && "tab-active"}`}
           onClick={() => setSelectedTab(2)}
         >
-          Carts
+          Cart
         </a>
         <a
           className={`tab ${selectedTab === 3 && "tab-active"}`}
@@ -49,12 +49,23 @@ function UserDetails({ user }) {
                         return order.isCart !== true
                       })
                       .map((order) => {
+                        const totalItems = order.lineItems.reduce(
+                          (acc, item) => acc + item.quantity,
+                          0
+                        )
+                        const totalPrice = order.lineItems.reduce(
+                          (acc, item) =>
+                            acc + item.quantity * item.product.price,
+                          0
+                        )
                         return (
                           <tr key={order.id}>
                             <td>{order.id}</td>
-                            <td>{order.createdAt}</td>
-                            <td>x</td>
-                            <td>x</td>
+                            <td>
+                              {new Date(order.createdAt).toLocaleString()}
+                            </td>
+                            <td>{totalItems}</td>
+                            <td>{totalPrice}</td>
                             <td>
                               <button className="btn-neutral btn">
                                 View Items
@@ -69,37 +80,49 @@ function UserDetails({ user }) {
           )}
           {selectedTab === 2 && (
             <div className="overflow-x-auto">
+              <div className="flex flex-row">
+                <div className="w-1/2">
+                  Total Items:{" "}
+                  {user.cart.cartItems.length > 0
+                    ? user.cart.cartItems.length
+                    : 0}
+                </div>
+                <div className="w-1/2">
+                  Total Price: $
+                  {user.cart.cartItems.reduce(
+                    (acc, item) => acc + item.quantity * item.product.price,
+                    0
+                  )}
+                </div>
+              </div>
               <table className="table-xs table">
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Created At</th>
-                    <th>Total Items</th>
+                    <th>Item</th>
+                    <th>Added On</th>
+                    <th>Quantity</th>
                     <th>Total Price</th>
-                    <th>Items</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {user.orders &&
-                    user.orders
-                      .filter((order) => {
-                        return order.isCart === true
-                      })
-                      .map((order) => {
-                        return (
-                          <tr key={order.id}>
-                            <td>{order.id}</td>
-                            <td>{order.createdAt}</td>
-                            <td>x</td>
-                            <td>x</td>
-                            <td>
-                              <button className="btn-neutral btn">
-                                View Items
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      })}
+                  {user.cart.cartItems &&
+                    user.cart.cartItems.map((item) => {
+                      return (
+                        <tr key={item.id}>
+                          <td>
+                            <Link
+                              to={`/products/${item.product.id}`}
+                              className="link-primary link"
+                            >
+                              {item.product.name}
+                            </Link>
+                          </td>
+                          <td>{new Date(item.createdAt).toLocaleString()}</td>
+                          <td>{item.quantity}</td>
+                          <td>${item.quantity * item.product.price}</td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </table>
             </div>
@@ -129,11 +152,7 @@ function UserDetails({ user }) {
                             {new Date(review.createdAt).toLocaleDateString()}
                           </td>
                           <td>
-                            <Rating
-                              rating={review.rating}
-
-
-                            />
+                            <Rating rating={review.rating} />
                           </td>
                           <td>{review.description}</td>
                         </tr>

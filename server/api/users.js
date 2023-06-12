@@ -1,6 +1,14 @@
 const express = require("express")
 const app = express.Router()
-const { User, Order, Review, Product } = require("../db")
+const {
+  Cart,
+  User,
+  Order,
+  Review,
+  Product,
+  LineItem,
+  CartItem,
+} = require("../db")
 
 module.exports = app
 
@@ -59,10 +67,27 @@ app.get("/", async (req, res, next) => {
         "avatar",
       ],
       include: [
-        Order,
+        {
+          model: Order,
+          include: [
+            {
+              model: LineItem,
+              include: [Product],
+            },
+          ],
+        },
         {
           model: Review,
-          include: Product,
+          include: [Product],
+        },
+        {
+          model: Cart,
+          include: [
+            {
+              model: CartItem,
+              include: [Product],
+            },
+          ],
         },
       ],
     })

@@ -26,14 +26,7 @@ function AdminUserPage() {
                   <th>Username</th>
                   <th>Email</th>
                   <th>Joined</th>
-                  <th>
-                    <input
-                      type="checkbox"
-                      checked="checked"
-                      className="checkbox h-4 w-4"
-                    />{" "}
-                    Admin
-                  </th>
+                  <th>Admin</th>
                   <th>Stripe ID</th>
                   <th>Total Orders and Carts</th>
                 </tr>
@@ -47,11 +40,13 @@ function AdminUserPage() {
                         className="hover cursor-pointer"
                         onClick={() => setSelectedUser(user)}
                       >
-                        <th><div className="avatar">
-                          <div className="mask mask-squircle h-12 w-12">
-                            <img src={user.avatar} alt={user.username} />
+                        <th>
+                          <div className="avatar">
+                            <div className="mask mask-squircle h-12 w-12">
+                              <img src={user.avatar} alt={user.username} />
+                            </div>
                           </div>
-                        </div></th>
+                        </th>
                         <th>{user.username}</th>
                         <td>{user.email}</td>
                         <td>{new Date(user.createdAt).toLocaleDateString()}</td>
