@@ -38,9 +38,16 @@ app.put("/:id", async (req, res, next) => {
       return
     }
     const fetchedUser = await User.findByPk(req.params.id)
-    console.log(req.body.data)
-    await fetchedUser.update(req.body.data)
-    res.send(fetchedUser)
+    const updateData = {
+      username: req.body.data.username,
+      email: req.body.data.email,
+      avatar: req.body.data.avatar,
+    }
+    if (req.body.data.password !== "" && req.body.data.password !== undefined && req.body.data.password !== null) {
+      updateData.password = req.body.data.password
+    }
+    const updatedUser = await fetchedUser.update(updateData)
+    res.send(updatedUser)
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       res.status(403)

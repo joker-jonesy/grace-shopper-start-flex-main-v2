@@ -32,7 +32,7 @@ function Navbar({ auth }) {
           <NavLink
             to={"/admin"}
             className={({ isActive, isPending }) =>
-              `text-md btn-ghost btn normal-case ${
+              `text-md btn-ghost btn btn-xs md:btn-md normal-case ${
                 isActive ? "btn-active" : ""
               }`
             }
@@ -43,7 +43,7 @@ function Navbar({ auth }) {
         <NavLink
           to={"/products"}
           className={({ isActive, isPending }) =>
-            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+            `text-md btn-ghost btn btn-xs md:btn-md normal-case ${isActive ? "btn-active" : ""}`
           }
         >
           Products
@@ -51,7 +51,7 @@ function Navbar({ auth }) {
         <NavLink
           to={"/orders"}
           className={({ isActive, isPending }) =>
-            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+            `text-md btn-ghost btn btn-xs md:btn-md normal-case ${isActive ? "btn-active" : ""}`
           }
         >
           Orders
@@ -88,18 +88,13 @@ function Navbar({ auth }) {
         }
         {/* USER DROP DOWN */}
         {auth.id ? (
-          <button
-            className="btn-secondary btn-sm btn mr-2"
-            onClick={() => navigate("/account")}
-          >
-            Account
-            {auth.avatar && (
-              <img src={auth.avatar} className="avatar h-8 w-8 rounded-full" />
-            )}
-          </button>
+          <>
+            {auth.avatar ? (
+              <img src={auth.avatar} className="avatar h-8 w-8 rounded-full hover:scale-110 cursor-pointer md:h-10 md:w-10" onClick={() => navigate("/account")} />
+            ) : <span className="">Account</span>}  </>      
         ) : (
           <button
-            className="btn-secondary btn-sm btn mr-2"
+              className="btn-secondary btn-xs md:btn-sm btn mr-2"
             onClick={() => handleLogin()}
           >
             Login | Sign Up
