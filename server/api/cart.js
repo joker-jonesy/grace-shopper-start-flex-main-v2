@@ -26,7 +26,6 @@ app.post("/", async (req, res, next) => {
 app.put("/", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
-    console.log("API", req.body)
     res.send(await user.removeFromCart(req.body))
   } catch (ex) {
     next(ex)

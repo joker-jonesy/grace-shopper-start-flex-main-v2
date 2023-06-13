@@ -60,11 +60,11 @@ User.prototype.createOrder = async function (data) {
   const orderItems = [];
 
   for(let item of cart.cartItems){
-    const creatLineItem = async ()=> {
+    const createLineItem = async ()=> {
       await conn.models.lineItem.create({productId: item.dataValues.productId, quantity: item.dataValues.quantity, orderId: order.id})
       await item.destroy();
     }
-    orderItems.push(creatLineItem());
+    orderItems.push(createLineItem());
   }
   await Promise.all(orderItems);
   return order;
