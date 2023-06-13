@@ -1,12 +1,13 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchGuestCart, fetchUserCart, logout } from "../store"
+import { fetchGuestCart, fetchUserCart, logout, removeFromCart } from "../store"
 import { Link, useNavigate } from "react-router-dom"
 import { cartQuantity, cartTotal } from "../util"
 import Spinner from "./Spinner"
+import RemoveFromCartButton from "./RemoveFromCartButton"
 
 const Cart = () => {
-  const { cart, auth } = useSelector((state) => state)
+  const { cart, auth, product } = useSelector((state) => state)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -26,14 +27,15 @@ const Cart = () => {
     <div>
       <h1>Cart</h1>
       <div className="m-4 flex flex-shrink flex-wrap justify-center">
-        {cartItems.map((item) => (
-          <div className="card glass m-4 w-64" key={item.product.id}>
+        {cartItems.map((product) => (
+          <div className="card glass m-4 w-64" key={product.product.id}>
             <div className="card-body p-2">
-              <span>{item.product.name}</span>
-              <span>{item.product.price}</span>
-              <span>{item.quantity}</span>
+              <span>{product.product.name}</span>
+              <span>{product.product.price}</span>
+              <span>{product.quantity}</span>
+              <RemoveFromCartButton product={product} quantity={product.quantity}/>
             </div>
-            <img src={item.product.imageURL} alt={item.product.name} />
+            <img src={product.product.imageURL} alt={product.product.name} />
           </div>
         ))}
         <div className="flex-row">
