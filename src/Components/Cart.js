@@ -37,7 +37,9 @@ const Cart = () => {
           <div className="card glass m-4 w-64" key={product.product.id}>
             <div className="card-body p-2">
               <span>{product.product.name}</span>
-              <span>{product.product.price}</span>
+              <span className= "badge badge-ghost">
+                <span className="text-lg font-bold">$</span><span className="font-bold">{product.product.price}</span>
+              </span>
               <span>{product.quantity}</span>
               <RemoveFromCartButton product={product} quantity={product.quantity}/>
             </div>
@@ -45,7 +47,9 @@ const Cart = () => {
           </div>
         ))}
         <div className="flex-row">
-          <div> Total: ${totalPrice}</div>
+          <div className="badge badge-ghost">
+            <div className="text-lg font-bold"> Total: ${totalPrice}</div>
+          </div>
           <div>{totalItems} Items</div>
         </div>
       </div>
