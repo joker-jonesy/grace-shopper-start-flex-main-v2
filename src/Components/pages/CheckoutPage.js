@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteGuestCart } from '../../store';
+import { deleteGuestCart, fetchUserCart } from '../../store';
 
 const CheckoutPage = () => {
 
@@ -50,6 +50,7 @@ const CheckoutPage = () => {
           } 
         )
         setOrder(response)
+        dispatch(fetchUserCart())
         setStatus("created")
       }else{
         const newOrder = {

@@ -82,6 +82,21 @@ export const removeFromCart = createAsyncThunk("removeFromCart", async (payload)
   }
 })
 
+export const removeFromGuestCart = createAsyncThunk("removeFromGuestCart", async (payload) => {
+  try {
+    console.log(payload);
+    let cart = window.localStorage.getItem("cart");
+    cart = JSON.parse(cart);
+    const index = cart.cartItems.findIndex(item => item.product.id === payload.product.product.id)
+    console.log(index);
+    cart.cartItems.splice(index,1);
+    window.localStorage.setItem("cart", JSON.stringify(cart));
+    return cart
+  }catch (error){
+    console.log(error)
+  }
+})
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -103,6 +118,9 @@ const cartSlice = createSlice({
       return action.payload
     })
     builder.addCase(deleteGuestCart.fulfilled, (state, action) => {
+      return action.payload
+    })
+    builder.addCase(removeFromGuestCart.fulfilled, (state, action) => {
       return action.payload
     })
   },
