@@ -51,28 +51,55 @@ const CreateAccount = () => {
             value={username}
             onChange={(event) => setUsername(event.target.value)}
           />
+          <p
+            className={
+              isValidUsername
+                ? "invisible text-xs"
+                : "visible text-xs text-error"
+            }
+          >
+            must be 8-30 characters long and no special chacters
+          </p>
           <h3>Password</h3>
           <input
             className={
               isValidPassword
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
             placeholder="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
+          <p
+            className={
+              isValidPassword
+                ? "invisible text-xs"
+                : "visible text-xs text-error"
+            }
+          >
+            must be 8-15 characters long and no special chacters
+          </p>
           <h3>Email</h3>
           <input
             className={
               isValidEmail
-                ? "border-2 input-bordered input-primary input m-1 bg-neutral text-black"
-                : "border-2 input-bordered input-warning input m-1 bg-neutral text-black"
+                ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
             placeholder="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
+          <p
+            className={
+              isValidEmail
+                ? "invisible text-xs"
+                : "visible text-xs text-error"
+            }
+          >
+            must be a valid email address
+          </p>
           <button
             disabled={!isValidEmail || !isValidPassword || !isValidUsername}
             className="btn-primary btn m-1"

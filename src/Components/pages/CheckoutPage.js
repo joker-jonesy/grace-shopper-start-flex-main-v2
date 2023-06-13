@@ -3,6 +3,7 @@ import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { deleteGuestCart, fetchUserCart } from '../../store';
+import { emailValidator } from '../../util';
 
 const CheckoutPage = () => {
 
@@ -16,7 +17,8 @@ const CheckoutPage = () => {
   const[city,setCity] = useState("");
   const[state,setState] = useState("");
   const[zip,setZip] = useState("");
-  const[number,setNumber] = useState("");
+  const[ccName, setCcName] = useState("");
+  const[ccNumber,setCcNumber] = useState("");
   const[exp,setExp] = useState("");
   const[ccv,setCcv] = useState("");
   const[email, setEmail] = useState("");
@@ -130,7 +132,11 @@ const CheckoutPage = () => {
               <h3 className="m-2">First Name</h3>
               <input
                 type="text"
-                className="input m-2 w-11/12"
+                className={
+                  firstName !== ""
+                    ? "input-bordered input-primary input m-2 w-11/12 border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-11/12 border-2 bg-neutral text-black"
+                }
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
               />
@@ -139,7 +145,11 @@ const CheckoutPage = () => {
               <h3 className="m-2">Last Name</h3>
               <input
                 type="text"
-                className="input m-2 w-full"
+                className={
+                  lastName !== ""
+                    ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+                }
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
               />
@@ -149,7 +159,11 @@ const CheckoutPage = () => {
             <h3 className="m-2">Email</h3>
             <input
               type="text"
-              className="input m-2 w-full"
+              className={
+                emailValidator(email)
+                  ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                  : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+              }
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
@@ -158,7 +172,11 @@ const CheckoutPage = () => {
             <h3 className="m-2">Street</h3>
             <input
               type="text"
-              className="input m-2 w-full"
+              className={
+                street !== ""
+                  ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                  : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+              }
               value={street}
               onChange={(event) => setStreet(event.target.value)}
             />
@@ -168,7 +186,11 @@ const CheckoutPage = () => {
               <h3 className="m-2">City</h3>
               <input
                 type="text"
-                className="input m-2 w-11/12"
+                className={
+                  city !== ""
+                    ? "input-bordered input-primary input m-2 w-11/12 border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-11/12 border-2 bg-neutral text-black"
+                }
                 value={city}
                 onChange={(event) => setCity(event.target.value)}
               />
@@ -177,7 +199,11 @@ const CheckoutPage = () => {
               <h3 className="m-2">State</h3>
               <input
                 type="text"
-                className="input m-2 w-11/12"
+                className={
+                  state !== ""
+                    ? "input-bordered input-primary input m-2 w-11/12 border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-11/12 border-2 bg-neutral text-black"
+                }
                 value={state}
                 onChange={(event) => setState(event.target.value)}
               />
@@ -186,34 +212,65 @@ const CheckoutPage = () => {
               <h3 className="m-2">Zip</h3>
               <input
                 type="text"
-                className="input m-2 w-full"
+                className={
+                  zip.length === 5 || zip.length === 10
+                    ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+                }
                 value={zip}
                 onChange={(event) => setZip(event.target.value)}
               />
             </div>
           </div>
+          <h3 className="m-2 w-full">Name on Card</h3>
+          <input
+            type="text"
+            className={
+             ccName !== ""
+                ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+            }
+            autoComplete="cc-name"
+            value={ccName}
+            onChange={(event) => setCcName(event.target.value)}
+          />
           <h3 className="m-2 w-full">CC Number</h3>
           <input
             type="text"
-            className="input m-2 w-full"
-            value={number}
-            onChange={(event) => setNumber(event.target.value)}
+            className={
+              ccNumber.length === 16
+                ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+            }
+            autoComplete="cc-number"
+            value={ccNumber}
+            onChange={(event) => setCcNumber(event.target.value)}
           />
           <div className="flex">
             <div className="w-1/2">
               <h3 className="m-2">Exp.</h3>
               <input
                 type="text"
-                className="input m-2 w-11/12"
+                className={
+                  exp !== ""
+                    ? "input-bordered input-primary input m-2 w-11/12 border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-11/12 border-2 bg-neutral text-black"
+                }
+                autoComplete="cc-exp"
                 value={exp}
                 onChange={(event) => setExp(event.target.value)}
               />
             </div>
             <div className="w-1/2">
-              <h3 className="m-2">CCV</h3>
+              <h3 className="m-2">CVV</h3>
               <input
                 type="text"
-                className="input m-2 w-full"
+                className={
+                  ccv.length === 3
+                    ? "input-bordered input-primary input m-2 w-full border-2 bg-neutral text-black"
+                    : "input-bordered input-warning input m-2 w-full border-2 bg-neutral text-black"
+                }
+                autoComplete="cc-csc"
                 value={ccv}
                 onChange={(event) => setCcv(event.target.value)}
               />
@@ -226,11 +283,12 @@ const CheckoutPage = () => {
                 firstName === "" ||
                 lastName === "" ||
                 street === "" ||
-                email === "" ||
+                ccName === "" ||
+                !emailValidator(email) ||
                 city === "" ||
-                zip === "" ||
-                number === "" ||
-                ccv === "" ||
+                (zip.length !== 5 && zip.length !== 10) ||
+                ccNumber.length !== 16 ||
+                ccv.length !== 3 ||
                 exp === "" ||
                 state === ""
               }
