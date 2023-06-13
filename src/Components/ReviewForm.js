@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { createReview } from '../store'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import Rating from './ui/Rating'
 
 const ReviewForm = () => {
     const [description, setDescription] = useState("")
@@ -18,7 +19,6 @@ const ReviewForm = () => {
           rating
     }
 
-            console.log("submit", newReview)
         dispatch(createReview(newReview))
     
         setDescription("")
@@ -36,15 +36,16 @@ const ReviewForm = () => {
                     onChange={(event) => setDescription(event.target.value)}
                     />
                 </label>
-                <label>Star Rating
-                    <select value={rating} onChange={(event) => setRating(event.target.value)} className="select select-bordered w-full max-w-xs">
+                {/* <label>Star Rating
+                    {/* <select value={rating} onChange={(event) => setRating(event.target.value)} className="select select-bordered w-full max-w-xs">
                         <option value={1}>1</option>
                         <option value={2}>2</option>
                         <option value={3}>3</option>
                         <option value={4}>4</option>
                         <option value={5}>5</option>
-                    </select>
-                </label>
+                    </select> */}
+                {/* </label> */} 
+                <Rating className="select select-bordered w-20"rating={rating} onSelect={setRating}/>
                 <button disabled = {description === "" || rating === ""}type="submit" className="btn-secondary btn-sm btn text-base-300">Submit</button>
             </form>
         </div>
