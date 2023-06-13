@@ -18,12 +18,6 @@ const Cart = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (!auth.id) {
-      localStorage.setItem("guestCart", JSON.stringify(cart))
-    }
-  }, [cart])
-
   const cartItems = cart && cart.cartItems ? cart.cartItems : []
   const totalPrice = cartTotal(cart.cartItems)
   const totalItems = cartQuantity(cart.cartItems)

@@ -8,11 +8,28 @@ module.exports = app
 // Create an order
 app.post("/", async (req, res, next) => {
   try {
-    const user = await User.findByToken(req.headers.authorization)
-    const order = await user.createOrder(req.body.data)
+    let order;
+    if(typeof req.headers.authorization !== "undefined"){
+      const user = await User.findByToken(req.headers.authorization)
+      order = await user.createOrder(req.body.data)
+    }else{
+      order = await Order.create(req.body.data.newOrder)
+      const orderItems = [];
+      for(let item of req.body.data.cart.cartItems){
+        const createLineItem = async () => {
+          await conn.models.lineItem.create({
+            productId: item.product.id,
+            quantity: item.quantity,
+            orderId: order.dataValues.id,
+          })
+        }
+        orderItems.push(createLineItem());
+      }
+      await Promise.all(orderItems);
+    }
     res.send(order)
   } catch (ex) {
-    next(ex)
+    console.log(ex)
   }
 })
 
@@ -27,8 +44,6 @@ app.get("/all", async (req, res, next) => {
             include: Product,
           },
           User,
-
-
         ],
       }))
     } else {
