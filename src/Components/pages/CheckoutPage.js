@@ -2,11 +2,11 @@ import axios from 'axios';
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchUserCart } from '../../store';
+import { deleteGuestCart, fetchUserCart } from '../../store';
 
 const CheckoutPage = () => {
 
-  const {auth} = useSelector(state => state);
+  const {auth,cart} = useSelector(state => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,59 +28,80 @@ const CheckoutPage = () => {
   const submit = async (event) => {
     try {
       event.preventDefault()
-      const newOrder = {
-        firstName,
-        lastName,
-        street,
-        city,
-        state,
-        zip,
-        userId: auth.id,
-        email,
-      }
-      const token = window.localStorage.getItem("token")
-      const response = await axios.post(
-        "/api/orders",
-        { data: newOrder },
-        {
-          headers: {
-            authorization: token,
-          },
+      if(auth.id){
+        const newOrder = {
+          firstName,
+          lastName,
+          street,
+          city,
+          state,
+          zip,
+          userId: auth.id,
+          email,
         }
-      )
-      setOrder(response)
-      console.log(order);
-      dispatch(fetchUserCart())
-      setStatus("created")
+        const token = window.localStorage.getItem("token")
+        const response = await axios.post(
+          "/api/orders",
+          { data: newOrder },
+          {
+            headers: {
+              authorization: token,
+            },
+          } 
+        )
+        setOrder(response)
+        dispatch(fetchUserCart())
+        setStatus("created")
+      }else{
+        const newOrder = {
+          firstName,
+          lastName,
+          street,
+          city,
+          state,
+          zip,
+          email,
+        }
+        const response = await axios.post(
+          "/api/orders",
+          { data: {newOrder, cart}}
+        )
+        setOrder(response)
+        dispatch(deleteGuestCart())
+        setStatus("created")
+      }
     } catch (error) {
       setStatus("error")
     }
   }
 
-  const OrderCreated = (
-    <div>
-      <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
-        Order Created
-      </h1>
-      <h2>
-        Thank you {firstName} {lastName} for shopping with us.
-      </h2>
-      <h4>Order Placed at: {order.data.createdAt}</h4>
-      <h4>shipping to:</h4>
-      <h4>{street}</h4>
-      <h4>
-        {city}, {state} {zip}
-      </h4>
-      <h4>Arriving in: 2 days</h4>
-      <button
-        onClick={() => {
-          navigate("/account")
-        }}
-      >
-        Return to Account
-      </button>
-    </div>
-  )
+  const OrderCreated = ({props}) => {
+    console.log(props);
+    return(
+      <div>
+        <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
+          Order Created
+        </h1>
+        <h2>
+          Thank you {props.data.firstName} {props.data.lastName} for shopping with us.
+        </h2>
+        <h4>Order Placed at: {props.data.createdAt}</h4>
+        <h4>shipping to:</h4>
+        <h4>{props.data.street}</h4>
+        <h4>
+          {props.data.city}, {props.data.state} {props.data.zip}
+        </h4>
+        <h4>Arriving in: 2 days</h4>
+        <button
+          onClick={() => {
+            navigate("/orders")
+          }}
+        >
+          Return to Account
+        </button>
+      </div>
+    )
+  }
 
   const OrderFailed = (
     <div>
@@ -98,7 +119,7 @@ const CheckoutPage = () => {
   )
 
   const form = (
-    <div className="mx-auto flex w-11/12 justify-center rounded-xl border-2 border-secondary bg-base-200 my-4">
+    <div className="mx-auto my-4 flex w-11/12 justify-center rounded-xl border-2 border-secondary bg-base-200">
       <div className="flex flex-col justify-center">
         <h1 className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-9xl font-extrabold text-transparent">
           Enter Details
@@ -199,9 +220,20 @@ const CheckoutPage = () => {
             </div>
           </div>
           <div className="flex">
-            <button 
-              className="btn-primary btn m-2 w-full" 
-              disabled = { firstName === "" || lastName === "" || street === "" || email === "" || city=== "" || zip === "" ||  number === "" ||  ccv === "" || exp === "" || state === "" }
+            <button
+              className="btn-primary btn m-2 w-full"
+              disabled={
+                firstName === "" ||
+                lastName === "" ||
+                street === "" ||
+                email === "" ||
+                city === "" ||
+                zip === "" ||
+                number === "" ||
+                ccv === "" ||
+                exp === "" ||
+                state === ""
+              }
             >
               Create Order
             </button>
@@ -214,7 +246,7 @@ const CheckoutPage = () => {
   if(status === "pending"){
     return form
   }else if(status === "created"){
-    return OrderCreated
+    return (<OrderCreated props = {order}/>)
   }else{
     return OrderFailed
   }

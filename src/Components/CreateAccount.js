@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { attemptLogin } from "../store";
 import { useNavigate } from "react-router-dom";
+import { emailValidator, passwordValidator, usernameValidator } from "../util";
 
 const CreateAccount = () => {
   const [username, setUsername] = useState("");
@@ -15,9 +16,9 @@ const CreateAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/) ? setIsValidUsername(true) : setIsValidUsername(false)}, [username]);
-  useEffect(() => {password.match(/^[A-Za-z]\w{7,14}$/) ? setIsValidPassword(true) : setIsValidPassword(false)}, [password])
-  useEffect(() => {email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/) ? setIsValidEmail(true) : setIsValidEmail(false)}, [email])
+  useEffect(() => {setIsValidUsername(usernameValidator(username))}, [username]);
+  useEffect(() => {setIsValidPassword(passwordValidator(password))}, [password])
+  useEffect(() => {setIsValidEmail(emailValidator(email))}, [email])
 
   const create = async (event) => {
     try{
