@@ -40,9 +40,9 @@ const App = () => {
     }
   }, [auth])
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Navbar auth={auth} />
-      <div>
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/account" element={<Account />} />
@@ -64,7 +64,7 @@ const App = () => {
       </div>
       <ToastProvider toasts={toasts} />
       <Footer />
-    </>
+    </div>
   )
 }
 
