@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchSingleProduct } from "../store/singleProduct"
 import { useParams } from "react-router-dom"
 import AddToCartButton from "./AddToCartButton"
-import { createReview } from "../store"
+import ReviewForm from "./ReviewForm"
 
 const SingleProductView = () => {
   const [quantity, setQuantity] = useState(1)
-  const [description, setDescription] = useState("")
-  const [rating, setRating] = useState()
   const product = useSelector(state => state.singleProduct)
   const dispatch = useDispatch()
   const { id } = useParams()
@@ -16,27 +14,6 @@ const SingleProductView = () => {
   useEffect(() => {
     dispatch(fetchSingleProduct(id))
   }, [dispatch])
-
-  const addToCart = (event) => {
-    event.preventDefault()
-    //add to cart function
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    const newReview = (
-      description, 
-      rating
-    )
-
-    dispatch(createReview(newReview))
-
-    setDescription("")
-    setRating("")
-  }
-
-  const starArr = Array.from(Array(5).keys())
 
   return (
     <div>
@@ -47,7 +24,7 @@ const SingleProductView = () => {
         <span className="badge badge-ghost">
           <span className="text-lg font-bold">$</span><span className="font-bold">{product.price}</span>
         </span>
-        <form onSubmit={addToCart}>
+        <form onSubmit={(event) => event.preventDefault()}>
           <input
             value={quantity}
             onChange={(event) => setQuantity(event.target.value)}
@@ -55,30 +32,7 @@ const SingleProductView = () => {
           <AddToCartButton product={product} quantity={parseInt(quantity)}/>
         </form>
       </div>
-      <div>Leave a Review
-        <form onSubmit={handleSubmit}>
-          <label>Description
-            <input
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            />
-          </label>
-          <label>Star Rating
-            {/* <input
-            value={rating}
-            onChange={(event) => setRating(event.target.value)}
-            /> */}
-            <select className="select select-bordered w-full max-w-xs">
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </select>
-          </label>
-          <button disabled = {description === "" || rating === ""}type="submit">Submit</button>
-        </form>
-      </div>
+      <ReviewForm />
     </div>
       
 

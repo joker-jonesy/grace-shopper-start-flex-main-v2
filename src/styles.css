@@ -24,7 +24,7 @@
 @tailwind components;
 @tailwind utilities;
 @layer utilities {
-    @variants responsive {
+
         .max-w-4xs          { max-width: 8rem; }
         .max-w-3xs          { max-width: 12rem; }
         .max-w-2xs          { max-width: 16rem; }
@@ -54,7 +54,6 @@
         .min-w-screen-lg	{ min-width: 1024px; }
         .min-w-screen-xl	{ min-width: 1280px; }
         .min-w-screen-2xl	{ min-width: 1536px; }
-    }
 }
 
 #myCoolBackground {
@@ -66,4 +65,5 @@
       conic-gradient(from 116.56deg at calc(100%/3) 0, var(--_g)),
       conic-gradient(from -63.44deg at calc(200%/3) 100%, var(--_g)) #22d3ee;
     background-size: var(--s) var(--s);
+
 }

@@ -26,6 +26,7 @@ export const fetchReview = createAsyncThunk("fetchReview", async (id) => {
 
 export const createReview = createAsyncThunk("createReview", async (review) => {
   try {
+    console.log("REVIEW", review)
     const token = window.localStorage.getItem("token")
     const response = await axios.post("/api/reviews", review, {
       headers: {
