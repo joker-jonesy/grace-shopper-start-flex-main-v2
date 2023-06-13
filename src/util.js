@@ -28,3 +28,24 @@ export const getAverageRating = (reviews) => {
   }, 0)
   return Math.floor(sum / reviews.length)
 }
+
+export const emailValidator = (email) => {
+  if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    return true
+  }
+  return false
+}
+
+export const passwordValidator = (password) => {
+  if (password.match(/^[A-Za-z]\w{7,14}$/)) {
+    return true
+  }
+  return false
+}
+
+export const usernameValidator = (username) => {
+  if(username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/)){
+    return true;
+  }
+  return false;
+}
