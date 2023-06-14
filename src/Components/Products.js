@@ -12,6 +12,7 @@ import WishListButton from "./ui/WishListButton"
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state.products)
   const [selectedCategory, setSelectedCategory] = useState("")
+  const [searchQuery, setSearchQuery] = useState("") // added for search bar
 
   //pagination variables
   const [itemsPerPage, setItemsPerPage] = useState(24)
@@ -30,9 +31,18 @@ const PaginatedProducts = () => {
   }
 
   const filterProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
+    ? products.filter(
+        // added for search bar so if category is selected, it will filter by category and search query and if not, it will just filter by search query
+        (product) =>
+          product.category === selectedCategory &&
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : products.length > 0
-    ? products
+    ? products.filter(
+        (
+          product // added for search bar
+        ) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : []
 
   const currentProducts = filterProducts.slice(itemOffset, endOffset)
@@ -45,7 +55,7 @@ const PaginatedProducts = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+          className="xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
         >
           <option value="">All Categories</option>
           <option value="Category1">Category 1</option>
@@ -53,23 +63,14 @@ const PaginatedProducts = () => {
           {/* Add more options for your categories */}
         </select>
 
-        {/**** TEMP CODE BELOW for seeing if styling works between bars ****/}
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
-        >
-          <option value="">Search Bar</option>
-        </select>
-
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
-        >
-          <option value="">Reviews</option>
-        </select>
-        {/******* END OF TEMP CODE ******/}
+        {/* Search input */}
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search"
+          className="xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+        />
       </div>
 
       {/* Display filtered products */}
