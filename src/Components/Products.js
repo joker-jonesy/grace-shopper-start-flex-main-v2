@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import ReactPaginate from "react-paginate"
 import Rating from "./ui/Rating"
 import Socials from "./ui/Socials"
@@ -12,41 +12,48 @@ import WishListButton from "./ui/WishListButton"
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state.products)
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [searchQuery, setSearchQuery] = useState("") // added for search bar
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isOnProductsPage, setIsOnProductsPage] = useState(false) // Determine if we are on the products page
 
-  //pagination variables
+  // Pagination variables
   const [itemsPerPage, setItemsPerPage] = useState(24)
   const [itemOffset, setItemOffset] = useState(0)
 
   const endOffset = itemOffset + itemsPerPage
 
-  // Invoke when user click to request another page
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % products.length
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    )
-    setItemOffset(newOffset)
-    window.scrollTo(0, 0)
-  }
+  const location = useLocation()
 
-  const filterProducts = selectedCategory
-    ? products.filter(
-        // added for search bar so if category is selected, it will filter by category and search query and if not, it will just filter by search query
-        (product) =>
-          product.category === selectedCategory &&
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : products.length > 0
-    ? products.filter(
-        (
-          product // added for search bar
-        ) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : []
+  // Hook to listen for changes in the url to determine if we are on the products page
+  useEffect(() => {
+    setIsOnProductsPage(location.pathname === "/products")
+  }, [location])
+
+  // Filter products based on search query and selected category
+  // useMemo is used to prevent the filterProducts array from being recalculated on every render
+  const filterProducts = useMemo(() => {
+    if (!isOnProductsPage) {
+      return products
+    }
+    return products.filter(
+      (product) =>
+        (selectedCategory === "" || product.category === selectedCategory) &&
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [products, selectedCategory, searchQuery, isOnProductsPage])
+
+  // Set the item offset when the search query or selected category changes
+  useEffect(() => {
+    setItemOffset(0)
+  }, [searchQuery, selectedCategory])
 
   const currentProducts = filterProducts.slice(itemOffset, endOffset)
   const pageCount = Math.ceil(filterProducts.length / itemsPerPage)
+
+  const handlePageClick = (event) => {
+    const newOffset = event.selected * itemsPerPage
+    setItemOffset(newOffset)
+    window.scrollTo(0, 0)
+  }
 
   return (
     <>
