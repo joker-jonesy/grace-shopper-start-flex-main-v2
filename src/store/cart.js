@@ -52,6 +52,21 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
   }
 })
 
+export const updateCartQuantity = createAsyncThunk("updateCartQuantity", async (payload) => {
+  console.log("PAYLOAD FROM STORE", payload)
+  try {
+    const token = window.localStorage.getItem("token")
+    const response = await axios.put("/api/cart/update", payload, {
+      headers: {
+        authorization: token
+      }
+    })
+    return response.data 
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 export const addToGuestCart = createAsyncThunk("addToGuestCart", async (payload) => {
   let cart = window.localStorage.getItem("cart");
   cart = JSON.parse(cart);
@@ -67,6 +82,15 @@ export const addToGuestCart = createAsyncThunk("addToGuestCart", async (payload)
   window.localStorage.setItem("cart", JSON.stringify(cart))
   return cart;
 })
+
+// export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity", async (payload) => {
+//   try {
+//     let cart = window.localStorage.getItem("cart")
+//     cart = JSON.parse(cart)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// })
 
 export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
   try {
@@ -123,6 +147,12 @@ const cartSlice = createSlice({
     builder.addCase(removeFromGuestCart.fulfilled, (state, action) => {
       return action.payload
     })
+    builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
+      return action.payload
+    })
+    // builder.addCase(updateGuestCartQuantity.fulfilled, (state, action) => {
+    //   return action.payload
+    // })
   },
 })
 

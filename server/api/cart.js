@@ -32,4 +32,15 @@ app.put("/", async (req, res, next) => {
   }
 })
 
+// Update quantity of an item in the user's cart
+app.put("/update", async (req, res, next) => {
+  try {
+    const user = await User.findByToken(req.headers.authorization)
+    console.log("API BODY", req.body)
+    res.send(await user.updateCartQuantity(req.body))
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = app
