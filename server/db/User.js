@@ -62,6 +62,8 @@ User.prototype.createOrder = async function (data) {
   for(let item of cart.cartItems){
     const createLineItem = async ()=> {
       await conn.models.lineItem.create({productId: item.dataValues.productId, quantity: item.dataValues.quantity, orderId: order.id})
+      const product = await conn.models.product.findByPk(item.product.id)
+      await product.update({ quantity: product.quantity - item.quantity })
       await item.destroy();
     }
     orderItems.push(createLineItem());

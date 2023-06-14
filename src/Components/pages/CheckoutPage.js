@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteGuestCart, fetchUserCart } from '../../store';
+import { deleteGuestCart, fetchUserCart, fetchProducts } from '../../store';
 import { emailValidator } from '../../util';
 
 const CheckoutPage = () => {
@@ -52,6 +52,7 @@ const CheckoutPage = () => {
           } 
         )
         setOrder(response)
+        dispatch(fetchProducts())
         dispatch(fetchUserCart())
         setStatus("created")
       }else{
@@ -70,6 +71,7 @@ const CheckoutPage = () => {
         )
         setOrder(response)
         dispatch(deleteGuestCart())
+        dispatch(fetchProducts())
         setStatus("created")
       }
     } catch (error) {

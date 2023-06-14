@@ -83,7 +83,7 @@ const createFakeOrder = (userId) => {
 
 const createFakeLineItem = (orderId, productId) => {
   return {
-    quantity: 1,
+    quantity: Math.floor(Math.random() * 1000),
     orderId: orderId,
     productId: productId,
   }
@@ -97,7 +97,7 @@ const createFakeCart = (userId) => {
 
 const createFakeCartItem = (cartId, productId) => {
   return {
-    quantity: 1,
+    quantity: Math.floor(Math.random() * 1000),
     cartId: cartId,
     productId: productId,
   }

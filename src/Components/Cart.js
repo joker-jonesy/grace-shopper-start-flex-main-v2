@@ -39,7 +39,7 @@ const Cart = () => {
           <div>{totalItems} Items</div>
         </div>
       </div>
-      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/create")}}>Checkout</button>
+      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/verify")}}>Checkout</button>
     </div>
   )
 }
