@@ -22,6 +22,8 @@ app.post("/", async (req, res, next) => {
             quantity: item.quantity,
             orderId: order.dataValues.id,
           })
+          const product = await conn.models.product.findByPk(item.product.id);
+          await product.update({quantity: product.quantity - item.quantity})
         }
         orderItems.push(createLineItem());
       }

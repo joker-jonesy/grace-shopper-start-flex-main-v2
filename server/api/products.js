@@ -16,6 +16,26 @@ app.get("/", async (req, res, next) => {
   }
 })
 
+//put instead of get because you cant send a body with get
+app.put("/some", async (req, res, next) => {
+  try{
+    let stock = [];
+    for(let id of req.body.data){
+      const fetchQuantity = async () =>{
+        const product = await Product.findByPk(id, {
+          attributes: ["id", "quantity"],
+        })
+        return product.dataValues;
+      }
+      stock.push(fetchQuantity())
+    }
+    const response = await Promise.all(stock)
+    res.send(response);
+  }catch(error){
+    next(error)
+  }
+})
+
 // GET /products/:id - Get a single product
 app.get("/:id", async (req, res, next) => {
   const { id } = req.params
