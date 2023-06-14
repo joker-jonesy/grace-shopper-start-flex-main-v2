@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchSingleProduct } from "../store/singleProduct"
 import { useParams, useNavigate, NavLink } from "react-router-dom"
 import AddToCartButton from "./AddToCartButton"
-import { createReview } from "../store"
+import ReviewForm from "./ReviewForm"
 
 const SingleProductView = () => {
   const [quantity, setQuantity] = useState(1)
@@ -26,7 +26,7 @@ const SingleProductView = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const newReview = (description, rating)
+    const newReview = {description, rating}
 
     dispatch(createReview(newReview))
 
@@ -64,7 +64,7 @@ const SingleProductView = () => {
           <span className="text-lg font-bold">$</span>
           <span className="font-bold">{product.price}</span>
         </span>
-        <form onSubmit={addToCart}>
+        <form onSubmit={(event) => event.preventDefault()}>
           <input
             value={quantity}
             onChange={(event) => setQuantity(event.target.value)}
@@ -101,6 +101,7 @@ const SingleProductView = () => {
           </button>
         </form>
       </div>
+      <ReviewForm />
     </div>
   )
 }

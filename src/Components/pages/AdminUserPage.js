@@ -4,7 +4,7 @@ import UserDetails from "../ui/UserDetails"
 import { fetchUsers } from "../../store/users"
 
 function AdminUserPage() {
-  const { users } = useSelector((state) => state)
+  const { users } = useSelector((state) => state.users)
   const [selectedUser, setSelectedUser] = useState(null)
   const dispatch = useDispatch()
   useEffect(() => {

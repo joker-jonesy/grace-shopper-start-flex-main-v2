@@ -2,7 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { useSelector } from "react-redux"
 
-const initialState = {}
+const initialState = {
+  users: [],
+  user: {},
+}
 
 export const fetchUsers = createAsyncThunk("fetchUsers", async () => {
   try {
@@ -40,6 +43,7 @@ export const updateUser = createAsyncThunk("updateUser", async (updateData) => {
         authorization: token,
       },
     })
+    return response.data
   } catch (error) {
     if (error.response.status === 403) {
       window.alert(error.response.data)
@@ -55,13 +59,13 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      return action.payload
+      return { ...state, users: action.payload }
     })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      return action.payload
+      return { ...state, user: action.payload }
     })
     builder.addCase(updateUser.fulfilled, (state,action) =>{
-      return true;
+      return { ...state, user: action.payload }
     })
   },
 })

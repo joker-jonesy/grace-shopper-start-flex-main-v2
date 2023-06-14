@@ -244,7 +244,8 @@ const seedUsers = async () => {
     street: "test st",
     city: "test town",
     state: "Oregon",
-    zip: "12345"
+    zip: "12345",
+    userId: moe.id,
   })
   await addCartAndOrders()
   await addItemsToCart()
