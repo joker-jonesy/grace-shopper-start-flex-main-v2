@@ -18,7 +18,7 @@ const Landing = () => {
 
   return (
     <div className="">
-      <div className="flex justify-center">
+      <div className="flex justify-center backdrop-blur">
         <div className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-8xl font-extrabold text-transparent">
           ACME Web Store
         </div>
