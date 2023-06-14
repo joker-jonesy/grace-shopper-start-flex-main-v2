@@ -40,16 +40,37 @@ const PaginatedProducts = () => {
 
   return (
     <>
-      {/* Filter by category */}
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-      >
-        <option value="">All Categories</option>
-        <option value="Category1">Category 1</option>
-        <option value="Category2">Category 2</option>
-        {/* Add more options for your categories */}
-      </select>
+      <div className="flex flex-wrap justify-center gap-10">
+        {/* Filter by category */}
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+        >
+          <option value="">All Categories</option>
+          <option value="Category1">Category 1</option>
+          <option value="Category2">Category 2</option>
+          {/* Add more options for your categories */}
+        </select>
+
+        {/**** TEMP CODE BELOW for seeing if styling works between bars ****/}
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+        >
+          <option value="">Search Bar</option>
+        </select>
+
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="btn-xq xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+        >
+          <option value="">Reviews</option>
+        </select>
+        {/******* END OF TEMP CODE ******/}
+      </div>
 
       {/* Display filtered products */}
       <Products currentProducts={currentProducts} />
@@ -109,12 +130,10 @@ export const Products = ({ currentProducts }) => {
                   </span>
                 </div>
               </div>
-              <div className="w-full flex flex-row p-3 justify-center items-center">
+              <div className="flex w-full flex-row items-center justify-center p-3">
                 <WishListButton product={product} />
                 <AddToCartButton product={product} quantity={1} />
-
               </div>
-
             </div>
           </div>
         )
