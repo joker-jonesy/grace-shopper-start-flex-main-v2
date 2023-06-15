@@ -25,27 +25,20 @@ const ReviewForm = () => {
         setRating("")
     }
 
-    // const starArr = Array.from(Array(5).keys())
 
     return (
-        <div>Leave a Review
+        <div className="w-75 card glass card-compact p-2 flex-col space-y-10">
+            <div className="font-bold text-lg">Leave a Review</div>
+            <div className="text-sm">Description</div>
             <form onSubmit={handleSubmit}>
-                <label>Description
-                    <input
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    />
-                </label>
-                {/* <label>Star Rating
-                    {/* <select value={rating} onChange={(event) => setRating(event.target.value)} className="select select-bordered w-full max-w-xs">
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                    </select> */}
-                {/* </label> */} 
-                <Rating className="select select-bordered w-20"rating={rating} onSelect={setRating}/>
+                <input
+                className="h-40"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                />
+                <div className="p-5">
+                    <Rating className="select select-bordered"rating={rating} onSelect={setRating}/>
+                </div>
                 <button disabled = {description === "" || rating === ""}type="submit" className="btn-secondary btn-sm btn text-base-300">Submit</button>
             </form>
         </div>

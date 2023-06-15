@@ -36,7 +36,6 @@ app.put("/", async (req, res, next) => {
 app.put("/update", async (req, res, next) => {
   try {
     const user = await User.findByToken(req.headers.authorization)
-    console.log("API BODY", req.body)
     res.send(await user.updateCartQuantity(req.body))
   } catch (error) {
     next(error)
