@@ -131,6 +131,16 @@ User.prototype.addToCart = async function ({ product, quantity }) {
   return this.getCart()
 }
 
+User.prototype.updateCartQuantity = async function ({ product, quantity }) {
+  const cart = await this.getCart()
+  let cartItem = cart.cartItems.find((cartItem) => {
+    return cartItem.productId === product.product.id
+  })
+  cartItem.quantity = quantity
+  await cartItem.save()
+  return this.getCart()
+}
+
 User.prototype.removeFromCart = async function ({ product, quantity }) {
   const cart = await this.getCart()
   const cartItem = cart.cartItems.find((cartItem) => {
