@@ -56,52 +56,28 @@ const SingleProductView = () => {
     </>
   ) : (
     <div>
-      <div className="card glass card-compact m-4 w-64 sm:card-normal">
-        <img src={product.imageURL} />
-        <h1 className="text-lg font-bold">{product.name}</h1>
-        <p className="text-sm">{product.description}</p>
-        <span className="badge badge-ghost">
-          <span className="text-lg font-bold">$</span>
-          <span className="font-bold">{product.price}</span>
-        </span>
-        <form onSubmit={(event) => event.preventDefault()}>
-          <input
-            value={quantity}
-            onChange={(event) => setQuantity(event.target.value)}
-          />
-          <AddToCartButton product={product} quantity={parseInt(quantity)} />
-        </form>
+      <div className="flex flex-wrap justify-center gap-10 mt-6 text-2xl font-bold normal-case"> 
+        {product.name}
       </div>
-      <div>
-        Leave a Review
-        <form onSubmit={handleSubmit}>
-          <label>
-            Description
+      <hr />
+      <div className="flex flex-row justify-center">
+        <div className="card glass card-compact m-4 w-64 sm:card-normal">
+          <img src={product.imageURL} className="mask-square aspect-square h-full w-full"/>
+          <p className="text-sm">{product.description}</p>
+          <span className="badge badge-ghost">
+            <span className="text-lg font-bold">$</span>
+            <span className="font-bold">{product.price}</span>
+          </span>
+          <form onSubmit={(event) => event.preventDefault()}>
             <input
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
             />
-          </label>
-          <label>
-            Star Rating
-            {/* <input
-            value={rating}
-            onChange={(event) => setRating(event.target.value)}
-            /> */}
-            <select className="select-bordered select w-full max-w-xs">
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </select>
-          </label>
-          <button disabled={description === "" || rating === ""} type="submit">
-            Submit
-          </button>
-        </form>
+            <AddToCartButton product={product} quantity={parseInt(quantity)} />
+          </form>
+        </div>
+        <ReviewForm />
       </div>
-      <ReviewForm />
     </div>
   )
 }

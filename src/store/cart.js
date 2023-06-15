@@ -53,7 +53,6 @@ export const addToCart = createAsyncThunk("addToCart", async (payload) => {
 })
 
 export const updateCartQuantity = createAsyncThunk("updateCartQuantity", async (payload) => {
-  console.log("PAYLOAD FROM STORE", payload)
   try {
     const token = window.localStorage.getItem("token")
     const response = await axios.put("/api/cart/update", payload, {

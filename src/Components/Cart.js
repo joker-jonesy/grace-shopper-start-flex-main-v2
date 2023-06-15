@@ -27,7 +27,7 @@ const Cart = () => {
 
   return (
     <div>
-      <h1>Cart</h1>
+      <h1 className="flex flex-wrap justify-center gap-10 mt-6 text-2xl font-bold normal-case">Cart</h1>
       <div className="m-4 flex flex-shrink flex-wrap justify-center">
         {cartItems.map((product) => (
           <CartItem key={product.product.id} product={product}/>
